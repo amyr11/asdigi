@@ -19,79 +19,60 @@ class AddChild extends StatelessWidget {
           style: Theme.of(context).textTheme.titleLarge,
         ),
       ),
-      body: CustomScrollView(
-        slivers: [
-          SliverFillRemaining(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              height: 150,
+              width: 150,
+              clipBehavior: Clip.antiAliasWithSaveLayer,
+              decoration: BoxDecoration(shape: BoxShape.circle),
+              child: Image.network(
+                "https://childmind.org/wp-content/uploads/2021/07/our-impact-header-half-r.jpg",
+                fit: BoxFit.cover,
+              ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Column(
               children: [
-                Expanded(
-                  child: SizedBox(),
-                  flex: 1,
+                TextFormField(
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: "Name",
+                  ),
                 ),
-                Expanded(
-                  flex: 2,
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 8.0),
-                    child: Container(
-                      clipBehavior: Clip.antiAliasWithSaveLayer,
-                      decoration: BoxDecoration(shape: BoxShape.circle),
-                      child: Image.network(
-                        "https://childmind.org/wp-content/uploads/2021/07/our-impact-header-half-r.jpg",
-                        fit: BoxFit.cover,
-                      ),
+                SizedBox(
+                  height: 10,
+                ),
+                TextFormField(
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: "Date",
+                    suffixIcon: IconButton(
+                      icon: Icon(Icons.calendar_month_sharp),
+                      tooltip: 'Date',
+                      onPressed: () => {},
                     ),
-                  ),
-                ),
-                Expanded(
-                  flex: 2,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(16, 0, 16, 10),
-                        child: TextFormField(
-                          decoration: InputDecoration(
-                              border: OutlineInputBorder(), labelText: "Name"),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: TextFormField(
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: "Date",
-                            suffixIcon: IconButton(
-                              icon: Icon(Icons.calendar_month_sharp),
-                              tooltip: 'Date',
-                              onPressed: () => {},
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  flex: 2,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      FilledButton(
-                        onPressed: () => {},
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: Text("Save"),
-                        ),
-                      ),
-                      Expanded(child: Container())
-                    ],
                   ),
                 ),
               ],
             ),
-          ),
-        ],
+            SizedBox(
+              height: 40,
+            ),
+            FilledButton(
+              onPressed: () => {},
+              child: const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                child: Text("Save"),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
