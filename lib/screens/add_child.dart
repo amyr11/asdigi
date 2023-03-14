@@ -29,7 +29,7 @@ class AddChild extends StatelessWidget {
                 height: 150,
                 width: 150,
                 clipBehavior: Clip.antiAliasWithSaveLayer,
-                decoration: const BoxDecoration(shape: BoxShape.circle),
+                decoration: BoxDecoration(shape: BoxShape.circle),
                 child: Image.network(
                   "https://childmind.org/wp-content/uploads/2021/07/our-impact-header-half-r.jpg",
                   fit: BoxFit.cover,
@@ -38,7 +38,7 @@ class AddChild extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(top: 100, left: 100),
                 child: Container(
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     color: Colors.white,
                     boxShadow: [
                       BoxShadow(
@@ -56,28 +56,26 @@ class AddChild extends StatelessWidget {
                 ),
               ),
             ]),
-            const SizedBox(
-              height: 40,
+            SizedBox(
+              height: 20,
             ),
             Column(
               children: [
                 TextFormField(
-                  decoration: const InputDecoration(
-                    isDense: true,
+                  decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: "Name",
                   ),
                 ),
-                const SizedBox(
+                SizedBox(
                   height: 10,
                 ),
                 TextFormField(
                   decoration: InputDecoration(
-                    isDense: true,
-                    border: const OutlineInputBorder(),
+                    border: OutlineInputBorder(),
                     labelText: "Date",
                     suffixIcon: IconButton(
-                      icon: const Icon(Icons.calendar_month_sharp),
+                      icon: Icon(Icons.calendar_month_sharp),
                       tooltip: 'Date',
                       onPressed: () => {},
                     ),
@@ -85,16 +83,14 @@ class AddChild extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(
+            SizedBox(
               height: 40,
             ),
             FilledButton(
               onPressed: () => {},
               child: const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10),
-                child: Text(
-                  "Save",
-                ),
+                child: Text("Save"),
               ),
             ),
           ],
