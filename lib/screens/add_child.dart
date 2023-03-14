@@ -24,16 +24,38 @@ class AddChild extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              height: 150,
-              width: 150,
-              clipBehavior: Clip.antiAliasWithSaveLayer,
-              decoration: BoxDecoration(shape: BoxShape.circle),
-              child: Image.network(
-                "https://childmind.org/wp-content/uploads/2021/07/our-impact-header-half-r.jpg",
-                fit: BoxFit.cover,
+            Stack(children: [
+              Container(
+                height: 150,
+                width: 150,
+                clipBehavior: Clip.antiAliasWithSaveLayer,
+                decoration: BoxDecoration(shape: BoxShape.circle),
+                child: Image.network(
+                  "https://childmind.org/wp-content/uploads/2021/07/our-impact-header-half-r.jpg",
+                  fit: BoxFit.cover,
+                ),
               ),
-            ),
+              Padding(
+                padding: const EdgeInsets.only(top: 100, left: 100),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black12,
+                        blurRadius: 10,
+                      )
+                    ],
+                    shape: BoxShape.circle,
+                  ),
+                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                  child: IconButton(
+                    onPressed: () => {},
+                    icon: Icon(Icons.edit),
+                  ),
+                ),
+              ),
+            ]),
             SizedBox(
               height: 20,
             ),
