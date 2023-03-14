@@ -1,4 +1,4 @@
-import 'package:asdigi/screens/activities.dart';
+import 'package:asdigi/screens/home.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
       ),
-      home: const Activities(),
+      home: const Home(),
       debugShowCheckedModeBanner: false,
     );
   }
