@@ -1,4 +1,4 @@
-import 'package:asdigi/screens/activities.dart';
+import 'package:asdigi/screens/home.dart';
 import 'package:flutter/material.dart';
 
 import 'screens/add_child.dart';
@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
       ),
-      home: const AddChild(),
+      home: const Home(),
       debugShowCheckedModeBanner: false,
     );
   }
