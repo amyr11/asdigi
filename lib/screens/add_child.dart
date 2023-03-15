@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'dart:io';
 
 class AddChild extends StatefulWidget {
   const AddChild({super.key});
@@ -12,6 +14,49 @@ class AddChild extends StatefulWidget {
 
 class _AddChildState extends State<AddChild> {
   TextEditingController date = TextEditingController();
+
+  final ImagePicker _picker = ImagePicker();
+  File? _image;
+
+  Future<void> _showDialog() async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Select an option'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                TextButton(
+                  child: Text("Use Camera"),
+                  onPressed: () async {
+                    final pickedFile =
+                        await _picker.getImage(source: ImageSource.camera);
+                    setState(() {
+                      _image = File(pickedFile!.path);
+                    });
+                    Navigator.of(context).pop();
+                  },
+                ),
+                Padding(padding: EdgeInsets.all(8.0)),
+                TextButton(
+                  child: Text('Use gallery'),
+                  onPressed: () async {
+                    final pickedFile =
+                        await _picker.getImage(source: ImageSource.gallery);
+                    setState(() {
+                      _image = File(pickedFile!.path);
+                    });
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,15 +79,19 @@ class _AddChildState extends State<AddChild> {
           children: [
             Stack(children: [
               Container(
-                height: 150,
-                width: 150,
-                clipBehavior: Clip.antiAliasWithSaveLayer,
-                decoration: const BoxDecoration(shape: BoxShape.circle),
-                child: Image.network(
-                  "https://childmind.org/wp-content/uploads/2021/07/our-impact-header-half-r.jpg",
-                  fit: BoxFit.cover,
-                ),
-              ),
+                  height: 150,
+                  width: 150,
+                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                  decoration: const BoxDecoration(shape: BoxShape.circle),
+                  child: _image == null
+                      ? Image.network(
+                          "https://childmind.org/wp-content/uploads/2021/07/our-impact-header-half-r.jpg",
+                          fit: BoxFit.cover,
+                        )
+                      : Image.file(
+                          _image!,
+                          fit: BoxFit.cover,
+                        )),
               Padding(
                 padding: const EdgeInsets.only(top: 100, left: 100),
                 child: Container(
@@ -58,8 +107,8 @@ class _AddChildState extends State<AddChild> {
                   ),
                   clipBehavior: Clip.antiAliasWithSaveLayer,
                   child: IconButton(
-                    onPressed: () => {},
-                    icon: const Icon(Icons.edit),
+                    onPressed: () => {_showDialog()},
+                    icon: const Icon(Icons.camera_alt),
                   ),
                 ),
               ),
@@ -84,7 +133,7 @@ class _AddChildState extends State<AddChild> {
                   decoration: InputDecoration(
                     isDense: true,
                     border: const OutlineInputBorder(),
-                    labelText: "Date",
+                    labelText: "Birth Date",
                     suffixIcon: IconButton(
                       icon: const Icon(Icons.calendar_month_sharp),
                       tooltip: 'Date',
