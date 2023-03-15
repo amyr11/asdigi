@@ -1,4 +1,4 @@
-import 'package:asdigi/screens/activities.dart';
+import 'package:asdigi/screens/home.dart';
 import 'package:flutter/material.dart';
 
 import 'screens/add_child.dart';

@@ -59,7 +59,7 @@ class _AddChildState extends State<AddChild> {
                   clipBehavior: Clip.antiAliasWithSaveLayer,
                   child: IconButton(
                     onPressed: () => {},
-                    icon: Icon(Icons.edit),
+                    icon: const Icon(Icons.edit),
                   ),
                 ),
               ),
@@ -114,9 +114,7 @@ class _AddChildState extends State<AddChild> {
               onPressed: () => {},
               child: const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10),
-                child: Text(
-                  "Save",
-                ),
+                child: Text("Save"),
               ),
             ),
           ],
