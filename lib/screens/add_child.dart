@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:intl/intl.dart';
 
-class AddChild extends StatelessWidget {
+class AddChild extends StatefulWidget {
   const AddChild({super.key});
+
+  @override
+  State<AddChild> createState() => _AddChildState();
+}
+
+class _AddChildState extends State<AddChild> {
+  TextEditingController date = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -72,6 +80,7 @@ class AddChild extends StatelessWidget {
                   height: 10,
                 ),
                 TextFormField(
+                  controller: date,
                   decoration: InputDecoration(
                     isDense: true,
                     border: const OutlineInputBorder(),
@@ -79,7 +88,20 @@ class AddChild extends StatelessWidget {
                     suffixIcon: IconButton(
                       icon: const Icon(Icons.calendar_month_sharp),
                       tooltip: 'Date',
-                      onPressed: () => {},
+                      onPressed: () async {
+                        DateTime? selectedDate = await showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(2000),
+                            lastDate: DateTime(2101));
+
+                        if (selectedDate != null) {
+                          setState(() {
+                            date.text =
+                                DateFormat('yyyy-MM-dd').format(selectedDate);
+                          });
+                        }
+                      },
                     ),
                   ),
                 ),
