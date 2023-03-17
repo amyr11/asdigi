@@ -31,7 +31,7 @@ class _AddChildState extends State<AddChild> {
                   child: Text("Use Camera"),
                   onPressed: () async {
                     final pickedFile =
-                        await _picker.getImage(source: ImageSource.camera);
+                        await _picker.pickImage(source: ImageSource.camera);
                     setState(() {
                       _image = File(pickedFile!.path);
                     });
@@ -43,7 +43,7 @@ class _AddChildState extends State<AddChild> {
                   child: Text('Use gallery'),
                   onPressed: () async {
                     final pickedFile =
-                        await _picker.getImage(source: ImageSource.gallery);
+                        await _picker.pickImage(source: ImageSource.gallery);
                     setState(() {
                       _image = File(pickedFile!.path);
                     });
@@ -131,6 +131,7 @@ class _AddChildState extends State<AddChild> {
                 TextFormField(
                   controller: date,
                   decoration: InputDecoration(
+                    helperText: 'YYYY-MM-DD',
                     isDense: true,
                     border: const OutlineInputBorder(),
                     labelText: "Birth Date",

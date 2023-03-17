@@ -22,7 +22,7 @@ class _myAppState extends State<MyApp> {
       theme: ThemeData(
         useMaterial3: true,
       ),
-      home: const AddChild(),
+      home: const Home(),
       debugShowCheckedModeBanner: false,
     );
   }

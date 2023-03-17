@@ -11,7 +11,7 @@ class Home extends StatefulWidget {
 }
 
 class _Home extends State<Home> {
-  int currentPageIndex = 2;
+  int currentPageIndex = 0;
 
   @override
   Widget build(BuildContext context) {
