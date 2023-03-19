@@ -51,7 +51,10 @@ class _Home extends State<Home> {
                 clipBehavior: Clip.antiAliasWithSaveLayer,
                 color: Theme.of(context).colorScheme.surfaceVariant,
                 child: InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    showSearch(
+                        context: context, delegate: CustomSearchDelegate());
+                  },
                   child: Padding(
                     padding: const EdgeInsets.all(15),
                     child: Row(
@@ -83,13 +86,23 @@ class _Home extends State<Home> {
                   separatorBuilder: (BuildContext context, int index) =>
                       const Divider(),
                   itemBuilder: (BuildContext context, int index) => Container(
-                    child: const Padding(
+                    child: Padding(
                       padding: EdgeInsets.symmetric(vertical: 5),
                       child: ListTile(
-                        leading: Icon(Icons.icecream),
-                        title: Text('I like icecream'),
-                        subtitle: Text('Icream is good for health'),
-                        trailing: Icon(Icons.food_bank),
+                        leading: Image.network(
+                          'https://thumbs.dreamstime.com/b/wood-texture-3753136.jpg',
+                          width: 56,
+                          height: 56,
+                        ),
+                        title: Text(
+                          'Title',
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
+                        subtitle: Text(
+                          'Supporting line text lorem ipsum dolor sit amet, consectetur',
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                        trailing: Icon(Icons.arrow_right),
                       ),
                     ),
                   ),
@@ -131,15 +144,106 @@ class _Home extends State<Home> {
   }
 }
 
-// TextField(
-//                 decoration: InputDecoration(
-//                   fillColor: Theme.of(context).colorScheme.surfaceVariant,
-//                   filled: true,
-//                   border: InputBorder.none,
-//                   hintText: 'Search',
-//                   suffixIcon: IconButton(
-//                     icon: const Icon(Icons.search),
-//                     onPressed: () {},
+class CustomSearchDelegate extends SearchDelegate {
+  List<String> searchTerms = [
+    'item #1',
+    'item #2',
+    'item #3',
+    'item #4',
+    'item #5',
+    'item #6',
+    'item #7',
+  ];
+
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    return [
+      IconButton(
+        icon: Icon(Icons.clear),
+        onPressed: () {
+          query = '';
+        },
+      )
+    ];
+  }
+
+  @override
+  Widget buildLeading(BuildContext context) {
+    return IconButton(
+      icon: Icon(Icons.arrow_back),
+      onPressed: () {
+        close(context, null);
+      },
+    );
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    List<String> matchQuery = [];
+    for (var item in searchTerms) {
+      if (item.toLowerCase().contains(query.toLowerCase())) {
+        matchQuery.add(item);
+      }
+    }
+
+    return ListView.builder(
+      itemCount: matchQuery.length,
+      itemBuilder: (context, index) {
+        var result = matchQuery[index];
+        return ListTile(
+          title: Text(result),
+        );
+      },
+    );
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    List<String> matchQuery = [];
+    for (var item in searchTerms) {
+      if (item.toLowerCase().contains(query.toLowerCase())) {
+        matchQuery.add(item);
+      }
+    }
+    return ListView.builder(
+      itemCount: matchQuery.length,
+      itemBuilder: (context, index) {
+        var result = matchQuery[index];
+        return ListTile(
+          title: Text(result),
+        );
+      },
+    );
+  }
+}
+
+// Row(
+//                     mainAxisSize: MainAxisSize.max,
+//                     children: [
+//                       Image.network(
+//                         'https://thumbs.dreamstime.com/b/wood-texture-3753136.jpg',
+//                         width: 56,
+//                         height: 56,
+//                       ),
+//                       Column(
+//                         mainAxisSize: MainAxisSize.max,
+//                         crossAxisAlignment: CrossAxisAlignment.start,
+//                         children: [
+//                           Text(
+//                             'Title',
+//                             style: Theme.of(context).textTheme.bodyLarge,
+//                           ),
+//                           Text(
+//                             'Supporting line text lorem ipsum dolor sit amet, consectetur',
+//                             style: Theme.of(context).textTheme.bodyMedium,
+//                           )
+//                         ],
+//                       ),
+//                       IconButton(
+//                         onPressed: () {},
+//                         icon: Icon(Icons.arrow_right),
+//                       )
+//                     ],
 //                   ),
 //                 ),
 //               ),
