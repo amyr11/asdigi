@@ -1,6 +1,3 @@
-import 'dart:html';
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 
 import '../components/app_bar_profile.dart';
@@ -30,38 +27,39 @@ class _Home extends State<Home> {
         },
       ),
       body: <Widget>[
-        Container(
-          alignment: Alignment.center,
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 16, top: 20),
-                child: Text(
-                  'Behavior Dictionary',
-                  style: Theme.of(context).textTheme.titleLarge,
+              const SizedBox(
+                height: 20,
+              ),
+              Text(
+                'Behavior Dictionary',
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              Text(
+                'Understand your child more',
+                style: Theme.of(context).textTheme.titleSmall,
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              TextField(
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(28),
+                  ),
+                  hintText: 'Search',
+                  suffixIcon: IconButton(
+                    icon: const Icon(Icons.search),
+                    onPressed: () {},
+                  ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 16),
-                child: Text(
-                  'Understand your child more',
-                  style: Theme.of(context).textTheme.titleSmall,
-                ),
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-                child: TextField(
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(28)),
-                      hintText: 'Search',
-                      suffixIcon: IconButton(
-                        icon: Icon(Icons.search),
-                        onPressed: () {},
-                      )),
-                ),
+              const SizedBox(
+                height: 20,
               ),
               Expanded(
                 child: ListView.separated(
@@ -70,38 +68,13 @@ class _Home extends State<Home> {
                   separatorBuilder: (BuildContext context, int index) =>
                       const Divider(),
                   itemBuilder: (BuildContext context, int index) => Container(
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(16, 4, 16, 5),
-                      child: Row(
-                        children: [
-                          Image.network(
-                            'https://thumbs.dreamstime.com/b/wood-texture-3753136.jpg',
-                            width: 56,
-                            height: 56,
-                          ),
-                          Container(
-                            constraints: const BoxConstraints(minWidth: 228),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                children: [
-                                  Text('Title',
-                                      style:
-                                          Theme.of(context).textTheme.bodyLarge,
-                                      softWrap: true),
-                                  Text(
-                                      'Supporting line text lorem ipsum dolor sit amet, consectetur',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium,
-                                      softWrap: true)
-                                ],
-                              ),
-                            ),
-                          ),
-                          IconButton(
-                              onPressed: () {}, icon: Icon(Icons.arrow_right))
-                        ],
+                    child: const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 5),
+                      child: ListTile(
+                        leading: Icon(Icons.icecream),
+                        title: Text('I like icecream'),
+                        subtitle: Text('Icream is good for health'),
+                        trailing: Icon(Icons.food_bank),
                       ),
                     ),
                   ),
@@ -142,3 +115,34 @@ class _Home extends State<Home> {
     );
   }
 }
+
+
+
+// Row(
+//                     mainAxisSize: MainAxisSize.max,
+//                     children: [
+//                       Image.network(
+//                         'https://thumbs.dreamstime.com/b/wood-texture-3753136.jpg',
+//                         width: 56,
+//                         height: 56,
+//                       ),
+//                       Column(
+//                         mainAxisSize: MainAxisSize.max,
+//                         crossAxisAlignment: CrossAxisAlignment.start,
+//                         children: [
+//                           Text(
+//                             'Title',
+//                             style: Theme.of(context).textTheme.bodyLarge,
+//                           ),
+//                           Text(
+//                             'Supporting line text lorem ipsum dolor sit amet, consectetur',
+//                             style: Theme.of(context).textTheme.bodyMedium,
+//                           )
+//                         ],
+//                       ),
+//                       IconButton(
+//                         onPressed: () {},
+//                         icon: Icon(Icons.arrow_right),
+//                       )
+//                     ],
+//                   ),
