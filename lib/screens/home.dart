@@ -30,7 +30,7 @@ class _Home extends State<Home> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const SizedBox(
                 height: 20,
@@ -46,15 +46,30 @@ class _Home extends State<Home> {
               const SizedBox(
                 height: 20,
               ),
-              TextField(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(28),
-                  ),
-                  hintText: 'Search',
-                  suffixIcon: IconButton(
-                    icon: const Icon(Icons.search),
-                    onPressed: () {},
+              Material(
+                borderRadius: BorderRadius.circular(50),
+                clipBehavior: Clip.antiAliasWithSaveLayer,
+                color: Theme.of(context).colorScheme.surfaceVariant,
+                child: InkWell(
+                  onTap: () {},
+                  child: Padding(
+                    padding: const EdgeInsets.all(15),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Search Behavior',
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleMedium!
+                              .copyWith(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onSurfaceVariant),
+                        ),
+                        const Icon(Icons.search),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -116,33 +131,15 @@ class _Home extends State<Home> {
   }
 }
 
-
-
-// Row(
-//                     mainAxisSize: MainAxisSize.max,
-//                     children: [
-//                       Image.network(
-//                         'https://thumbs.dreamstime.com/b/wood-texture-3753136.jpg',
-//                         width: 56,
-//                         height: 56,
-//                       ),
-//                       Column(
-//                         mainAxisSize: MainAxisSize.max,
-//                         crossAxisAlignment: CrossAxisAlignment.start,
-//                         children: [
-//                           Text(
-//                             'Title',
-//                             style: Theme.of(context).textTheme.bodyLarge,
-//                           ),
-//                           Text(
-//                             'Supporting line text lorem ipsum dolor sit amet, consectetur',
-//                             style: Theme.of(context).textTheme.bodyMedium,
-//                           )
-//                         ],
-//                       ),
-//                       IconButton(
-//                         onPressed: () {},
-//                         icon: Icon(Icons.arrow_right),
-//                       )
-//                     ],
+// TextField(
+//                 decoration: InputDecoration(
+//                   fillColor: Theme.of(context).colorScheme.surfaceVariant,
+//                   filled: true,
+//                   border: InputBorder.none,
+//                   hintText: 'Search',
+//                   suffixIcon: IconButton(
+//                     icon: const Icon(Icons.search),
+//                     onPressed: () {},
 //                   ),
+//                 ),
+//               ),
