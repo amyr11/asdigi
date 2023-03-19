@@ -10,6 +10,36 @@ class Home extends StatefulWidget {
   State<Home> createState() => _Home();
 }
 
+List<Widget> listItems = [
+  CustomListItem(
+    leading: Image.network(
+      'https://thumbs.dreamstime.com/b/wood-texture-3753136.jpg',
+      width: 56,
+      height: 56,
+    ),
+    titleData: 'Title 1',
+    subtitleData: 'Subtitle',
+  ),
+  CustomListItem(
+    leading: Image.network(
+      'https://thumbs.dreamstime.com/b/wood-texture-3753136.jpg',
+      width: 56,
+      height: 56,
+    ),
+    titleData: 'Title 2',
+    subtitleData: 'Subtitle',
+  ),
+  CustomListItem(
+    leading: Image.network(
+      'https://thumbs.dreamstime.com/b/wood-texture-3753136.jpg',
+      width: 56,
+      height: 56,
+    ),
+    titleData: 'Title 3',
+    subtitleData: 'Subtitle',
+  ),
+];
+
 class _Home extends State<Home> {
   int currentPageIndex = 0;
   String searchText = '';
@@ -81,31 +111,12 @@ class _Home extends State<Home> {
               ),
               Expanded(
                 child: ListView.separated(
-                  itemCount: 15,
+                  itemCount: listItems.length,
                   shrinkWrap: true,
                   separatorBuilder: (BuildContext context, int index) =>
                       const Divider(),
-                  itemBuilder: (BuildContext context, int index) => Container(
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(vertical: 5),
-                      child: ListTile(
-                        leading: Image.network(
-                          'https://thumbs.dreamstime.com/b/wood-texture-3753136.jpg',
-                          width: 56,
-                          height: 56,
-                        ),
-                        title: Text(
-                          'Title',
-                          style: Theme.of(context).textTheme.bodyLarge,
-                        ),
-                        subtitle: Text(
-                          'Supporting line text lorem ipsum dolor sit amet, consectetur',
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ),
-                        trailing: Icon(Icons.arrow_right),
-                      ),
-                    ),
-                  ),
+                  itemBuilder: (BuildContext context, int index) =>
+                      listItems[index],
                 ),
               )
             ],
@@ -140,6 +151,40 @@ class _Home extends State<Home> {
           ),
         ),
       ][currentPageIndex],
+    );
+  }
+}
+
+class CustomListItem extends StatelessWidget {
+  final Widget leading;
+  final String titleData;
+  final String subtitleData;
+
+  const CustomListItem({
+    super.key,
+    required this.leading,
+    required this.titleData,
+    required this.subtitleData,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Padding(
+        padding: EdgeInsets.symmetric(vertical: 5),
+        child: ListTile(
+          leading: leading,
+          title: Text(
+            titleData,
+            style: Theme.of(context).textTheme.bodyLarge,
+          ),
+          subtitle: Text(
+            subtitleData,
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
+          trailing: Icon(Icons.arrow_right),
+        ),
+      ),
     );
   }
 }
@@ -217,33 +262,26 @@ class CustomSearchDelegate extends SearchDelegate {
   }
 }
 
-// Row(
-//                     mainAxisSize: MainAxisSize.max,
-//                     children: [
-//                       Image.network(
-//                         'https://thumbs.dreamstime.com/b/wood-texture-3753136.jpg',
-//                         width: 56,
-//                         height: 56,
-//                       ),
-//                       Column(
-//                         mainAxisSize: MainAxisSize.max,
-//                         crossAxisAlignment: CrossAxisAlignment.start,
-//                         children: [
-//                           Text(
-//                             'Title',
-//                             style: Theme.of(context).textTheme.bodyLarge,
-//                           ),
-//                           Text(
-//                             'Supporting line text lorem ipsum dolor sit amet, consectetur',
-//                             style: Theme.of(context).textTheme.bodyMedium,
-//                           )
-//                         ],
-//                       ),
-//                       IconButton(
-//                         onPressed: () {},
-//                         icon: Icon(Icons.arrow_right),
-//                       )
-//                     ],
-//                   ),
-//                 ),
-//               ),
+
+
+// Container(
+//       child: Padding(
+//         padding: EdgeInsets.symmetric(vertical: 5),
+//         child: ListTile(
+//           leading: Image.network(
+//             'https://thumbs.dreamstime.com/b/wood-texture-3753136.jpg',
+//             width: 56,
+//             height: 56,
+//           ),
+//           title: Text(
+//             'Title 1',
+//             style: Theme.of(context).textTheme.bodyLarge,
+//           ),
+//           subtitle: Text(
+//             'Supporting line text lorem ipsum dolor sit amet, consectetur',
+//             style: Theme.of(context).textTheme.bodyMedium,
+//           ),
+//           trailing: Icon(Icons.arrow_right),
+//         ),
+//       ),
+//     );
