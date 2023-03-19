@@ -10,7 +10,7 @@ class Home extends StatefulWidget {
   State<Home> createState() => _Home();
 }
 
-List<Widget> listItems = [
+List<CustomListItem> listItems = [
   CustomListItem(
     leading: Image.network(
       'https://thumbs.dreamstime.com/b/wood-texture-3753136.jpg',
@@ -18,7 +18,7 @@ List<Widget> listItems = [
       height: 56,
     ),
     titleData: 'Title 1',
-    subtitleData: 'Subtitle',
+    subtitleData: 'Lorem',
   ),
   CustomListItem(
     leading: Image.network(
@@ -27,7 +27,7 @@ List<Widget> listItems = [
       height: 56,
     ),
     titleData: 'Title 2',
-    subtitleData: 'Subtitle',
+    subtitleData: 'Ipsum',
   ),
   CustomListItem(
     leading: Image.network(
@@ -36,7 +36,25 @@ List<Widget> listItems = [
       height: 56,
     ),
     titleData: 'Title 3',
-    subtitleData: 'Subtitle',
+    subtitleData: 'Dolor',
+  ),
+  CustomListItem(
+    leading: Image.network(
+      'https://thumbs.dreamstime.com/b/wood-texture-3753136.jpg',
+      width: 56,
+      height: 56,
+    ),
+    titleData: 'Title 4',
+    subtitleData: 'Sit',
+  ),
+  CustomListItem(
+    leading: Image.network(
+      'https://thumbs.dreamstime.com/b/wood-texture-3753136.jpg',
+      width: 56,
+      height: 56,
+    ),
+    titleData: 'Title 5',
+    subtitleData: 'Eth',
   ),
 ];
 
@@ -182,7 +200,10 @@ class CustomListItem extends StatelessWidget {
             subtitleData,
             style: Theme.of(context).textTheme.bodyMedium,
           ),
-          trailing: Icon(Icons.arrow_right),
+          trailing: IconButton(
+            icon: Icon(Icons.arrow_right),
+            onPressed: () {},
+          ),
         ),
       ),
     );
@@ -190,16 +211,6 @@ class CustomListItem extends StatelessWidget {
 }
 
 class CustomSearchDelegate extends SearchDelegate {
-  List<String> searchTerms = [
-    'item #1',
-    'item #2',
-    'item #3',
-    'item #4',
-    'item #5',
-    'item #6',
-    'item #7',
-  ];
-
   @override
   List<Widget> buildActions(BuildContext context) {
     return [
@@ -224,9 +235,10 @@ class CustomSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    List<String> matchQuery = [];
-    for (var item in searchTerms) {
-      if (item.toLowerCase().contains(query.toLowerCase())) {
+    List<CustomListItem> matchQuery = [];
+    for (CustomListItem item in listItems) {
+      if (item.titleData.toLowerCase().contains(query.toLowerCase()) ||
+          item.subtitleData.toLowerCase().contains(query.toLowerCase())) {
         matchQuery.add(item);
       }
     }
@@ -235,18 +247,17 @@ class CustomSearchDelegate extends SearchDelegate {
       itemCount: matchQuery.length,
       itemBuilder: (context, index) {
         var result = matchQuery[index];
-        return ListTile(
-          title: Text(result),
-        );
+        return result;
       },
     );
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    List<String> matchQuery = [];
-    for (var item in searchTerms) {
-      if (item.toLowerCase().contains(query.toLowerCase())) {
+    List<CustomListItem> matchQuery = [];
+    for (CustomListItem item in listItems) {
+      if (item.titleData.toLowerCase().contains(query.toLowerCase()) ||
+          item.subtitleData.toLowerCase().contains(query.toLowerCase())) {
         matchQuery.add(item);
       }
     }
@@ -254,9 +265,7 @@ class CustomSearchDelegate extends SearchDelegate {
       itemCount: matchQuery.length,
       itemBuilder: (context, index) {
         var result = matchQuery[index];
-        return ListTile(
-          title: Text(result),
-        );
+        return result;
       },
     );
   }
