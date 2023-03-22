@@ -5,10 +5,14 @@ void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
+  @override
+  State<MyApp> createState() => _myAppState();
+}
+
+class _myAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
