@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../components/app_bar_profile.dart';
+import '../components/custom_doctor_item.dart';
 import '../components/custom_nav_bar.dart';
 
 List<String> places = <String>['Manila', 'Mandaluyong', 'Makati', 'Marikina'];
@@ -105,7 +106,8 @@ class _Home extends State<Home> {
                                       border: Border.all(color: Colors.black),
                                       borderRadius: BorderRadius.circular(8)),
                                   child: DropdownButtonFormField<String>(
-                                    alignment: Alignment.center,
+                                    style:
+                                        Theme.of(context).textTheme.labelSmall,
                                     value: textValuePlaces,
                                     items: places.map<DropdownMenuItem<String>>(
                                         (String value) {
@@ -123,9 +125,7 @@ class _Home extends State<Home> {
                                   ),
                                 ),
                               ),
-                              SizedBox(
-                                width: 10,
-                              ),
+                              SizedBox(),
                               Expanded(
                                 flex: 2,
                                 child: Container(
@@ -133,7 +133,8 @@ class _Home extends State<Home> {
                                       border: Border.all(color: Colors.black),
                                       borderRadius: BorderRadius.circular(8)),
                                   child: DropdownButtonFormField(
-                                    alignment: Alignment.centerRight,
+                                    style:
+                                        Theme.of(context).textTheme.labelSmall,
                                     value: textValueOccupation,
                                     items: occupations
                                         .map<DropdownMenuItem<String>>(
@@ -183,14 +184,38 @@ class _Home extends State<Home> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 16, vertical: 20),
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          'Financial Shit',
-                          style: Theme.of(context).textTheme.titleLarge,
+                        Padding(
+                          padding: const EdgeInsets.only(top: 20),
+                          child: Text(
+                            'Financial Assistance',
+                            style: Theme.of(context).textTheme.titleLarge,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 20),
+                          child: Text(
+                            'Discover financial help and sponsorships',
+                            style: Theme.of(context).textTheme.titleSmall,
+                          ),
+                        ),
+                        Expanded(
+                          child: ListView.separated(
+                            itemCount: 5,
+                            separatorBuilder:
+                                (BuildContext context, int index) {
+                              return SizedBox(
+                                  height:
+                                      10); // set the height of the separator here
+                            },
+                            itemBuilder: (BuildContext context, int index) {
+                              return CustomFinancialItem();
+                            },
+                            shrinkWrap: true,
+                          ),
                         )
                       ],
                     ),
@@ -205,96 +230,30 @@ class _Home extends State<Home> {
   }
 }
 
-class CustomDoctorItem extends StatelessWidget {
-  final String pfp;
-  final String docName;
-  final String docOccupation;
-  final String description;
-  final String hospitalName;
-  final String address;
-  final String trunkLine;
-
-  const CustomDoctorItem({
+class CustomFinancialItem extends StatelessWidget {
+  const CustomFinancialItem({
     super.key,
-    required this.pfp,
-    required this.docName,
-    required this.docOccupation,
-    required this.description,
-    required this.address,
-    required this.trunkLine,
-    required this.hospitalName,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ListTile(
-            leading: CircleAvatar(
-              backgroundImage: NetworkImage(pfp),
-            ),
-            title: Text(
-              docName,
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-            subtitle: Text(
-              docOccupation,
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-            trailing: Icon(Icons.more_vert),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  description,
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-                SizedBox(
-                  height: 15,
-                ),
-                Text(
-                  hospitalName,
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    decoration: TextDecoration.underline,
-                  ),
-                ),
-                Text(
-                  address,
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-                Text(
-                  trunkLine,
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    ElevatedButton(
-                      onPressed: () {},
-                      child: Text('Email'),
-                    ),
-                    SizedBox(
-                      width: 8,
-                    ),
-                    ElevatedButton(
-                        onPressed: () {}, child: Text('Add to Contacts'))
-                  ],
-                )
-              ],
-            ),
-          ),
-        ],
+          border: Border.all(color: Colors.grey),
+          borderRadius: BorderRadius.circular(12)),
+      child: ListTile(
+        onTap: () {},
+        leading: Image.network(
+          'https://play-lh.googleusercontent.com/b60f8bzdLdXPgmJ7oAJyLTneTfDnRTimi4hXHWtLWYlJpyhLCibhKaBI5oMU6GQ1xg',
+        ),
+        title: Text(
+          'Family and Community Welfare Program (FCWP)',
+          style: Theme.of(context).textTheme.titleSmall,
+        ),
+        subtitle: Text(
+          'Thie program aims to help disadvantaged families improve their ability to identify needs',
+          style: Theme.of(context).textTheme.bodySmall,
+        ),
       ),
     );
   }
