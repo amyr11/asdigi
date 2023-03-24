@@ -218,24 +218,30 @@ class _Home extends State<Home> {
                           ),
                         ),
                         Expanded(
-                          child: ListView.separated(
-                            itemCount: 4,
-                            separatorBuilder:
-                                (BuildContext context, int index) {
-                              return SizedBox(
-                                  height:
-                                      10); // set the height of the separator here
-                            },
+                          child: ListView.builder(
+                            itemCount: doctors.length,
                             itemBuilder: (context, index) {
-                              return CustomDoctorItem(
-                                pfp: doctors[index].profilePic,
-                                docName: doctors[index].name,
-                                docOccupation: doctors[index].occupation,
-                                description: doctors[index].jobDescription,
-                                address: doctors[index].address,
-                                trunkLine: doctors[index].trunkLine,
-                                hospitalName: doctors[index].hospital,
-                              );
+                              // Filter doctors by occupation
+                              if ((textValueOccupation == 'Type' &&
+                                      textValuePlaces == 'Location') ||
+                                  doctors[index]
+                                      .occupation
+                                      .contains(textValueOccupation) ||
+                                  doctors[index]
+                                      .address
+                                      .contains(textValuePlaces)) {
+                                return CustomDoctorItem(
+                                  pfp: doctors[index].profilePic,
+                                  docName: doctors[index].name,
+                                  docOccupation: doctors[index].occupation,
+                                  description: doctors[index].jobDescription,
+                                  address: doctors[index].address,
+                                  trunkLine: doctors[index].trunkLine,
+                                  hospitalName: doctors[index].hospital,
+                                );
+                              } else {
+                                return SizedBox.shrink();
+                              }
                             },
                             shrinkWrap: true,
                           ),

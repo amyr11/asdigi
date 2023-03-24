@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class CustomFinancialItem extends StatelessWidget {
-  const CustomFinancialItem({
+  CustomFinancialItem({
     super.key,
   });
 
