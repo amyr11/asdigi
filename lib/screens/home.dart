@@ -1,14 +1,64 @@
 import 'package:flutter/material.dart';
 import '../components/app_bar_profile.dart';
 import '../components/custom_doctor_item.dart';
+import '../components/custom_financial_item.dart';
 import '../components/custom_nav_bar.dart';
+import '../models/doctors.dart';
 
-List<String> places = <String>['Manila', 'Mandaluyong', 'Makati', 'Marikina'];
+List<Doctor> doctors = <Doctor>[
+  Doctor(
+      Image.network(
+          'https://img.freepik.com/free-photo/attractive-young-male-nutriologist-lab-coat-smiling-against-white-background_662251-2960.jpg'),
+      'Heart Marcial',
+      'Developmental Pediatrician',
+      'Specializes in speech therapy, helping individuals with a wide range of speech and language issues',
+      'Ospital ng Sampaloc',
+      'España Blvd., Sampaloc, Manila',
+      'Trunkline: 827495'),
+  Doctor(
+      Image.network(
+          'https://img.freepik.com/free-photo/beautiful-young-female-doctor-looking-camera-office_1301-7807.jpg'),
+      'Amy Francisco',
+      'Speech Therapist',
+      'Talks to children who can not',
+      'Ospital ng Mandaluyong',
+      'Mandaluyong',
+      'Trunkline: 294867'),
+  Doctor(
+      Image.network(
+          'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8ZG9jdG9yfGVufDB8fDB8fA%3D%3D&w=1000&q=80'),
+      'Karl Malaga',
+      'Psychological Therapist',
+      'Talks to you and gives you advice for life',
+      'St Luke\'s Medical Center',
+      'Quezon City',
+      'Trunkline: 294867'),
+  Doctor(
+      Image.network(
+          'https://upload.wikimedia.org/wikipedia/en/5/53/Greys-Anatomy-Season-7-Promo-9.jpg'),
+      'Eliza Lim',
+      'Occupational Therapist',
+      'Gives advice in movement of children',
+      'Marikina Valley Medical Center',
+      'Marikina City',
+      'Trunkline: 294867'),
+];
+
+List<String> places = [
+  'Location',
+  'Manila',
+  'Mandaluyong',
+  'Makati',
+  'Quezon',
+  'Marikina'
+];
 List<String> occupations = <String>[
-  'Developmental Pediatrician',
-  'Physical Therapist',
+  'Type',
+  'Developmental Pedia',
   'Speech Therapist',
-  'Other Therapist'
+  'Psychological Therapist',
+  'Occupational Therapist',
+  'Sample Therapist'
 ];
 
 class Home extends StatefulWidget {
@@ -25,6 +75,12 @@ class _Home extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    // for (Doctor doctor in doctors) {
+    //   places.add(doctor.address);
+    // }
+    // for (Doctor doctor in doctors) {
+    //   occupations.add(doctor.occupation);
+    // }
     return Scaffold(
       appBar: AppBarWithProfile(context),
       bottomNavigationBar: CustomNavBar(
@@ -106,6 +162,7 @@ class _Home extends State<Home> {
                                       border: Border.all(color: Colors.black),
                                       borderRadius: BorderRadius.circular(8)),
                                   child: DropdownButtonFormField<String>(
+                                    alignment: Alignment.center,
                                     style:
                                         Theme.of(context).textTheme.labelSmall,
                                     value: textValuePlaces,
@@ -125,31 +182,35 @@ class _Home extends State<Home> {
                                   ),
                                 ),
                               ),
-                              SizedBox(),
                               Expanded(
                                 flex: 2,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      border: Border.all(color: Colors.black),
-                                      borderRadius: BorderRadius.circular(8)),
-                                  child: DropdownButtonFormField(
-                                    style:
-                                        Theme.of(context).textTheme.labelSmall,
-                                    value: textValueOccupation,
-                                    items: occupations
-                                        .map<DropdownMenuItem<String>>(
-                                            (String value) {
-                                      return DropdownMenuItem<String>(
-                                        value: value,
-                                        child: Text(value),
-                                      );
-                                    }).toList(),
-                                    onChanged: (String? value) {
-                                      // This is called when the user selects an item.
-                                      setState(() {
-                                        textValueOccupation = value!;
-                                      });
-                                    },
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 10),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        border: Border.all(color: Colors.black),
+                                        borderRadius: BorderRadius.circular(8)),
+                                    child: DropdownButtonFormField(
+                                      alignment: Alignment.center,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .labelSmall,
+                                      value: textValueOccupation,
+                                      items: occupations
+                                          .map<DropdownMenuItem<String>>(
+                                              (String value) {
+                                        return DropdownMenuItem<String>(
+                                          value: value,
+                                          child: Text(value),
+                                        );
+                                      }).toList(),
+                                      onChanged: (String? value) {
+                                        // This is called when the user selects an item.
+                                        setState(() {
+                                          textValueOccupation = value!;
+                                        });
+                                      },
+                                    ),
                                   ),
                                 ),
                               )
@@ -158,24 +219,23 @@ class _Home extends State<Home> {
                         ),
                         Expanded(
                           child: ListView.separated(
-                            itemCount: 5,
+                            itemCount: 4,
                             separatorBuilder:
                                 (BuildContext context, int index) {
                               return SizedBox(
                                   height:
                                       10); // set the height of the separator here
                             },
-                            itemBuilder: (BuildContext context, int index) {
+                            itemBuilder: (context, index) {
                               return CustomDoctorItem(
-                                  pfp:
-                                      'https://images.theconversation.com/files/304957/original/file-20191203-66986-im7o5.jpg?ixlib=rb-1.1.0&q=45&auto=format&w=1200&h=1200.0&fit=crop',
-                                  docName: 'Dr. Heart Marcial',
-                                  docOccupation: 'Developmental Pediatrician',
-                                  description:
-                                      'Specializes in speech therapy, helping individuals with a wide range of speech and language issues',
-                                  hospitalName: 'Ospital ng Sampaloc',
-                                  address: 'España Blvd., Sampaloc, Manila',
-                                  trunkLine: 'Trunk line: (02) 781-4201');
+                                pfp: doctors[index].profilePic,
+                                docName: doctors[index].name,
+                                docOccupation: doctors[index].occupation,
+                                description: doctors[index].jobDescription,
+                                address: doctors[index].address,
+                                trunkLine: doctors[index].trunkLine,
+                                hospitalName: doctors[index].hospital,
+                              );
                             },
                             shrinkWrap: true,
                           ),
@@ -204,7 +264,7 @@ class _Home extends State<Home> {
                         ),
                         Expanded(
                           child: ListView.separated(
-                            itemCount: 5,
+                            itemCount: 3,
                             separatorBuilder:
                                 (BuildContext context, int index) {
                               return SizedBox(
@@ -226,35 +286,6 @@ class _Home extends State<Home> {
           ),
         ),
       ][currentPageIndex],
-    );
-  }
-}
-
-class CustomFinancialItem extends StatelessWidget {
-  const CustomFinancialItem({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey),
-          borderRadius: BorderRadius.circular(12)),
-      child: ListTile(
-        onTap: () {},
-        leading: Image.network(
-          'https://play-lh.googleusercontent.com/b60f8bzdLdXPgmJ7oAJyLTneTfDnRTimi4hXHWtLWYlJpyhLCibhKaBI5oMU6GQ1xg',
-        ),
-        title: Text(
-          'Family and Community Welfare Program (FCWP)',
-          style: Theme.of(context).textTheme.titleSmall,
-        ),
-        subtitle: Text(
-          'Thie program aims to help disadvantaged families improve their ability to identify needs',
-          style: Theme.of(context).textTheme.bodySmall,
-        ),
-      ),
     );
   }
 }

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'dart:ui';
 
 class CustomDoctorItem extends StatelessWidget {
-  final String pfp;
+  final Image pfp;
   final String docName;
   final String docOccupation;
   final String description;
@@ -32,7 +33,7 @@ class CustomDoctorItem extends StatelessWidget {
         children: [
           ListTile(
             leading: CircleAvatar(
-              backgroundImage: NetworkImage(pfp),
+              backgroundImage: pfp.image,
             ),
             title: Text(
               docName,
