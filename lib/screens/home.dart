@@ -3,15 +3,15 @@ import '../components/app_bar_profile.dart';
 import '../components/custom_nav_bar.dart';
 import 'doctors.dart';
 
-class Home extends StatefulWidget {
-  const Home({super.key});
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
 
   @override
-  State<Home> createState() => _Home();
+  State<HomePage> createState() => _HomePage();
 }
 
-class _Home extends State<Home> {
-  int currentPageIndex = 4;
+class _HomePage extends State<HomePage> {
+  int currentPageIndex = 2;
 
   @override
   Widget build(BuildContext context) {

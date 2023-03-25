@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "122403147834",
+    "project_id": "asdigi-9f849",
+    "storage_bucket": "asdigi-9f849.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:122403147834:android:43ff87ea135386ee502503",
+        "android_client_info": {
+          "package_name": "com.example.asdigi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "122403147834-f52e0p1opo5kh62oqahmgugmbbjm0tsp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.asdigi",
+            "certificate_hash": "2b5c7de2a07a1083c00608490b1902ac618e40c5"
+          }
+        },
+        {
+          "client_id": "122403147834-p44fcef0js5f6qhk4ra4r8slq3417q7t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDhmvp-dk7NRwV0sJ0o7ibeOgCCvnkFrfg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "122403147834-p44fcef0js5f6qhk4ra4r8slq3417q7t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
