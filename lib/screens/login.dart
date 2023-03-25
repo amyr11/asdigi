@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../helpers/auth_services.dart';
+
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
 
@@ -117,7 +119,9 @@ class LoginPage extends StatelessWidget {
                           ),
                           padding: const EdgeInsets.symmetric(vertical: 15),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          AuthServices().signInWithGoogle();
+                        },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
