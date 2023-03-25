@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import '../components/app_bar_profile.dart';
 import '../components/custom_nav_bar.dart';
 
-class Home extends StatefulWidget {
-  const Home({super.key});
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
 
   @override
-  State<Home> createState() => _Home();
+  State<HomePage> createState() => _HomePage();
 }
 
-class _Home extends State<Home> {
+class _HomePage extends State<HomePage> {
   int currentPageIndex = 2;
 
   @override
