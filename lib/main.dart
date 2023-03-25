@@ -3,6 +3,8 @@ import 'firebase_options.dart';
 import 'package:asdigi/helpers/auth_services.dart';
 import 'package:flutter/material.dart';
 
+import 'screens/home.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -24,7 +26,7 @@ class _myAppState extends State<MyApp> {
       theme: ThemeData(
         useMaterial3: true,
       ),
-      home: AuthServices().handleAuthState(),
+      home: HomePage(),
       debugShowCheckedModeBanner: false,
     );
   }
