@@ -59,12 +59,12 @@ class CustomDoctorItem extends StatelessWidget {
                     description,
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 15,
                   ),
                   Text(
                     hospitalName,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                       decoration: TextDecoration.underline,
@@ -78,18 +78,23 @@ class CustomDoctorItem extends StatelessWidget {
                     trunkLine,
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
+                  const SizedBox(
+                    height: 15,
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      ElevatedButton(
+                      OutlinedButton(
                         onPressed: () {},
-                        child: Text('Email'),
+                        child: const Text('Email'),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 8,
                       ),
-                      ElevatedButton(
-                          onPressed: () {}, child: Text('Add to Contacts'))
+                      FilledButton(
+                        onPressed: () {},
+                        child: const Text('Add to Contacts'),
+                      )
                     ],
                   )
                 ],
