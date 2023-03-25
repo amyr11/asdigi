@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-
 import '../components/app_bar_profile.dart';
 import '../components/custom_nav_bar.dart';
+import 'doctors.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -48,19 +48,12 @@ class _HomePage extends State<HomePage> {
           ),
         ),
         Container(
-          alignment: Alignment.center,
           child: Text(
             'Page 4',
             style: Theme.of(context).textTheme.titleLarge,
           ),
         ),
-        Container(
-          alignment: Alignment.center,
-          child: Text(
-            'Page 5',
-            style: Theme.of(context).textTheme.titleLarge,
-          ),
-        ),
+        DoctorsPage(),
       ][currentPageIndex],
     );
   }
