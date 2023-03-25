@@ -1,15 +1,100 @@
+import 'package:asdigi/screens/register.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../helpers/auth_services.dart';
 
-class LoginPage extends StatelessWidget {
-  LoginPage({super.key});
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
 
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   final String logoPath = 'assets/logos/logo_asdigi.png';
   final String googleLogoPath = 'assets/logos/logo_google.png';
 
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+
+  Icon showPasswordIcon = Icon(Icons.visibility_off);
+  bool showPassword = false;
+
+  String? emailErrorText;
+  String? passwordErrorText;
+
+  late Widget loginButtonChild;
+  late Widget googleSignInButtonChild;
+  late Widget loginLoadingWidget;
+
+  bool logInLoading = false;
+  bool googleSignInLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    loginLoadingWidget = const SizedBox(
+      height: 22,
+      width: 22,
+      child: CircularProgressIndicator(
+        color: Colors.white,
+        strokeWidth: 2,
+      ),
+    );
+    loginButtonChild = const Text('Login');
+    googleSignInButtonChild = Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Image.asset(
+          googleLogoPath,
+          height: 18,
+        ),
+        const SizedBox(
+          width: 8,
+        ),
+        const Text('Sign in with Google'),
+      ],
+    );
+  }
+
+  void toggleShowPassword() {
+    setState(() {
+      showPassword = !showPassword;
+      showPasswordIcon = showPassword
+          ? const Icon(Icons.visibility)
+          : const Icon(Icons.visibility_off);
+    });
+  }
+
+  void validateEmailPassword(FirebaseAuthException? e) {
+    String? emailErrorMessage;
+    String? passwordErrorMessage;
+
+    if (e == null) {
+      emailErrorMessage = null;
+      passwordErrorMessage = null;
+    } else if (emailController.text.isEmpty) {
+      emailErrorMessage = 'Email is required';
+    } else if (passwordController.text.isEmpty) {
+      passwordErrorMessage = 'Password is required';
+    } else if (e.code == 'invalid-email') {
+      emailErrorMessage = 'Invalid email';
+    } else if (e.code == 'user-not-found') {
+      emailErrorMessage = 'User not found';
+    } else if (e.code == 'wrong-password') {
+      passwordErrorMessage = 'Wrong password';
+    } else {
+      emailErrorMessage = 'Something went wrong';
+    }
+
+    setState(() {
+      emailErrorText = emailErrorMessage;
+      passwordErrorText = passwordErrorMessage;
+      logInLoading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,9 +143,10 @@ class LoginPage extends StatelessWidget {
                         children: [
                           TextField(
                             controller: emailController,
-                            decoration: const InputDecoration(
+                            decoration: InputDecoration(
+                              errorText: emailErrorText,
                               isDense: true,
-                              border: OutlineInputBorder(),
+                              border: const OutlineInputBorder(),
                               labelText: 'Email',
                             ),
                           ),
@@ -69,11 +155,18 @@ class LoginPage extends StatelessWidget {
                           ),
                           TextField(
                             controller: passwordController,
-                            obscureText: true,
-                            decoration: const InputDecoration(
+                            obscureText: !showPassword,
+                            decoration: InputDecoration(
+                              errorText: passwordErrorText,
                               isDense: true,
-                              border: OutlineInputBorder(),
+                              border: const OutlineInputBorder(),
                               labelText: 'Password',
+                              suffixIcon: IconButton(
+                                onPressed: () {
+                                  toggleShowPassword();
+                                },
+                                icon: showPasswordIcon,
+                              ),
                             ),
                           ),
                           const SizedBox(
@@ -96,11 +189,20 @@ class LoginPage extends StatelessWidget {
                         style: FilledButton.styleFrom(
                           padding: const EdgeInsets.symmetric(vertical: 15),
                         ),
-                        onPressed: () {
-                          AuthServices().signInWithEmailAndPassword(
-                              emailController.text, passwordController.text);
+                        onPressed: () async {
+                          setState(() {
+                            logInLoading = true;
+                          });
+                          FirebaseAuthException? error =
+                              await AuthServices().signInWithEmailAndPassword(
+                            emailController.text,
+                            passwordController.text,
+                          );
+                          validateEmailPassword(error);
                         },
-                        child: const Text('Log in'),
+                        child: logInLoading
+                            ? loginLoadingWidget
+                            : loginButtonChild,
                       ),
                       const SizedBox(
                         height: 10,
@@ -127,22 +229,10 @@ class LoginPage extends StatelessWidget {
                           ),
                           padding: const EdgeInsets.symmetric(vertical: 15),
                         ),
-                        onPressed: () {
-                          AuthServices().signInWithGoogle();
+                        onPressed: () async {
+                          await AuthServices().signInWithGoogle();
                         },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Image.asset(
-                              googleLogoPath,
-                              height: 18,
-                            ),
-                            const SizedBox(
-                              width: 8,
-                            ),
-                            const Text('Sign in with Google'),
-                          ],
-                        ),
+                        child: googleSignInButtonChild,
                       ),
                     ],
                   ),
@@ -157,7 +247,16 @@ class LoginPage extends StatelessWidget {
                         style: Theme.of(context).textTheme.labelLarge,
                       ),
                       TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return const RegisterPage();
+                              },
+                            ),
+                          );
+                        },
                         style: TextButton.styleFrom(
                           splashFactory: NoSplash.splashFactory,
                           padding: EdgeInsets.zero,
