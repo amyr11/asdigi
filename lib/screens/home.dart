@@ -59,7 +59,7 @@ List<CustomListItem> listItems = [
 ];
 
 class _HomePage extends State<HomePage> {
-  int currentPageIndex = 0;
+  int currentPageIndex = 2;
   String searchText = '';
 
   @override
