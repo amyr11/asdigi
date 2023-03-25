@@ -13,7 +13,7 @@ class AuthServices {
         if (snapshot.hasData) {
           return const HomePage();
         } else {
-          return const LoginPage();
+          return LoginPage();
         }
       },
     );
@@ -45,7 +45,7 @@ class AuthServices {
   }
 
   signOut() async {
-    await GoogleSignIn().disconnect();
     FirebaseAuth.instance.signOut();
+    await GoogleSignIn().disconnect();
   }
 }

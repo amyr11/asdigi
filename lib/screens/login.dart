@@ -3,10 +3,13 @@ import 'package:flutter/material.dart';
 import '../helpers/auth_services.dart';
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+  LoginPage({super.key});
 
   final String logoPath = 'assets/logos/logo_asdigi.png';
   final String googleLogoPath = 'assets/logos/logo_google.png';
+
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -53,8 +56,9 @@ class LoginPage extends StatelessWidget {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          const TextField(
-                            decoration: InputDecoration(
+                          TextField(
+                            controller: emailController,
+                            decoration: const InputDecoration(
                               isDense: true,
                               border: OutlineInputBorder(),
                               labelText: 'Email',
@@ -63,9 +67,10 @@ class LoginPage extends StatelessWidget {
                           const SizedBox(
                             height: 20,
                           ),
-                          const TextField(
+                          TextField(
+                            controller: passwordController,
                             obscureText: true,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               isDense: true,
                               border: OutlineInputBorder(),
                               labelText: 'Password',
@@ -91,7 +96,10 @@ class LoginPage extends StatelessWidget {
                         style: FilledButton.styleFrom(
                           padding: const EdgeInsets.symmetric(vertical: 15),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          AuthServices().signInWithEmailAndPassword(
+                              emailController.text, passwordController.text);
+                        },
                         child: const Text('Log in'),
                       ),
                       const SizedBox(
