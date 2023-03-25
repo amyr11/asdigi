@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../helpers/auth_services.dart';
 import 'circle_image_button.dart';
 
 // TODO: Change image path to children's image
@@ -29,7 +30,10 @@ class AppBarWithProfile extends AppBar {
           ),
           actions: [
             IconButton(
-              onPressed: () => {},
+              onPressed: () {
+                // TODO: Change by adding setting screen
+                AuthServices().signOut();
+              },
               icon: const Icon(Icons.settings),
               tooltip: 'Settings',
             ),
