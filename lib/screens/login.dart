@@ -2,6 +2,7 @@ import 'package:asdigi/screens/register.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../constants.dart';
 import '../helpers/auth_services.dart';
 
 class LoginPage extends StatefulWidget {
@@ -12,9 +13,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final String logoPath = 'assets/logos/logo_asdigi.png';
-  final String googleLogoPath = 'assets/logos/logo_google.png';
-
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
@@ -48,7 +46,7 @@ class _LoginPageState extends State<LoginPage> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Image.asset(
-          googleLogoPath,
+          Constants.googleLogoPath,
           height: 18,
         ),
         const SizedBox(
@@ -69,30 +67,31 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void validateEmailPassword(FirebaseAuthException? e) {
-    String? emailErrorMessage;
-    String? passwordErrorMessage;
-
-    if (e == null) {
-      emailErrorMessage = null;
-      passwordErrorMessage = null;
-    } else if (emailController.text.isEmpty) {
-      emailErrorMessage = 'Email is required';
-    } else if (passwordController.text.isEmpty) {
-      passwordErrorMessage = 'Password is required';
-    } else if (e.code == 'invalid-email') {
-      emailErrorMessage = 'Invalid email';
-    } else if (e.code == 'user-not-found') {
-      emailErrorMessage = 'User not found';
-    } else if (e.code == 'wrong-password') {
-      passwordErrorMessage = 'Wrong password';
-    } else {
-      emailErrorMessage = 'Something went wrong';
-    }
-
     setState(() {
-      emailErrorText = emailErrorMessage;
-      passwordErrorText = passwordErrorMessage;
-      logInLoading = false;
+      if (e == null) {
+        emailErrorText = null;
+        passwordErrorText = null;
+        return;
+      }
+      // Validate email
+      if (emailController.text.isEmpty) {
+        emailErrorText = 'Email is required';
+      } else if (e.code == 'invalid-email') {
+        emailErrorText = 'Invalid email';
+      } else if (e.code == 'user-not-found') {
+        emailErrorText = 'User not found';
+      } else {
+        emailErrorText = null;
+      }
+
+      // Validate password
+      if (passwordController.text.isEmpty) {
+        passwordErrorText = 'Password is required';
+      } else if (e.code == 'wrong-password') {
+        passwordErrorText = 'Wrong password';
+      } else {
+        passwordErrorText = null;
+      }
     });
   }
 
@@ -119,7 +118,7 @@ class _LoginPageState extends State<LoginPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Image.asset(
-                            logoPath,
+                            Constants.logoPath,
                             width: 62,
                           ),
                           const SizedBox(
@@ -151,7 +150,7 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                           const SizedBox(
-                            height: 20,
+                            height: 10,
                           ),
                           TextField(
                             controller: passwordController,
@@ -193,12 +192,17 @@ class _LoginPageState extends State<LoginPage> {
                           setState(() {
                             logInLoading = true;
                           });
-                          FirebaseAuthException? error =
-                              await AuthServices().signInWithEmailAndPassword(
+                          AuthServices()
+                              .signInWithEmailAndPassword(
                             emailController.text,
                             passwordController.text,
-                          );
-                          validateEmailPassword(error);
+                          )
+                              .then((error) {
+                            validateEmailPassword(error);
+                            setState(() {
+                              logInLoading = false;
+                            });
+                          });
                         },
                         child: logInLoading
                             ? loginLoadingWidget
@@ -252,7 +256,7 @@ class _LoginPageState extends State<LoginPage> {
                             context,
                             MaterialPageRoute(
                               builder: (context) {
-                                return const RegisterPage();
+                                return RegisterPage();
                               },
                             ),
                           );
