@@ -43,9 +43,11 @@ class _RegisterPageState extends State<RegisterPage> {
   bool preValidateFields() {
     bool isValid = true;
 
-    emailErrorText = null;
-    passwordErrorText = null;
-    confirmPasswordErrorText = null;
+    setState(() {
+      emailErrorText = null;
+      passwordErrorText = null;
+      confirmPasswordErrorText = null;
+    });
 
     // Validate email
     if (emailController.text.isEmpty) {
