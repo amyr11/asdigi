@@ -13,7 +13,7 @@ class AuthServices {
         if (snapshot.hasData) {
           return const HomePage();
         } else {
-          return LoginPage();
+          return const LoginPage();
         }
       },
     );
