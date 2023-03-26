@@ -28,7 +28,7 @@ class _HomePage extends State<HomePage> {
         },
       ),
       body: <Widget>[
-        BehaviorDictionaryPage(),
+        const BehaviorDictionaryPage(),
         Container(
           alignment: Alignment.center,
           child: Text(
