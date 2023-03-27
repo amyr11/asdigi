@@ -1,3 +1,4 @@
+import 'package:asdigi/screens/behavior_content.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:asdigi/helpers/auth_services.dart';
@@ -24,7 +25,7 @@ class _myAppState extends State<MyApp> {
       theme: ThemeData(
         useMaterial3: true,
       ),
-      home: AuthServices().handleAuthState(),
+      home: const BehaviorContentPage(),
       debugShowCheckedModeBanner: false,
     );
   }
