@@ -41,7 +41,7 @@ List<DevelopmentalActivity> allActivities = [
     'Activity',
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit, ',
     'Movement',
-    false,
+    true,
   ),
   DevelopmentalActivity(
     Image.network(
@@ -77,140 +77,55 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
           child: Scaffold(
             appBar: AppBar(
               toolbarHeight: 0,
-              bottom: TabBar(
+              bottom: const TabBar(
+                isScrollable: true,
                 tabs: [
                   Tab(
                     child: Text(
                       'Social',
-                      style: Theme.of(context).textTheme.labelSmall,
                     ),
                   ),
                   Tab(
                     child: Text(
                       'Language',
-                      style: Theme.of(context).textTheme.labelSmall,
                     ),
                   ),
                   Tab(
                     child: Text(
                       'Cognitive',
-                      style: Theme.of(context).textTheme.labelSmall,
                     ),
                   ),
                   Tab(
                     child: Text(
                       'Movement',
-                      style: Theme.of(context).textTheme.labelSmall,
                     ),
                   ),
                 ],
               ),
             ),
-            body: Padding(
-              padding: const EdgeInsets.only(left: 16),
-              child: TabBarView(
-                children: [
-                  SingleChildScrollView(
-                    physics: AlwaysScrollableScrollPhysics(),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 20),
-                          child: Text(
-                            'Recommended',
-                            style: Theme.of(context).textTheme.titleLarge,
-                          ),
-                        ),
-                        Container(
-                          height: 350,
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: allActivities.length,
-                            itemBuilder: (context, index) {
-                              return CustomRecommendationItem(
-                                backgroundImage:
-                                    allActivities[index].backgroundImage,
-                                title: allActivities[index].title,
-                                category: allActivities[index].category,
-                                description: allActivities[index].description,
-                              );
-                            },
-                          ),
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Visibility(
-                          visible: pinnedList.length >= 1,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Pinned',
-                                style: Theme.of(context).textTheme.titleLarge,
-                              ),
-                              ListView.separated(
-                                physics: BouncingScrollPhysics(),
-                                shrinkWrap: true,
-                                itemCount: pinnedList.length,
-                                separatorBuilder: (context, index) {
-                                  return const Divider();
-                                },
-                                itemBuilder: (context, index) {
-                                  return CustomMaterialItem(
-                                    backgroundImage:
-                                        pinnedList[index].backgroundImage,
-                                    title: pinnedList[index].title,
-                                    category: pinnedList[index].category,
-                                    description: pinnedList[index].description,
-                                  );
-                                },
-                              ),
-                            ],
-                          ),
-                        ),
-                        Text(
-                          'All Materials',
+            body: TabBarView(
+              children: [
+                SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 20),
+                        child: Text(
+                          'Recommended',
                           style: Theme.of(context).textTheme.titleLarge,
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 15),
-                          child: Row(
-                            children: materialFilter.values
-                                .map((materialFilter filter) {
-                              return Padding(
-                                padding: const EdgeInsets.only(right: 10),
-                                child: FilterChip(
-                                  label: Text(filter.name),
-                                  selected: !_filters.contains(filter.name),
-                                  onSelected: (bool value) {
-                                    setState(() {
-                                      if (!value) {
-                                        if (!_filters.contains(filter.name)) {
-                                          _filters.add(filter.name);
-                                        }
-                                      } else {
-                                        _filters.removeWhere((String name) {
-                                          return name == filter.name;
-                                        });
-                                      }
-                                    });
-                                  },
-                                ),
-                              );
-                            }).toList(),
-                          ),
-                        ),
-                        ListView.separated(
-                          physics: BouncingScrollPhysics(),
-                          shrinkWrap: true,
+                      ),
+                      SizedBox(
+                        height: 350,
+                        child: ListView.builder(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          scrollDirection: Axis.horizontal,
                           itemCount: allActivities.length,
-                          separatorBuilder: (context, index) {
-                            return const Divider();
-                          },
                           itemBuilder: (context, index) {
-                            return CustomMaterialItem(
+                            return CustomRecommendationItem(
                               backgroundImage:
                                   allActivities[index].backgroundImage,
                               title: allActivities[index].title,
@@ -218,12 +133,104 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                               description: allActivities[index].description,
                             );
                           },
-                        )
-                      ],
-                    ),
-                  )
-                ],
-              ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Visibility(
+                        visible: pinnedList.isNotEmpty,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16),
+                              child: Text(
+                                'Pinned',
+                                style: Theme.of(context).textTheme.titleLarge,
+                              ),
+                            ),
+                            ListView.separated(
+                              physics: const BouncingScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: pinnedList.length,
+                              separatorBuilder: (context, index) {
+                                return const Divider();
+                              },
+                              itemBuilder: (context, index) {
+                                return CustomMaterialItem(
+                                  backgroundImage:
+                                      pinnedList[index].backgroundImage,
+                                  title: pinnedList[index].title,
+                                  category: pinnedList[index].category,
+                                  description: pinnedList[index].description,
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 15),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'All Materials',
+                              style: Theme.of(context).textTheme.titleLarge,
+                            ),
+                            const SizedBox(height: 5),
+                            Row(
+                              children: materialFilter.values
+                                  .map((materialFilter filter) {
+                                return Padding(
+                                  padding: const EdgeInsets.only(right: 10),
+                                  child: FilterChip(
+                                    label: Text(filter.name),
+                                    selected: !_filters.contains(filter.name),
+                                    onSelected: (bool value) {
+                                      setState(() {
+                                        if (!value) {
+                                          if (!_filters.contains(filter.name)) {
+                                            _filters.add(filter.name);
+                                          }
+                                        } else {
+                                          _filters.removeWhere((String name) {
+                                            return name == filter.name;
+                                          });
+                                        }
+                                      });
+                                    },
+                                  ),
+                                );
+                              }).toList(),
+                            ),
+                          ],
+                        ),
+                      ),
+                      ListView.separated(
+                        physics: const BouncingScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: allActivities.length,
+                        separatorBuilder: (context, index) {
+                          return const Divider();
+                        },
+                        itemBuilder: (context, index) {
+                          return CustomMaterialItem(
+                            backgroundImage:
+                                allActivities[index].backgroundImage,
+                            title: allActivities[index].title,
+                            category: allActivities[index].category,
+                            description: allActivities[index].description,
+                          );
+                        },
+                      )
+                    ],
+                  ),
+                )
+              ],
             ),
           ),
         ));
