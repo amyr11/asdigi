@@ -1,3 +1,5 @@
+import 'package:asdigi/models/developmentalActivity.dart';
+import 'package:asdigi/screens/activities.dart';
 import 'package:flutter/material.dart';
 import '../components/app_bar_profile.dart';
 import '../components/custom_material_item.dart';
@@ -11,8 +13,6 @@ class HomePage extends StatefulWidget {
   @override
   State<HomePage> createState() => _HomePage();
 }
-
-enum materialFilter { Activities, Tips }
 
 List<CustomListItem> listItems = [
   CustomListItem(
@@ -154,123 +154,7 @@ class _HomePage extends State<HomePage> {
             style: Theme.of(context).textTheme.titleLarge,
           ),
         ),
-        Container(
-            alignment: Alignment.center,
-            child: DefaultTabController(
-              length: 4,
-              child: Scaffold(
-                appBar: AppBar(
-                  toolbarHeight: 0,
-                  bottom: TabBar(
-                    tabs: [
-                      Tab(
-                        child: Text(
-                          'Social',
-                          style: Theme.of(context).textTheme.labelSmall,
-                        ),
-                      ),
-                      Tab(
-                        child: Text(
-                          'Language',
-                          style: Theme.of(context).textTheme.labelSmall,
-                        ),
-                      ),
-                      Tab(
-                        child: Text(
-                          'Cognitive',
-                          style: Theme.of(context).textTheme.labelSmall,
-                        ),
-                      ),
-                      Tab(
-                        child: Text(
-                          'Movement',
-                          style: Theme.of(context).textTheme.labelSmall,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                body: Padding(
-                  padding: const EdgeInsets.only(left: 16),
-                  child: TabBarView(
-                    children: [
-                      SingleChildScrollView(
-                        physics: AlwaysScrollableScrollPhysics(),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 20),
-                              child: Text(
-                                'Recommended',
-                                style: Theme.of(context).textTheme.titleLarge,
-                              ),
-                            ),
-                            Container(
-                              height: 350,
-                              child: ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                itemCount: 5,
-                                itemBuilder: (context, index) {
-                                  return CustomRecommendationItem();
-                                },
-                              ),
-                            ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            Text(
-                              'All Materials',
-                              style: Theme.of(context).textTheme.titleLarge,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 15),
-                              child: Row(
-                                children: materialFilter.values
-                                    .map((materialFilter filter) {
-                                  return Padding(
-                                    padding: const EdgeInsets.only(right: 10),
-                                    child: FilterChip(
-                                      label: Text(filter.name),
-                                      selected: !_filters.contains(filter.name),
-                                      onSelected: (bool value) {
-                                        setState(() {
-                                          if (!value) {
-                                            if (!_filters
-                                                .contains(filter.name)) {
-                                              _filters.add(filter.name);
-                                            }
-                                          } else {
-                                            _filters.removeWhere((String name) {
-                                              return name == filter.name;
-                                            });
-                                          }
-                                        });
-                                      },
-                                    ),
-                                  );
-                                }).toList(),
-                              ),
-                            ),
-                            ListView.separated(
-                              physics: BouncingScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount: 5,
-                              separatorBuilder: (context, index) {
-                                return const Divider();
-                              },
-                              itemBuilder: (context, index) {
-                                return CustomMaterialItem();
-                              },
-                            )
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            )),
+        ActivitiesPage(),
         Container(
           child: Text(
             'Page 4',

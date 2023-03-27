@@ -1,30 +1,38 @@
 import 'package:flutter/material.dart';
 
 class CustomMaterialItem extends StatelessWidget {
+  final Image backgroundImage;
+  final String title;
+  final String category;
+  final String description;
+
   const CustomMaterialItem({
     super.key,
+    required this.backgroundImage,
+    required this.title,
+    required this.category,
+    required this.description,
   });
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: Image.network(
-          'https://content.presentermedia.com/files/clipart/00014000/14170/light_bulb_sketch_800_wht.jpg'),
+      leading: backgroundImage,
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Category',
+            category,
             style: Theme.of(context).textTheme.labelMedium,
           ),
           Text(
-            'Title',
+            title,
             style: Theme.of(context).textTheme.bodyLarge,
           )
         ],
       ),
       subtitle: Text(
-        'Supporting line text lorem ipsum dolor sit amet, consectetur',
+        description,
         style: Theme.of(context).textTheme.bodyMedium,
       ),
       trailing: IconButton(
