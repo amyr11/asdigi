@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:markdown_viewer/markdown_viewer.dart';
 
+import '../models/behavior.dart';
 import '../temp/temp_markdown.dart';
 
 class BehaviorContentPage extends StatefulWidget {
+  final Behavior behaviorObject;
+
   const BehaviorContentPage({
     super.key,
+    required this.behaviorObject,
   });
 
   @override
@@ -16,20 +20,10 @@ class _BehaviorContentPageState extends State<BehaviorContentPage>
     with SingleTickerProviderStateMixin {
   late TabController tabController;
 
-  late String title;
-  late String description;
-  late String overViewMarkdown;
-  late String howToAddressMarkdown;
-
   @override
   void initState() {
     super.initState();
     tabController = TabController(length: 2, vsync: this);
-
-    title = BehaviorMarkdownData.title;
-    description = BehaviorMarkdownData.description;
-    overViewMarkdown = BehaviorMarkdownData.overViewMarkdown;
-    howToAddressMarkdown = BehaviorMarkdownData.howToAddressMarkdown;
   }
 
   @override
@@ -46,13 +40,14 @@ class _BehaviorContentPageState extends State<BehaviorContentPage>
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            // Navigator.pop(context);
+            Navigator.pop(context);
           },
         ),
       ),
       body: NestedScrollView(
         headerSliverBuilder: (context, innerBoxIsScrolled) => [
           SliverAppBar(
+            automaticallyImplyLeading: false,
             expandedHeight: 300,
             stretch: true,
             flexibleSpace: FlexibleSpaceBar(
@@ -60,10 +55,7 @@ class _BehaviorContentPageState extends State<BehaviorContentPage>
               background: Stack(
                 fit: StackFit.expand,
                 children: [
-                  Image.network(
-                    'https://lighthouseautismcenter.com/wp-content/uploads/2022/11/Meltdown-Blog-Feature-Image.jpg',
-                    fit: BoxFit.cover,
-                  ),
+                  widget.behaviorObject.image,
                   Container(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 16,
@@ -91,7 +83,7 @@ class _BehaviorContentPageState extends State<BehaviorContentPage>
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         Text(
-                          title,
+                          widget.behaviorObject.title,
                           style: Theme.of(context)
                               .textTheme
                               .headlineMedium!
@@ -102,7 +94,7 @@ class _BehaviorContentPageState extends State<BehaviorContentPage>
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          description,
+                          widget.behaviorObject.description,
                           style: Theme.of(context)
                               .textTheme
                               .bodyMedium!
@@ -138,14 +130,16 @@ class _BehaviorContentPageState extends State<BehaviorContentPage>
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 16, vertical: 20),
-                      child: MarkdownViewer(overViewMarkdown),
+                      child: MarkdownViewer(
+                          widget.behaviorObject.overViewMarkdown),
                     ),
                   ),
                   SingleChildScrollView(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 16, vertical: 20),
-                      child: MarkdownViewer(howToAddressMarkdown),
+                      child: MarkdownViewer(
+                          widget.behaviorObject.howToAddressMarkdown),
                     ),
                   ),
                 ],

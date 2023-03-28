@@ -1,4 +1,10 @@
+import 'package:flutter/material.dart';
+
 class BehaviorMarkdownData {
+  static Widget image = Image.network(
+    'https://images.squarespace-cdn.com/content/v1/551dfbb6e4b06a5b2a85e190/1574040474859-KOT5VMB15DKYTB07KEIP/AdobeStock_273904805.jpeg?format=1000w',
+    fit: BoxFit.cover,
+  );
   static String title = 'Meltdown';
   static String description =
       'Intense and prolonged reactions that can happen to some individuals with autism, which may have different triggers, outcomes, and handling compared to regular tantrums.';

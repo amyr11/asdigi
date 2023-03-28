@@ -1,55 +1,18 @@
+import 'package:asdigi/temp/temp_markdown.dart';
 import 'package:flutter/material.dart';
-import '../components/custom_list_item.dart';
+import '../models/behavior.dart';
 import '../models/doctors.dart';
 
 class BehaviorDictionaryPageData {
-  static List<CustomListItem> listItems = [
-    CustomListItem(
-      leading: Image.network(
-        'https://thumbs.dreamstime.com/b/wood-texture-3753136.jpg',
-        width: 56,
-        height: 56,
-      ),
-      titleData: 'Title 1',
-      subtitleData: 'Lorem',
-    ),
-    CustomListItem(
-      leading: Image.network(
-        'https://thumbs.dreamstime.com/b/wood-texture-3753136.jpg',
-        width: 56,
-        height: 56,
-      ),
-      titleData: 'Title 2',
-      subtitleData: 'Ipsum',
-    ),
-    CustomListItem(
-      leading: Image.network(
-        'https://thumbs.dreamstime.com/b/wood-texture-3753136.jpg',
-        width: 56,
-        height: 56,
-      ),
-      titleData: 'Title 3',
-      subtitleData: 'Dolor',
-    ),
-    CustomListItem(
-      leading: Image.network(
-        'https://thumbs.dreamstime.com/b/wood-texture-3753136.jpg',
-        width: 56,
-        height: 56,
-      ),
-      titleData: 'Title 4',
-      subtitleData: 'Sit',
-    ),
-    CustomListItem(
-      leading: Image.network(
-        'https://thumbs.dreamstime.com/b/wood-texture-3753136.jpg',
-        width: 56,
-        height: 56,
-      ),
-      titleData: 'Title 5',
-      subtitleData: 'Eth',
-    ),
-  ];
+  static List<Behavior> listItems = List.filled(
+      20,
+      Behavior(
+        image: BehaviorMarkdownData.image,
+        title: BehaviorMarkdownData.title,
+        description: BehaviorMarkdownData.description,
+        overViewMarkdown: BehaviorMarkdownData.overViewMarkdown,
+        howToAddressMarkdown: BehaviorMarkdownData.howToAddressMarkdown,
+      ));
 }
 
 class DoctorsPageData {
