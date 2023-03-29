@@ -1,3 +1,4 @@
+import 'package:asdigi/screens/milestones_checklist.dart';
 import 'package:flutter/material.dart';
 import '../components/app_bar_profile.dart';
 import '../components/custom_nav_bar.dart';
@@ -12,7 +13,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePage extends State<HomePage> {
-  int currentPageIndex = 2;
+  int currentPageIndex = 0;
   String searchText = '';
 
   @override
@@ -28,27 +29,15 @@ class _HomePage extends State<HomePage> {
         },
       ),
       body: <Widget>[
+        Container(
+          alignment: Alignment.center,
+          child: Text(
+            'Activities Page',
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+        ),
+        const MilestonesChecklistPage(),
         const BehaviorDictionaryPage(),
-        Container(
-          alignment: Alignment.center,
-          child: Text(
-            'Page 2',
-            style: Theme.of(context).textTheme.titleLarge,
-          ),
-        ),
-        Container(
-          alignment: Alignment.center,
-          child: Text(
-            'Page 3',
-            style: Theme.of(context).textTheme.titleLarge,
-          ),
-        ),
-        Container(
-          child: Text(
-            'Page 4',
-            style: Theme.of(context).textTheme.titleLarge,
-          ),
-        ),
         const DoctorsPage(),
       ][currentPageIndex],
     );
