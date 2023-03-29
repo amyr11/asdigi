@@ -33,6 +33,7 @@ class _MilestoneCheclistSectionState extends State<MilestoneCheclistSection>
             child: MilestoneCheclistItemCard(
               imageURL: widget.milestones[index].imageURL,
               title: widget.milestones[index].title,
+              intialSelected: widget.milestones[index].status,
               onChangeSelected: (value) {
                 setState(() {
                   widget.milestones[index].status = value;

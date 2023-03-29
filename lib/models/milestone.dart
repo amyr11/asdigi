@@ -1,7 +1,7 @@
 class MilestoneChecklistItem {
   final String imageURL;
   final String title;
-  int status = 0;
+  int status = -1;
 
   MilestoneChecklistItem({
     required this.imageURL,
