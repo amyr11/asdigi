@@ -123,7 +123,7 @@ class _MilestoneCheclistItemCardState extends State<MilestoneCheclistItemCard> {
                                     ? 'Yes'
                                     : _milestoneStatus == 1
                                         ? 'Not sure'
-                                        : _milestoneStatus == 1
+                                        : _milestoneStatus == 2
                                             ? 'Not yet'
                                             : 'No Status',
                                 style: Theme.of(context).textTheme.bodyMedium,
