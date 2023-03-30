@@ -138,7 +138,7 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                         ),
                       ),
                       const SizedBox(
-                        height: 20,
+                        height: 25,
                       ),
                       Visibility(
                         visible: pinnedList.isNotEmpty,
@@ -152,6 +152,9 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                                 'Pinned',
                                 style: Theme.of(context).textTheme.titleLarge,
                               ),
+                            ),
+                            const SizedBox(
+                              height: 20,
                             ),
                             ListView.separated(
                               physics: const BouncingScrollPhysics(),
@@ -173,9 +176,9 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                           ],
                         ),
                       ),
+                      const SizedBox(height: 25),
                       Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 15),
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -192,13 +195,13 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                                   setState(() {
                                     if (selected) {
                                       _filters.add('Activities');
-                                    } else {
+                                    } else if (_filters.length == 2) {
                                       _filters.remove('Activities');
                                     }
                                   });
                                 },
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 10,
                               ),
                               FilterChip(
@@ -208,7 +211,7 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                                   setState(() {
                                     if (selected) {
                                       _filters.add('Tips');
-                                    } else {
+                                    } else if (_filters.length == 2) {
                                       _filters.remove('Tips');
                                     }
                                   });
@@ -218,6 +221,7 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                           ],
                         ),
                       ),
+                      const SizedBox(height: 20),
                       ListView.separated(
                         physics: const BouncingScrollPhysics(),
                         shrinkWrap: true,

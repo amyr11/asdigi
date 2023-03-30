@@ -17,6 +17,8 @@ class CustomMaterialItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      visualDensity: VisualDensity.compact,
+      onTap: () {},
       leading: backgroundImage,
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -34,11 +36,10 @@ class CustomMaterialItem extends StatelessWidget {
       subtitle: Text(
         description,
         style: Theme.of(context).textTheme.bodyMedium,
+        overflow: TextOverflow.ellipsis,
+        maxLines: 2,
       ),
-      trailing: IconButton(
-        icon: Icon(Icons.arrow_right),
-        onPressed: () {},
-      ),
+      trailing: const Icon(Icons.arrow_right),
     );
   }
 }

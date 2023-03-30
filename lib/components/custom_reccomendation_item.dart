@@ -21,34 +21,38 @@ class CustomRecommendationItem extends StatelessWidget {
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
       width: 260,
       child: Card(
+        shadowColor: Colors.transparent,
         clipBehavior: Clip.hardEdge,
-        child: Column(
-          children: [
-            backgroundImage,
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: Theme.of(context).textTheme.bodyLarge,
-                  ),
-                  Text(
-                    category,
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Text(
-                    description,
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  )
-                ],
+        child: InkWell(
+          onTap: () {},
+          child: Column(
+            children: [
+              backgroundImage,
+              Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                    Text(
+                      category,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Text(
+                      description,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    )
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
