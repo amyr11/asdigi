@@ -1,8 +1,6 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
+import 'package:asdigi/screens/edit_milestones_checklist.dart';
 import 'package:flutter/material.dart';
 
-import '../components/milestone_checklist_item_card.dart';
 import '../components/milestone_checklist_section.dart';
 import '../models/milestone.dart';
 import '../temp/temp_data.dart';
@@ -37,7 +35,7 @@ class _MilestonesChecklistPageState extends State<MilestonesChecklistPage>
     tabController = TabController(length: 4, vsync: this);
     scrollController = ScrollController();
     tabController.addListener(() {
-      if (tabController.indexIsChanging) {
+      if (tabController.indexIsChanging && scrollController.offset > 132) {
         scrollController.animateTo(132,
             duration: const Duration(milliseconds: 300), curve: Curves.ease);
       }
@@ -81,7 +79,19 @@ class _MilestonesChecklistPageState extends State<MilestonesChecklistPage>
               ),
               const Spacer(),
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => EditMilestoneCheclistPage(
+                        socialMilestones: socialMilestones,
+                        languageMilestones: languageMilestones,
+                        cognitiveMilestones: cognitiveMilestones,
+                        movementMilestones: movementMilestones,
+                      ),
+                    ),
+                  );
+                },
                 icon: const Icon(Icons.edit),
                 tooltip: 'Edit',
               ),
