@@ -40,6 +40,8 @@ dependencies:
   firebase_auth: ^4.3.0
   firebase_core: ^2.8.0
   image_picker: ^0.8.7
+  markdown_viewer: ^0.5.0
+  easy_stepper: ^0.4.0
 
 dev_dependencies:
   flutter_test:

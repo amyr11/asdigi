@@ -13,23 +13,32 @@ class AuthServices {
         if (snapshot.hasData) {
           return const HomePage();
         } else {
-          return LoginPage();
+          return const LoginPage();
         }
       },
     );
   }
 
-  signInWithEmailAndPassword(String email, String password) async {
+  Future<FirebaseAuthException?> signInWithEmailAndPassword(
+      String email, String password) async {
     try {
-      UserCredential userCredential = await FirebaseAuth.instance
+      await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
-      return userCredential.user;
+      return null;
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        print('No user found for that email.');
-      } else if (e.code == 'wrong-password') {
-        print('Wrong password provided for that user.');
-      }
+      return e;
+    }
+  }
+
+  Future<FirebaseAuthException?> createUserWithEmailAndPassword(
+      String email, String password) async {
+    try {
+      await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: email, password: password);
+      signInWithEmailAndPassword(email, password);
+      return null;
+    } on FirebaseAuthException catch (e) {
+      return e;
     }
   }
 

@@ -17,9 +17,9 @@ class CustomNavBar extends StatelessWidget {
       selectedIndex: currentPageIndex,
       destinations: const <Widget>[
         NavigationDestination(
-          selectedIcon: Icon(Icons.library_books),
-          icon: Icon(Icons.library_books_outlined),
-          label: 'Dictionary',
+          selectedIcon: Icon(Icons.star),
+          icon: Icon(Icons.star_border),
+          label: 'Activities',
         ),
         NavigationDestination(
           selectedIcon: Icon(Icons.location_on),
@@ -27,14 +27,9 @@ class CustomNavBar extends StatelessWidget {
           label: 'Milestones',
         ),
         NavigationDestination(
-          selectedIcon: Icon(Icons.star),
-          icon: Icon(Icons.star_border),
-          label: 'Activities',
-        ),
-        NavigationDestination(
-          selectedIcon: Icon(Icons.language),
-          icon: Icon(Icons.language_outlined),
-          label: 'Community',
+          selectedIcon: Icon(Icons.library_books),
+          icon: Icon(Icons.library_books_outlined),
+          label: 'Dictionary',
         ),
         NavigationDestination(
           selectedIcon: Icon(Icons.medical_information),
