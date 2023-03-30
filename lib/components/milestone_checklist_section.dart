@@ -8,13 +8,10 @@ class MilestoneCheclistSection extends StatefulWidget {
 
   final bool readOnly;
 
-  final ScrollController? controller;
-
   const MilestoneCheclistSection(
     this.milestones, {
     super.key,
     this.readOnly = false,
-    this.controller,
   });
 
   @override
@@ -34,7 +31,6 @@ class _MilestoneCheclistSectionState extends State<MilestoneCheclistSection>
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: ListView.builder(
         shrinkWrap: true,
-        controller: widget.controller,
         itemCount: widget.milestones.length,
         padding: const EdgeInsets.symmetric(vertical: 20),
         itemBuilder: (context, index) {
