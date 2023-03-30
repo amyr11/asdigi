@@ -22,6 +22,7 @@ class _MilestonesChecklistPageState extends State<MilestonesChecklistPage>
 
   late TabController tabController;
   late ScrollController scrollController;
+  Key _listKey = UniqueKey();
 
   @override
   void dispose() {
@@ -29,9 +30,22 @@ class _MilestonesChecklistPageState extends State<MilestonesChecklistPage>
     super.dispose();
   }
 
+  void _updateListKey() {
+    _listKey = UniqueKey(); // generate a new key
+    setState(() {}); // rebuild the widget
+  }
+
   @override
   void initState() {
     super.initState();
+    socialMilestones =
+        MilestonesChecklistPageData().generateDummyData('Social');
+    languageMilestones =
+        MilestonesChecklistPageData().generateDummyData('Language');
+    cognitiveMilestones =
+        MilestonesChecklistPageData().generateDummyData('Cognitive');
+    movementMilestones =
+        MilestonesChecklistPageData().generateDummyData('Movement');
     tabController = TabController(length: 4, vsync: this);
     scrollController = ScrollController();
     tabController.addListener(() {
@@ -40,10 +54,6 @@ class _MilestonesChecklistPageState extends State<MilestonesChecklistPage>
             duration: const Duration(milliseconds: 300), curve: Curves.ease);
       }
     });
-    socialMilestones = MilestonesCheclistPageData().socialMilestones;
-    languageMilestones = MilestonesCheclistPageData().languageMilestones;
-    cognitiveMilestones = MilestonesCheclistPageData().cognitiveMilestones;
-    movementMilestones = MilestonesCheclistPageData().movementMilestones;
   }
 
   @override
@@ -79,8 +89,8 @@ class _MilestonesChecklistPageState extends State<MilestonesChecklistPage>
               ),
               const Spacer(),
               IconButton(
-                onPressed: () {
-                  Navigator.push(
+                onPressed: () async {
+                  await Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => EditMilestoneCheclistPage(
@@ -90,7 +100,7 @@ class _MilestonesChecklistPageState extends State<MilestonesChecklistPage>
                         movementMilestones: movementMilestones,
                       ),
                     ),
-                  );
+                  ).then((value) => _updateListKey());
                 },
                 icon: const Icon(Icons.edit),
                 tooltip: 'Edit',
@@ -122,13 +132,26 @@ class _MilestonesChecklistPageState extends State<MilestonesChecklistPage>
         ),
       ],
       body: TabBarView(
+        key: _listKey,
         controller: tabController,
         physics: const NeverScrollableScrollPhysics(),
         children: [
-          MilestoneCheclistSection(socialMilestones, readOnly: true),
-          MilestoneCheclistSection(languageMilestones, readOnly: true),
-          MilestoneCheclistSection(cognitiveMilestones, readOnly: true),
-          MilestoneCheclistSection(movementMilestones, readOnly: true),
+          MilestoneChecklistSection(
+            socialMilestones,
+            readOnly: true,
+          ),
+          MilestoneChecklistSection(
+            languageMilestones,
+            readOnly: true,
+          ),
+          MilestoneChecklistSection(
+            cognitiveMilestones,
+            readOnly: true,
+          ),
+          MilestoneChecklistSection(
+            movementMilestones,
+            readOnly: true,
+          ),
         ],
       ),
     );

@@ -112,7 +112,9 @@ class _MilestoneCheclistItemCardState extends State<MilestoneCheclistItemCard> {
                                 ? Colors.green[100]
                                 : _milestoneStatus == 1
                                     ? Colors.purple[50]
-                                    : Colors.red[100],
+                                    : _milestoneStatus == 2
+                                        ? Colors.red[100]
+                                        : Colors.grey[200],
                             child: Padding(
                               padding: const EdgeInsets.symmetric(
                                   vertical: 8, horizontal: 12),
@@ -121,7 +123,9 @@ class _MilestoneCheclistItemCardState extends State<MilestoneCheclistItemCard> {
                                     ? 'Yes'
                                     : _milestoneStatus == 1
                                         ? 'Not sure'
-                                        : 'Not yet',
+                                        : _milestoneStatus == 1
+                                            ? 'Not yet'
+                                            : 'No Status',
                                 style: Theme.of(context).textTheme.bodyMedium,
                               ),
                             ),

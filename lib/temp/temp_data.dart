@@ -1,78 +1,22 @@
+import 'dart:math';
+
 import 'package:asdigi/models/milestone.dart';
 import 'package:asdigi/temp/temp_markdown.dart';
 import 'package:flutter/material.dart';
 import '../models/behavior.dart';
 import '../models/doctors.dart';
 
-class MilestonesCheclistPageData {
-  List<MilestoneChecklistItem> socialMilestones = [
-    MilestoneChecklistItem(
-      title: 'Able to make friends',
-      imageURL:
-          'https://cms-tc.pbskids.org/parents/expert-tips-and-advice/helping-young-children-learn-to-make-friends-hero.jpg',
-    ),
-    MilestoneChecklistItem(
-      title: 'Enjoys meeting new people',
-      imageURL:
-          'https://media.istockphoto.com/id/1390036246/photo/shot-of-two-adorable-little-girls-dressed-as-businesspeople-sitting-in-an-office-and-shaking.jpg?s=612x612&w=0&k=20&c=zxibXHk83uijfBg4OvyN9HSqgPzji6IQLOBHxVytyqc=',
-    ),
-    MilestoneChecklistItem(
-      title: 'Display empathy on others',
-      imageURL:
-          'https://montessorirocks.org/wp-content/uploads/2018/12/MRBlog15_Featured-Image.jpg',
-    ),
-  ];
-  List<MilestoneChecklistItem> languageMilestones = [
-    MilestoneChecklistItem(
-      title: 'language',
-      imageURL:
-          'https://cms-tc.pbskids.org/parents/expert-tips-and-advice/helping-young-children-learn-to-make-friends-hero.jpg',
-    ),
-    MilestoneChecklistItem(
-      title: 'language',
-      imageURL:
-          'https://media.istockphoto.com/id/1390036246/photo/shot-of-two-adorable-little-girls-dressed-as-businesspeople-sitting-in-an-office-and-shaking.jpg?s=612x612&w=0&k=20&c=zxibXHk83uijfBg4OvyN9HSqgPzji6IQLOBHxVytyqc=',
-    ),
-    MilestoneChecklistItem(
-      title: 'language',
-      imageURL:
-          'https://montessorirocks.org/wp-content/uploads/2018/12/MRBlog15_Featured-Image.jpg',
-    ),
-  ];
-  List<MilestoneChecklistItem> cognitiveMilestones = [
-    MilestoneChecklistItem(
-      title: 'cognitive',
-      imageURL:
-          'https://cms-tc.pbskids.org/parents/expert-tips-and-advice/helping-young-children-learn-to-make-friends-hero.jpg',
-    ),
-    MilestoneChecklistItem(
-      title: 'cognitive',
-      imageURL:
-          'https://media.istockphoto.com/id/1390036246/photo/shot-of-two-adorable-little-girls-dressed-as-businesspeople-sitting-in-an-office-and-shaking.jpg?s=612x612&w=0&k=20&c=zxibXHk83uijfBg4OvyN9HSqgPzji6IQLOBHxVytyqc=',
-    ),
-    MilestoneChecklistItem(
-      title: 'cognitive',
-      imageURL:
-          'https://montessorirocks.org/wp-content/uploads/2018/12/MRBlog15_Featured-Image.jpg',
-    ),
-  ];
-  List<MilestoneChecklistItem> movementMilestones = [
-    MilestoneChecklistItem(
-      title: 'movement',
-      imageURL:
-          'https://cms-tc.pbskids.org/parents/expert-tips-and-advice/helping-young-children-learn-to-make-friends-hero.jpg',
-    ),
-    MilestoneChecklistItem(
-      title: 'movement',
-      imageURL:
-          'https://media.istockphoto.com/id/1390036246/photo/shot-of-two-adorable-little-girls-dressed-as-businesspeople-sitting-in-an-office-and-shaking.jpg?s=612x612&w=0&k=20&c=zxibXHk83uijfBg4OvyN9HSqgPzji6IQLOBHxVytyqc=',
-    ),
-    MilestoneChecklistItem(
-      title: 'movement',
-      imageURL:
-          'https://montessorirocks.org/wp-content/uploads/2018/12/MRBlog15_Featured-Image.jpg',
-    ),
-  ];
+class MilestonesChecklistPageData {
+  List<MilestoneChecklistItem> generateDummyData(String name) {
+    return List.generate(
+      Random().nextInt(3) + 2,
+      (index) => MilestoneChecklistItem(
+        title: '$name $index',
+        imageURL:
+            'https://cms-tc.pbskids.org/parents/expert-tips-and-advice/helping-young-children-learn-to-make-friends-hero.jpg',
+      ),
+    );
+  }
 }
 
 class BehaviorDictionaryPageData {

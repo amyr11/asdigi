@@ -3,34 +3,32 @@ import 'package:flutter/material.dart';
 import '../models/milestone.dart';
 import 'milestone_checklist_item_card.dart';
 
-class MilestoneCheclistSection extends StatefulWidget {
+class MilestoneChecklistSection extends StatefulWidget {
   final List<MilestoneChecklistItem> milestones;
 
   final bool readOnly;
+  final ScrollPhysics? physics;
 
-  const MilestoneCheclistSection(
+  const MilestoneChecklistSection(
     this.milestones, {
     super.key,
     this.readOnly = false,
+    this.physics,
   });
 
   @override
-  State<MilestoneCheclistSection> createState() =>
-      _MilestoneCheclistSectionState();
+  State<MilestoneChecklistSection> createState() =>
+      _MilestoneChecklistSectionState();
 }
 
-class _MilestoneCheclistSectionState extends State<MilestoneCheclistSection>
-    with AutomaticKeepAliveClientMixin {
-  @override
-  bool get wantKeepAlive => true;
-
+class _MilestoneChecklistSectionState extends State<MilestoneChecklistSection> {
   @override
   Widget build(BuildContext context) {
-    super.build(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: ListView.builder(
         shrinkWrap: true,
+        physics: widget.physics,
         itemCount: widget.milestones.length,
         padding: const EdgeInsets.symmetric(vertical: 20),
         itemBuilder: (context, index) {
@@ -51,6 +49,5 @@ class _MilestoneCheclistSectionState extends State<MilestoneCheclistSection>
         },
       ),
     );
-    ;
   }
 }
