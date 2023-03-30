@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
@@ -20,7 +21,7 @@ List<DevelopmentalActivity> allActivities = [
     Image.network(
         'https://cdn.pixabay.com/photo/2012/08/27/14/19/mountains-55067__340.png'),
     'Title 1',
-    'Activity',
+    'Activities',
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit, ',
     'Social',
     false,
@@ -29,7 +30,7 @@ List<DevelopmentalActivity> allActivities = [
     Image.network(
         'https://cdn.pixabay.com/photo/2012/08/27/14/19/mountains-55067__340.png'),
     'Title 2',
-    'Tip',
+    'Tips',
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit, ',
     'Cognitive',
     false,
@@ -38,7 +39,7 @@ List<DevelopmentalActivity> allActivities = [
     Image.network(
         'https://cdn.pixabay.com/photo/2012/08/27/14/19/mountains-55067__340.png'),
     'Title 3',
-    'Activity',
+    'Activities',
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit, ',
     'Movement',
     true,
@@ -47,7 +48,7 @@ List<DevelopmentalActivity> allActivities = [
     Image.network(
         'https://cdn.pixabay.com/photo/2012/08/27/14/19/mountains-55067__340.png'),
     'Title 4',
-    'Tip',
+    'Tips',
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit, ',
     'Language',
     true,
@@ -56,7 +57,7 @@ List<DevelopmentalActivity> allActivities = [
     Image.network(
         'https://cdn.pixabay.com/photo/2012/08/27/14/19/mountains-55067__340.png'),
     'Title 5',
-    'Activity',
+    'Activities',
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit, ',
     'Movement',
     false,
@@ -67,7 +68,8 @@ List<DevelopmentalActivity> pinnedList =
     allActivities.where((activity) => activity.isPinned).toList();
 
 class _ActivitiesPageState extends State<ActivitiesPage> {
-  final List<String> _filters = <String>[];
+  final List<String> _filters = <String>['Activities', 'Tips'];
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -182,48 +184,60 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                               style: Theme.of(context).textTheme.titleLarge,
                             ),
                             const SizedBox(height: 5),
-                            Row(
-                              children: materialFilter.values
-                                  .map((materialFilter filter) {
-                                return Padding(
-                                  padding: const EdgeInsets.only(right: 10),
-                                  child: FilterChip(
-                                    label: Text(filter.name),
-                                    selected: !_filters.contains(filter.name),
-                                    onSelected: (bool value) {
-                                      setState(() {
-                                        if (!value) {
-                                          if (!_filters.contains(filter.name)) {
-                                            _filters.add(filter.name);
-                                          }
-                                        } else {
-                                          _filters.removeWhere((String name) {
-                                            return name == filter.name;
-                                          });
-                                        }
-                                      });
-                                    },
-                                  ),
-                                );
-                              }).toList(),
-                            ),
+                            Row(children: [
+                              FilterChip(
+                                label: Text('Activitites'),
+                                selected: _filters.contains('Activities'),
+                                onSelected: (selected) {
+                                  setState(() {
+                                    if (selected) {
+                                      _filters.add('Activities');
+                                    } else {
+                                      _filters.remove('Activities');
+                                    }
+                                  });
+                                },
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              FilterChip(
+                                label: Text('Tips'),
+                                selected: _filters.contains('Tips'),
+                                onSelected: (selected) {
+                                  setState(() {
+                                    if (selected) {
+                                      _filters.add('Tips');
+                                    } else {
+                                      _filters.remove('Tips');
+                                    }
+                                  });
+                                },
+                              )
+                            ]),
                           ],
                         ),
                       ),
                       ListView.separated(
                         physics: const BouncingScrollPhysics(),
                         shrinkWrap: true,
-                        itemCount: allActivities.length,
+                        itemCount: allActivities
+                            .where((activity) =>
+                                _filters.contains(activity.category))
+                            .length,
                         separatorBuilder: (context, index) {
                           return const Divider();
                         },
                         itemBuilder: (context, index) {
+                          final filtered = allActivities
+                              .where((activity) =>
+                                  _filters.contains(activity.category))
+                              .toList();
                           return CustomMaterialItem(
-                            backgroundImage:
-                                allActivities[index].backgroundImage,
-                            title: allActivities[index].title,
-                            category: allActivities[index].category,
-                            description: allActivities[index].description,
+                            backgroundImage: filtered[index].backgroundImage,
+                            title: filtered[index].title,
+                            category: filtered[index].category,
+                            description: filtered[index].description,
                           );
                         },
                       )
