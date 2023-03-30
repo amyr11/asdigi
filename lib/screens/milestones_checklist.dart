@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import '../components/milestone_checklist_item_card.dart';
@@ -29,17 +31,20 @@ class _MilestonesChecklistPageState extends State<MilestonesChecklistPage> {
   }
 
   @override
-  Widget build(BuildContext context) => DefaultTabController(
-        length: 4,
-        child: Scaffold(
-          body: NestedScrollView(
-            headerSliverBuilder: (context, innerBoxIsScrolled) => [
-              SliverAppBar(
-                floating: true,
-                snap: true,
-                pinned: true,
-                toolbarHeight: 130,
-                title: Column(
+  Widget build(BuildContext context) {
+    return DefaultTabController(
+      length: 4,
+      child: NestedScrollView(
+        headerSliverBuilder: (context, innerBoxIsScrolled) => [
+          SliverAppBar(
+            floating: true,
+            snap: true,
+            pinned: true,
+            toolbarHeight: 130,
+            title: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text('Juan (5 years old)'),
@@ -58,38 +63,46 @@ class _MilestonesChecklistPageState extends State<MilestonesChecklistPage> {
                     ),
                   ],
                 ),
-                bottom: const PreferredSize(
-                  preferredSize: Size.fromHeight(50),
-                  child: TabBar(
-                    isScrollable: true,
-                    tabs: [
-                      Tab(
-                        text: 'Social',
-                      ),
-                      Tab(
-                        text: 'Language',
-                      ),
-                      Tab(
-                        text: 'Cognitive',
-                      ),
-                      Tab(
-                        text: 'Movement',
-                      )
-                    ],
-                    indicatorSize: TabBarIndicatorSize.tab,
-                  ),
+                const Spacer(),
+                IconButton(
+                  onPressed: () {},
+                  icon: const Icon(Icons.edit),
+                  tooltip: 'Edit',
                 ),
-              ),
-            ],
-            body: TabBarView(
-              children: [
-                MilestoneCheclistSection(socialMilestones),
-                MilestoneCheclistSection(languageMilestones),
-                MilestoneCheclistSection(cognitiveMilestones),
-                MilestoneCheclistSection(movementMilestones),
               ],
             ),
+            bottom: const PreferredSize(
+              preferredSize: Size.fromHeight(50),
+              child: TabBar(
+                isScrollable: true,
+                tabs: [
+                  Tab(
+                    text: 'Social',
+                  ),
+                  Tab(
+                    text: 'Language',
+                  ),
+                  Tab(
+                    text: 'Cognitive',
+                  ),
+                  Tab(
+                    text: 'Movement',
+                  )
+                ],
+                indicatorSize: TabBarIndicatorSize.tab,
+              ),
+            ),
           ),
+        ],
+        body: TabBarView(
+          children: [
+            MilestoneCheclistSection(socialMilestones, readOnly: true),
+            MilestoneCheclistSection(languageMilestones, readOnly: true),
+            MilestoneCheclistSection(cognitiveMilestones, readOnly: true),
+            MilestoneCheclistSection(movementMilestones, readOnly: true),
+          ],
         ),
-      );
+      ),
+    );
+  }
 }

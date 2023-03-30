@@ -24,51 +24,51 @@ class MilestonesCheclistPageData {
   ];
   List<MilestoneChecklistItem> languageMilestones = [
     MilestoneChecklistItem(
-      title: 'Able to make friends',
+      title: 'language',
       imageURL:
           'https://cms-tc.pbskids.org/parents/expert-tips-and-advice/helping-young-children-learn-to-make-friends-hero.jpg',
     ),
     MilestoneChecklistItem(
-      title: 'Enjoys meeting new people',
+      title: 'language',
       imageURL:
           'https://media.istockphoto.com/id/1390036246/photo/shot-of-two-adorable-little-girls-dressed-as-businesspeople-sitting-in-an-office-and-shaking.jpg?s=612x612&w=0&k=20&c=zxibXHk83uijfBg4OvyN9HSqgPzji6IQLOBHxVytyqc=',
     ),
     MilestoneChecklistItem(
-      title: 'Display empathy on others',
+      title: 'language',
       imageURL:
           'https://montessorirocks.org/wp-content/uploads/2018/12/MRBlog15_Featured-Image.jpg',
     ),
   ];
   List<MilestoneChecklistItem> cognitiveMilestones = [
     MilestoneChecklistItem(
-      title: 'Able to make friends',
+      title: 'cognitive',
       imageURL:
           'https://cms-tc.pbskids.org/parents/expert-tips-and-advice/helping-young-children-learn-to-make-friends-hero.jpg',
     ),
     MilestoneChecklistItem(
-      title: 'Enjoys meeting new people',
+      title: 'cognitive',
       imageURL:
           'https://media.istockphoto.com/id/1390036246/photo/shot-of-two-adorable-little-girls-dressed-as-businesspeople-sitting-in-an-office-and-shaking.jpg?s=612x612&w=0&k=20&c=zxibXHk83uijfBg4OvyN9HSqgPzji6IQLOBHxVytyqc=',
     ),
     MilestoneChecklistItem(
-      title: 'Display empathy on others',
+      title: 'cognitive',
       imageURL:
           'https://montessorirocks.org/wp-content/uploads/2018/12/MRBlog15_Featured-Image.jpg',
     ),
   ];
   List<MilestoneChecklistItem> movementMilestones = [
     MilestoneChecklistItem(
-      title: 'Able to make friends',
+      title: 'movement',
       imageURL:
           'https://cms-tc.pbskids.org/parents/expert-tips-and-advice/helping-young-children-learn-to-make-friends-hero.jpg',
     ),
     MilestoneChecklistItem(
-      title: 'Enjoys meeting new people',
+      title: 'movement',
       imageURL:
           'https://media.istockphoto.com/id/1390036246/photo/shot-of-two-adorable-little-girls-dressed-as-businesspeople-sitting-in-an-office-and-shaking.jpg?s=612x612&w=0&k=20&c=zxibXHk83uijfBg4OvyN9HSqgPzji6IQLOBHxVytyqc=',
     ),
     MilestoneChecklistItem(
-      title: 'Display empathy on others',
+      title: 'movement',
       imageURL:
           'https://montessorirocks.org/wp-content/uploads/2018/12/MRBlog15_Featured-Image.jpg',
     ),

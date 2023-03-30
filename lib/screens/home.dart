@@ -14,7 +14,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePage extends State<HomePage> {
   int currentPageIndex = 0;
-  String searchText = '';
 
   @override
   Widget build(BuildContext context) {

@@ -6,7 +6,10 @@ import 'milestone_checklist_item_card.dart';
 class MilestoneCheclistSection extends StatefulWidget {
   final List<MilestoneChecklistItem> milestones;
 
-  const MilestoneCheclistSection(this.milestones, {super.key});
+  final bool readOnly;
+
+  const MilestoneCheclistSection(this.milestones,
+      {super.key, this.readOnly = false});
 
   @override
   State<MilestoneCheclistSection> createState() =>
@@ -24,6 +27,7 @@ class _MilestoneCheclistSectionState extends State<MilestoneCheclistSection>
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: ListView.builder(
+        physics: NeverScrollableScrollPhysics(),
         shrinkWrap: true,
         itemCount: widget.milestones.length,
         padding: const EdgeInsets.symmetric(vertical: 20),
@@ -31,6 +35,7 @@ class _MilestoneCheclistSectionState extends State<MilestoneCheclistSection>
           return Padding(
             padding: const EdgeInsets.only(bottom: 10),
             child: MilestoneCheclistItemCard(
+              enabled: !widget.readOnly,
               imageURL: widget.milestones[index].imageURL,
               title: widget.milestones[index].title,
               intialSelected: widget.milestones[index].status,

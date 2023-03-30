@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class MilestoneCheclistItemCard extends StatefulWidget {
+  final bool enabled;
   final String imageURL;
   final String title;
   final int intialSelected;
@@ -8,6 +9,7 @@ class MilestoneCheclistItemCard extends StatefulWidget {
 
   const MilestoneCheclistItemCard({
     super.key,
+    this.enabled = true,
     required this.imageURL,
     required this.title,
     this.intialSelected = -1,
@@ -37,6 +39,8 @@ class _MilestoneCheclistItemCardState extends State<MilestoneCheclistItemCard> {
   @override
   Widget build(BuildContext context) {
     return Card(
+      shadowColor: Colors.transparent,
+      borderOnForeground: true,
       clipBehavior: Clip.hardEdge,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -61,41 +65,68 @@ class _MilestoneCheclistItemCardState extends State<MilestoneCheclistItemCard> {
                 const SizedBox(height: 10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    FilterChip(
-                      avatar: const Icon(Icons.check),
-                      showCheckmark: false,
-                      selectedColor: Colors.green[100],
-                      label: const Text('Yes'),
-                      selected: _milestoneStatus == 0,
-                      onSelected: (isSelected) {
-                        _handleChipSelected(0);
-                        widget.onChangeSelected(0);
-                      },
-                    ),
-                    const SizedBox(width: 8),
-                    FilterChip(
-                      showCheckmark: false,
-                      label: const Text('Not sure'),
-                      selected: _milestoneStatus == 1,
-                      onSelected: (isSelected) {
-                        _handleChipSelected(1);
-                        widget.onChangeSelected(1);
-                      },
-                    ),
-                    const SizedBox(width: 8),
-                    FilterChip(
-                      avatar: const Icon(Icons.close),
-                      selectedColor: Colors.red[100],
-                      showCheckmark: false,
-                      label: const Text('Not yet'),
-                      selected: _milestoneStatus == 2,
-                      onSelected: (isSelected) {
-                        _handleChipSelected(2);
-                        widget.onChangeSelected(2);
-                      },
-                    ),
-                  ],
+                  children: widget.enabled
+                      ? [
+                          FilterChip(
+                            avatar: const Icon(Icons.check),
+                            showCheckmark: false,
+                            selectedColor: Colors.green[100],
+                            label: const Text('Yes'),
+                            selected: _milestoneStatus == 0,
+                            onSelected: (isSelected) {
+                              _handleChipSelected(0);
+                              widget.onChangeSelected(0);
+                            },
+                          ),
+                          const SizedBox(width: 8),
+                          FilterChip(
+                            showCheckmark: false,
+                            label: const Text('Not sure'),
+                            selected: _milestoneStatus == 1,
+                            onSelected: (isSelected) {
+                              _handleChipSelected(1);
+                              widget.onChangeSelected(1);
+                            },
+                          ),
+                          const SizedBox(width: 8),
+                          FilterChip(
+                            avatar: const Icon(Icons.close),
+                            selectedColor: Colors.red[100],
+                            showCheckmark: false,
+                            label: const Text('Not yet'),
+                            selected: _milestoneStatus == 2,
+                            onSelected: (isSelected) {
+                              _handleChipSelected(2);
+                              widget.onChangeSelected(2);
+                            },
+                          ),
+                        ]
+                      : [
+                          Text(
+                            'Status: ',
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                          Card(
+                            shadowColor: Colors.transparent,
+                            color: _milestoneStatus == 0
+                                ? Colors.green[100]
+                                : _milestoneStatus == 1
+                                    ? Colors.purple[50]
+                                    : Colors.red[100],
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 8, horizontal: 12),
+                              child: Text(
+                                _milestoneStatus == 0
+                                    ? 'Yes'
+                                    : _milestoneStatus == 1
+                                        ? 'Not sure'
+                                        : 'Not yet',
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              ),
+                            ),
+                          ),
+                        ],
                 ),
               ],
             ),
