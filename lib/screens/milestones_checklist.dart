@@ -35,6 +35,7 @@ class _MilestonesChecklistPageState extends State<MilestonesChecklistPage> {
     return DefaultTabController(
       length: 4,
       child: NestedScrollView(
+        physics: NeverScrollableScrollPhysics(),
         headerSliverBuilder: (context, innerBoxIsScrolled) => [
           SliverAppBar(
             floating: true,

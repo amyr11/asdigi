@@ -27,7 +27,6 @@ class _MilestoneCheclistSectionState extends State<MilestoneCheclistSection>
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: ListView.builder(
-        physics: NeverScrollableScrollPhysics(),
         shrinkWrap: true,
         itemCount: widget.milestones.length,
         padding: const EdgeInsets.symmetric(vertical: 20),
