@@ -5,6 +5,7 @@ class CustomMaterialItem extends StatelessWidget {
   final String title;
   final String category;
   final String description;
+  final void Function()? onTap;
 
   const CustomMaterialItem({
     super.key,
@@ -12,13 +13,14 @@ class CustomMaterialItem extends StatelessWidget {
     required this.title,
     required this.category,
     required this.description,
+    this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
       visualDensity: VisualDensity.compact,
-      onTap: () {},
+      onTap: onTap,
       leading: backgroundImage,
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

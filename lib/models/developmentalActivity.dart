@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
 
 class DevelopmentalActivity {
-  final Image backgroundImage;
-  final String title;
-  final String category;
-  final String description;
-  final String milestone;
-  final bool isPinned;
+  Image backgroundImage;
+  String title;
+  String category;
+  String description;
+  String milestone;
+  bool isPinned;
+  String content;
 
-  DevelopmentalActivity(this.backgroundImage, this.title, this.category,
-      this.description, this.milestone, this.isPinned);
+  DevelopmentalActivity({
+    required this.backgroundImage,
+    required this.title,
+    required this.category,
+    required this.description,
+    required this.milestone,
+    required this.isPinned,
+    required this.content,
+  });
 }
