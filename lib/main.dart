@@ -27,7 +27,7 @@ class _myAppState extends State<MyApp> {
       theme: ThemeData(
         useMaterial3: true,
       ),
-      home: HomePage(),
+      home: AuthServices().handleAuthState(),
       debugShowCheckedModeBanner: false,
     );
   }
