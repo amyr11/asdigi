@@ -1,11 +1,9 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-
 import '../components/custom_material_item.dart';
 import '../components/custom_reccomendation_item.dart';
 import '../models/developmentalActivity.dart';
+import '../temp/temp_data.dart';
+import 'activity_content.dart';
 
 class ActivitiesPage extends StatefulWidget {
   const ActivitiesPage({super.key});
@@ -14,65 +12,38 @@ class ActivitiesPage extends StatefulWidget {
   State<ActivitiesPage> createState() => _ActivitiesPageState();
 }
 
-enum materialFilter { Activities, Tips }
-
-List<DevelopmentalActivity> allActivities = [
-  DevelopmentalActivity(
-    Image.network(
-        'https://cdn.pixabay.com/photo/2012/08/27/14/19/mountains-55067__340.png'),
-    'Title 1',
-    'Activities',
-    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, ',
-    'Social',
-    false,
-  ),
-  DevelopmentalActivity(
-    Image.network(
-        'https://cdn.pixabay.com/photo/2012/08/27/14/19/mountains-55067__340.png'),
-    'Title 2',
-    'Tips',
-    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, ',
-    'Cognitive',
-    false,
-  ),
-  DevelopmentalActivity(
-    Image.network(
-        'https://cdn.pixabay.com/photo/2012/08/27/14/19/mountains-55067__340.png'),
-    'Title 3',
-    'Activities',
-    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, ',
-    'Movement',
-    true,
-  ),
-  DevelopmentalActivity(
-    Image.network(
-        'https://cdn.pixabay.com/photo/2012/08/27/14/19/mountains-55067__340.png'),
-    'Title 4',
-    'Tips',
-    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, ',
-    'Language',
-    true,
-  ),
-  DevelopmentalActivity(
-    Image.network(
-        'https://cdn.pixabay.com/photo/2012/08/27/14/19/mountains-55067__340.png'),
-    'Title 5',
-    'Activities',
-    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, ',
-    'Movement',
-    false,
-  ),
-];
-
-List<DevelopmentalActivity> pinnedList =
-    allActivities.where((activity) => activity.isPinned).toList();
+late List<DevelopmentalActivity> allActivities;
 
 class _ActivitiesPageState extends State<ActivitiesPage> {
-  final List<String> _filters = <String>['Activities', 'Tips'];
+  final List<String> _filters = <String>['Activity', 'Tips'];
+  Key _activitiesKey = UniqueKey();
+
+  void _updateActivitiesKey() {
+    _activitiesKey = UniqueKey(); // generate a new key
+    setState(() {}); // rebuild the widget
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    allActivities = DevelopmentalActivitiesPageData().generateDummyData();
+  }
+
+  void goToActivityContentPage(DevelopmentalActivity activity) async {
+    await Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return ActivityContentPage(activity);
+    })).then((value) => _updateActivitiesKey());
+  }
 
   @override
   Widget build(BuildContext context) {
+    List<DevelopmentalActivity> pinnedList =
+        allActivities.where((activity) => activity.isPinned).toList();
+    List<DevelopmentalActivity> recommendedActivities =
+        allActivities.sublist(0, 3);
+
     return Container(
+        key: _activitiesKey,
         alignment: Alignment.center,
         child: DefaultTabController(
           length: 4,
@@ -125,14 +96,19 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                         child: ListView.builder(
                           padding: const EdgeInsets.symmetric(horizontal: 16),
                           scrollDirection: Axis.horizontal,
-                          itemCount: allActivities.length,
+                          itemCount: recommendedActivities.length,
                           itemBuilder: (context, index) {
                             return CustomRecommendationItem(
                               backgroundImage:
-                                  allActivities[index].backgroundImage,
-                              title: allActivities[index].title,
-                              category: allActivities[index].category,
-                              description: allActivities[index].description,
+                                  recommendedActivities[index].backgroundImage,
+                              title: recommendedActivities[index].title,
+                              category: recommendedActivities[index].category,
+                              description:
+                                  recommendedActivities[index].description,
+                              onTap: () {
+                                goToActivityContentPage(
+                                    recommendedActivities[index]);
+                              },
                             );
                           },
                         ),
@@ -170,13 +146,16 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                                   title: pinnedList[index].title,
                                   category: pinnedList[index].category,
                                   description: pinnedList[index].description,
+                                  onTap: () {
+                                    goToActivityContentPage(pinnedList[index]);
+                                  },
                                 );
                               },
                             ),
+                            const SizedBox(height: 25),
                           ],
                         ),
                       ),
-                      const SizedBox(height: 25),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 16),
                         child: Column(
@@ -189,14 +168,14 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                             const SizedBox(height: 5),
                             Row(children: [
                               FilterChip(
-                                label: Text('Activitites'),
-                                selected: _filters.contains('Activities'),
+                                label: const Text('Activity'),
+                                selected: _filters.contains('Activity'),
                                 onSelected: (selected) {
                                   setState(() {
                                     if (selected) {
-                                      _filters.add('Activities');
+                                      _filters.add('Activity');
                                     } else if (_filters.length == 2) {
-                                      _filters.remove('Activities');
+                                      _filters.remove('Activity');
                                     }
                                   });
                                 },
@@ -205,7 +184,7 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                                 width: 10,
                               ),
                               FilterChip(
-                                label: Text('Tips'),
+                                label: const Text('Tips'),
                                 selected: _filters.contains('Tips'),
                                 onSelected: (selected) {
                                   setState(() {
@@ -242,6 +221,9 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                             title: filtered[index].title,
                             category: filtered[index].category,
                             description: filtered[index].description,
+                            onTap: () {
+                              goToActivityContentPage(filtered[index]);
+                            },
                           );
                         },
                       )

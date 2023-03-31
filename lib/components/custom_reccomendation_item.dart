@@ -6,6 +6,7 @@ class CustomRecommendationItem extends StatelessWidget {
   final String title;
   final String category;
   final String description;
+  final void Function()? onTap;
 
   const CustomRecommendationItem({
     super.key,
@@ -13,6 +14,7 @@ class CustomRecommendationItem extends StatelessWidget {
     required this.title,
     required this.category,
     required this.description,
+    this.onTap,
   });
 
   @override
@@ -24,7 +26,7 @@ class CustomRecommendationItem extends StatelessWidget {
         shadowColor: Colors.transparent,
         clipBehavior: Clip.hardEdge,
         child: InkWell(
-          onTap: () {},
+          onTap: onTap,
           child: Column(
             children: [
               backgroundImage,
