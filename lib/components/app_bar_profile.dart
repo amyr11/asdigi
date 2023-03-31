@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../helpers/auth_services.dart';
 import 'circle_image_button.dart';
+import 'package:side_sheet/side_sheet.dart';
 
 // TODO: Change image path to children's image
 const String imagePath = 'assets/images/boy.jpg';
@@ -31,8 +32,22 @@ class AppBarWithProfile extends AppBar {
           actions: [
             IconButton(
               onPressed: () {
-                // TODO: Change by adding setting screen
-                AuthServices().signOut();
+                SideSheet.right(
+                  body: Padding(
+                    padding: const EdgeInsets.only(top: 50),
+                    child: ListTile(
+                      leading: Icon(Icons.logout),
+                      title: Text('Sign Out'),
+                      trailing: Icon(Icons.arrow_right),
+                      onTap: () {
+                        Navigator.pop(context);
+                        AuthServices().signOut();
+                      },
+                    ),
+                  ),
+                  context: context,
+                );
+                // // TODO: Change by adding setting screen
               },
               icon: const Icon(Icons.settings),
               tooltip: 'Settings',
