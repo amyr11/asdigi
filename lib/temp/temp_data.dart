@@ -9,8 +9,21 @@ import '../models/doctors.dart';
 class MilestonesChecklistPageData {
   List<MilestoneChecklistItem> generateDummyData(String name) {
     return List.generate(
-      Random().nextInt(3) + 2,
+      3,
       (index) => MilestoneChecklistItem(
+        title: '$name $index',
+        imageURL:
+            'https://cms-tc.pbskids.org/parents/expert-tips-and-advice/helping-young-children-learn-to-make-friends-hero.jpg',
+      ),
+    );
+  }
+}
+
+class MilestonesOverviewPageData {
+  List<MilestoneOverviewItem> generateDummyData(String name) {
+    return List.generate(
+      3,
+      (index) => MilestoneOverviewItem(
         title: '$name $index',
         imageURL:
             'https://cms-tc.pbskids.org/parents/expert-tips-and-advice/helping-young-children-learn-to-make-friends-hero.jpg',

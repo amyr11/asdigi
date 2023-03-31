@@ -5,7 +5,6 @@ import 'milestone_checklist_item_card.dart';
 
 class MilestoneChecklistSection extends StatefulWidget {
   final List<MilestoneChecklistItem> milestones;
-
   final bool readOnly;
   final ScrollPhysics? physics;
 

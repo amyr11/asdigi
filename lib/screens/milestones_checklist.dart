@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../components/milestone_checklist_section.dart';
 import '../models/milestone.dart';
 import '../temp/temp_data.dart';
+import 'milestones_overview.dart';
 
 class MilestonesChecklistPage extends StatefulWidget {
   const MilestonesChecklistPage({super.key});
@@ -77,7 +78,14 @@ class _MilestonesChecklistPageState extends State<MilestonesChecklistPage>
                     style: TextButton.styleFrom(
                       padding: EdgeInsets.zero,
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const MilestonesOverviewPage(),
+                        ),
+                      );
+                    },
                     child: const Text(
                       'See all Developmental Milestones',
                       style: TextStyle(

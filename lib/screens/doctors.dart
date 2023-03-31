@@ -93,6 +93,7 @@ class _DoctorsPageState extends State<DoctorsPage> {
                         Expanded(
                           child: CustomDropDown(
                               value: textValuePlaces,
+                              isExpanded: true,
                               list: DoctorsPageData.places,
                               onChanged: (String? value) {
                                 setState(
@@ -110,6 +111,7 @@ class _DoctorsPageState extends State<DoctorsPage> {
                         Expanded(
                           child: CustomDropDown(
                               value: textValueOccupation,
+                              isExpanded: true,
                               list: DoctorsPageData.occupations,
                               onChanged: (String? value) {
                                 setState(

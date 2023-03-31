@@ -8,3 +8,13 @@ class MilestoneChecklistItem {
     required this.title,
   });
 }
+
+class MilestoneOverviewItem {
+  final String imageURL;
+  final String title;
+
+  MilestoneOverviewItem({
+    required this.imageURL,
+    required this.title,
+  });
+}
