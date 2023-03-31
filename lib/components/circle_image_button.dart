@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 
 class CircleImageButton extends StatelessWidget {
   final ImageProvider image;
-
+  final void Function()? onTap;
   const CircleImageButton({
     super.key,
     required this.image,
+    this.onTap,
   });
 
   @override
@@ -17,7 +18,7 @@ class CircleImageButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(50),
         clipBehavior: Clip.antiAliasWithSaveLayer,
         child: InkWell(
-          onTap: () {},
+          onTap: onTap,
           child: Padding(
             padding: const EdgeInsets.all(5.0),
             child: CircleAvatar(

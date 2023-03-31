@@ -5,7 +5,6 @@ import '../screens/behavior_content.dart';
 
 class BehaviorListItem extends StatelessWidget {
   final Behavior behaviorObject;
-
   const BehaviorListItem(
     this.behaviorObject, {
     super.key,
