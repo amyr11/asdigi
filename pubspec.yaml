@@ -38,7 +38,7 @@ dependencies:
   url_launcher: ^6.1.10
   google_sign_in: ^6.0.2
   firebase_auth: ^4.3.0
-  firebase_core: ^2.8.0
+  firebase_core: ^2.9.0
   image_picker: ^0.8.7
   markdown_viewer: ^0.5.0
   easy_stepper: ^0.4.0

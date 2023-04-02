@@ -1,14 +1,13 @@
-import 'package:asdigi/screens/behavior_content.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:asdigi/helpers/auth_services.dart';
 import 'package:flutter/material.dart';
 
-import 'screens/home.dart';
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
