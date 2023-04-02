@@ -8,7 +8,7 @@ class Doctor {
   final String jobDescription;
   final String hospital;
   final String address;
-  final String trunkLine;
+  final int trunkLine;
 
   Doctor(this.profilePic, this.name, this.occupation, this.jobDescription,
       this.hospital, this.address, this.trunkLine);
