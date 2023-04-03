@@ -64,7 +64,7 @@ class _MilestonesOverviewPageState extends State<MilestonesOverviewPage>
   void loadAges(List<MilestoneOverviewItem> allMilestones) {
     // get the unique ages from milestones
     ages = <int>{
-      ...allMilestones!.map((e) => e.age),
+      ...allMilestones.map((e) => e.age),
     }.toList();
     ages!.sort();
     agesString = ages!.map((e) => getAgeString(e)).toList();
