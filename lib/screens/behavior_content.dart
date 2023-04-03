@@ -5,11 +5,11 @@ import '../models/behavior.dart';
 import '../temp/temp_markdown.dart';
 
 class BehaviorContentPage extends StatefulWidget {
-  final Behavior behaviorObject;
+  final BehaviorOverview behaviorOverview;
 
-  const BehaviorContentPage({
+  const BehaviorContentPage(
+    this.behaviorOverview, {
     super.key,
-    required this.behaviorObject,
   });
 
   @override
@@ -19,11 +19,21 @@ class BehaviorContentPage extends StatefulWidget {
 class _BehaviorContentPageState extends State<BehaviorContentPage>
     with SingleTickerProviderStateMixin {
   late TabController tabController;
+  BehaviorContent? behaviorContent;
 
   @override
   void initState() {
     super.initState();
     tabController = TabController(length: 2, vsync: this);
+    loadBehaviorContent();
+  }
+
+  void loadBehaviorContent() async {
+    BehaviorContent data =
+        await BehaviorContent.getDataFromFirestore(widget.behaviorOverview.id!);
+    setState(() {
+      behaviorContent = data;
+    });
   }
 
   @override
@@ -55,7 +65,11 @@ class _BehaviorContentPageState extends State<BehaviorContentPage>
               background: Stack(
                 fit: StackFit.expand,
                 children: [
-                  widget.behaviorObject.image,
+                  Image.network(
+                    widget.behaviorOverview.imageURL,
+                    fit: BoxFit.cover,
+                    alignment: Alignment.topCenter,
+                  ),
                   Container(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 16,
@@ -83,7 +97,7 @@ class _BehaviorContentPageState extends State<BehaviorContentPage>
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         Text(
-                          widget.behaviorObject.title,
+                          widget.behaviorOverview.title,
                           style: Theme.of(context)
                               .textTheme
                               .headlineMedium!
@@ -94,7 +108,7 @@ class _BehaviorContentPageState extends State<BehaviorContentPage>
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          widget.behaviorObject.description,
+                          widget.behaviorOverview.description,
                           style: Theme.of(context)
                               .textTheme
                               .bodyMedium!
@@ -128,19 +142,23 @@ class _BehaviorContentPageState extends State<BehaviorContentPage>
                 children: [
                   SingleChildScrollView(
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 20),
-                      child: MarkdownViewer(
-                          widget.behaviorObject.overViewMarkdown),
-                    ),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 20),
+                        child: behaviorContent == null
+                            ? const Center(
+                                child: CircularProgressIndicator(),
+                              )
+                            : MarkdownViewer(behaviorContent!.overview)),
                   ),
                   SingleChildScrollView(
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 20),
-                      child: MarkdownViewer(
-                          widget.behaviorObject.howToAddressMarkdown),
-                    ),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 20),
+                        child: behaviorContent == null
+                            ? const Center(
+                                child: CircularProgressIndicator(),
+                              )
+                            : MarkdownViewer(behaviorContent!.howToAddress)),
                   ),
                 ],
               ),

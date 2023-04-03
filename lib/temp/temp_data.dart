@@ -53,31 +53,6 @@ class MilestonesChecklistPageData {
   }
 }
 
-class MilestonesOverviewPageData {
-  List<MilestoneOverviewItem> generateDummyData(String name) {
-    return List.generate(
-      3,
-      (index) => MilestoneOverviewItem(
-        title: '$name $index',
-        imageURL:
-            'https://cms-tc.pbskids.org/parents/expert-tips-and-advice/helping-young-children-learn-to-make-friends-hero.jpg',
-      ),
-    );
-  }
-}
-
-class BehaviorDictionaryPageData {
-  static List<Behavior> listItems = List.filled(
-      20,
-      Behavior(
-        image: BehaviorMarkdownData.image,
-        title: BehaviorMarkdownData.title,
-        description: BehaviorMarkdownData.description,
-        overViewMarkdown: BehaviorMarkdownData.overViewMarkdown,
-        howToAddressMarkdown: BehaviorMarkdownData.howToAddressMarkdown,
-      ));
-}
-
 class DoctorsPageData {
   static List<Doctor> doctors = <Doctor>[
     Doctor(
