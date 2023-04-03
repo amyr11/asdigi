@@ -88,7 +88,7 @@ class DoctorsPageData {
         'Specializes in speech therapy, helping individuals with a wide range of speech and language issues',
         'Ospital ng Sampaloc',
         'España Blvd., Sampaloc, Manila',
-        'Trunkline: 827495'),
+        827495),
     Doctor(
         Image.network(
             'https://img.freepik.com/free-photo/beautiful-young-female-doctor-looking-camera-office_1301-7807.jpg'),
@@ -97,7 +97,7 @@ class DoctorsPageData {
         'Talks to children who can not',
         'Ospital ng Mandaluyong',
         'Mandaluyong',
-        'Trunkline: 294867'),
+        294867),
     Doctor(
         Image.network(
             'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8ZG9jdG9yfGVufDB8fDB8fA%3D%3D&w=1000&q=80'),
@@ -106,7 +106,7 @@ class DoctorsPageData {
         'Talks to you and gives you advice for life',
         'St Luke\'s Medical Center',
         'Quezon City',
-        'Trunkline: 294867'),
+        294867),
     Doctor(
         Image.network(
             'https://upload.wikimedia.org/wikipedia/en/5/53/Greys-Anatomy-Season-7-Promo-9.jpg'),
@@ -115,7 +115,7 @@ class DoctorsPageData {
         'Gives advice in movement of children',
         'Marikina Valley Medical Center',
         'Marikina City',
-        'Trunkline: 294867'),
+        294867),
   ];
 
   static List<String> places = [

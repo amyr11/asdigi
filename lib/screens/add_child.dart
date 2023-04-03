@@ -62,11 +62,6 @@ class _AddChildState extends State<AddChild> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          tooltip: 'Back',
-          onPressed: () => {},
-        ),
         title: Text(
           "Add Child",
           style: Theme.of(context).textTheme.titleLarge,
@@ -131,7 +126,7 @@ class _AddChildState extends State<AddChild> {
                 TextFormField(
                   controller: date,
                   decoration: InputDecoration(
-                    helperText: 'YYYY-MM-DD',
+                    helperText: 'MM/DD/YYYY',
                     isDense: true,
                     border: const OutlineInputBorder(),
                     labelText: "Birth Date",
@@ -148,7 +143,7 @@ class _AddChildState extends State<AddChild> {
                         if (selectedDate != null) {
                           setState(() {
                             date.text =
-                                DateFormat('yyyy-MM-dd').format(selectedDate);
+                                DateFormat('MM/dd/yyyy').format(selectedDate);
                           });
                         }
                       },

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../components/custom_doctor_item.dart';
 import '../components/custom_dropdown.dart';
@@ -120,13 +121,16 @@ class _DoctorsPageState extends State<DoctorsPage> {
           itemCount: filteredDoctors.length,
           itemBuilder: (context, index) {
             return CustomDoctorItem(
-              pfp: filteredDoctors[index].profilePic,
               docName: filteredDoctors[index].name,
               docOccupation: filteredDoctors[index].occupation,
               description: filteredDoctors[index].jobDescription,
               address: filteredDoctors[index].address,
               trunkLine: filteredDoctors[index].trunkLine,
               hospitalName: filteredDoctors[index].hospital,
+              callNumber: () {
+                // ignore: deprecated_member_use
+                launch('tel:${filteredDoctors[index].trunkLine}');
+              },
             );
           },
           shrinkWrap: true,

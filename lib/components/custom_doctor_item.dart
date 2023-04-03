@@ -1,24 +1,26 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
 
+import 'package:url_launcher/url_launcher.dart';
+
 class CustomDoctorItem extends StatelessWidget {
-  final Image pfp;
   final String docName;
   final String docOccupation;
   final String description;
   final String hospitalName;
   final String address;
-  final String trunkLine;
+  final int trunkLine;
+  final Function()? callNumber;
 
   const CustomDoctorItem({
     super.key,
-    required this.pfp,
     required this.docName,
     required this.docOccupation,
     required this.description,
     required this.address,
     required this.trunkLine,
     required this.hospitalName,
+    this.callNumber,
   });
 
   @override
@@ -34,9 +36,6 @@ class CustomDoctorItem extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ListTile(
-              leading: CircleAvatar(
-                backgroundImage: pfp.image,
-              ),
               title: Text(
                 docName,
                 style: Theme.of(context).textTheme.titleMedium,
@@ -44,10 +43,6 @@ class CustomDoctorItem extends StatelessWidget {
               subtitle: Text(
                 docOccupation,
                 style: Theme.of(context).textTheme.bodyMedium,
-              ),
-              trailing: IconButton(
-                icon: Icon(Icons.more_vert),
-                onPressed: () {},
               ),
             ),
             Padding(
@@ -75,7 +70,7 @@ class CustomDoctorItem extends StatelessWidget {
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   Text(
-                    trunkLine,
+                    'Trunk Line: $trunkLine',
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   const SizedBox(
@@ -86,13 +81,13 @@ class CustomDoctorItem extends StatelessWidget {
                     children: [
                       OutlinedButton(
                         onPressed: () {},
-                        child: const Text('Email'),
+                        child: Text('Go to website'),
                       ),
-                      const SizedBox(
+                      SizedBox(
                         width: 8,
                       ),
                       FilledButton(
-                        onPressed: () {},
+                        onPressed: callNumber,
                         child: const Text('Add to Contacts'),
                       )
                     ],
