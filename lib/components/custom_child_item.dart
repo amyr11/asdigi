@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class custom_child_item extends StatelessWidget {
-  Image pfp;
-  String name;
+class ChildListItem extends StatelessWidget {
+  final Image pfp;
+  final String name;
 
-  custom_child_item({
+  const ChildListItem({
     super.key,
     required this.pfp,
     required this.name,
@@ -18,10 +18,6 @@ class custom_child_item extends StatelessWidget {
       title: Text(
         name,
         style: Theme.of(context).textTheme.bodyMedium,
-      ),
-      trailing: IconButton(
-        icon: Icon(Icons.more_vert),
-        onPressed: () {},
       ),
     );
   }

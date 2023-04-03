@@ -25,30 +25,48 @@ class AppBarWithProfile extends AppBar {
             image: AssetImage(imagePath),
             onTap: () => showDialog<String>(
               context: context,
-              builder: (BuildContext context) => AlertDialog(
-                icon: Icon(Icons.person_2_outlined),
-                title: const Text('Switch Child'),
-                content: ListView.separated(
-                    shrinkWrap: true,
-                    itemBuilder: (BuildContext context, int index) =>
-                        custom_child_item(
-                            pfp: children[index].image,
-                            name: children[index].name),
-                    separatorBuilder: (BuildContext context, int index) =>
-                        const Divider(),
-                    itemCount: children.length),
-                actions: <Widget>[
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                      Navigator.push(
+              builder: (BuildContext context) => Dialog(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const SizedBox(height: 20),
+                    const Icon(Icons.person_2_outlined, size: 30),
+                    const SizedBox(height: 10),
+                    Text('Switch Child',
+                        style: Theme.of(context).textTheme.titleLarge),
+                    const SizedBox(height: 20),
+                    SingleChildScrollView(
+                      child: ListView.separated(
+                        shrinkWrap: true,
+                        itemBuilder: (BuildContext context, int index) =>
+                            ChildListItem(
+                                pfp: children[index].image,
+                                name: children[index].name),
+                        separatorBuilder: (BuildContext context, int index) =>
+                            const Divider(),
+                        itemCount: children.length,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const AddChild()));
-                    },
-                    child: Text('+ Add Child'),
-                  )
-                ],
+                              builder: (context) => const AddChild()),
+                        );
+                      },
+                      style: TextButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 20,
+                        ),
+                      ),
+                      child: const Text('+ Add Child'),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
