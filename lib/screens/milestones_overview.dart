@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../components/custom_dropdown.dart';
 import '../components/milestone_overview_section.dart';
 import '../models/milestone.dart';
-import '../temp/temp_data.dart';
 
 class MilestonesOverviewPage extends StatefulWidget {
   const MilestonesOverviewPage({super.key});
@@ -14,15 +13,82 @@ class MilestonesOverviewPage extends StatefulWidget {
 
 class _MilestonesOverviewPageState extends State<MilestonesOverviewPage>
     with SingleTickerProviderStateMixin {
-  late List<MilestoneOverviewItem> socialMilestones;
-  late List<MilestoneOverviewItem> languageMilestones;
-  late List<MilestoneOverviewItem> cognitiveMilestones;
-  late List<MilestoneOverviewItem> movementMilestones;
+  List<MilestoneOverviewItem>? allMilestones;
+  List<MilestoneOverviewItem>? socialMilestones;
+  List<MilestoneOverviewItem>? languageMilestones;
+  List<MilestoneOverviewItem>? cognitiveMilestones;
+  List<MilestoneOverviewItem>? movementMilestones;
+  List<int>? ages;
+  List<String>? agesString;
+  String? dropdownAge;
+  int? currentAge;
 
   late TabController tabController;
   late ScrollController scrollController;
-  late List<String> ages;
-  late String dropdownAge;
+
+  void fetchMilestones() async {
+    allMilestones =
+        await MilestoneOverviewItem.getAllFromFirestore().then((value) {
+      loadAges(value);
+      return value;
+    });
+    setState(() {});
+  }
+
+  void loadAllMilestones(int? age) {
+    if (allMilestones != null && age != null) {
+      socialMilestones = allMilestones!
+          .where((element) =>
+              element.milestoneCategory == MilestoneOverviewItem.social &&
+              element.age == age)
+          .toList();
+      languageMilestones = allMilestones!
+          .where((element) =>
+              element.milestoneCategory == MilestoneOverviewItem.language &&
+              element.age == age)
+          .toList();
+      cognitiveMilestones = allMilestones!
+          .where((element) =>
+              element.milestoneCategory == MilestoneOverviewItem.cognitive &&
+              element.age == age)
+          .toList();
+      movementMilestones = allMilestones!
+          .where((element) =>
+              element.milestoneCategory == MilestoneOverviewItem.movement &&
+              element.age == age)
+          .toList();
+    }
+    setState(() {});
+  }
+
+  void loadAges(List<MilestoneOverviewItem> allMilestones) {
+    // get the unique ages from milestones
+    ages = <int>{
+      ...allMilestones!.map((e) => e.age),
+    }.toList();
+    ages!.sort();
+    agesString = ages!.map((e) => getAgeString(e)).toList();
+    updateAge(ages!.first);
+    setState(() {});
+  }
+
+  String getAgeString(int age) {
+    String word = '';
+    bool isYear = age % 12 == 0;
+    if (isYear) {
+      age = age ~/ 12;
+      word = age > 1 ? 'years' : 'year';
+    } else {
+      word = age > 1 ? 'months' : 'month';
+    }
+    return '$age $word old';
+  }
+
+  void updateAge(int age) {
+    dropdownAge = getAgeString(age);
+    currentAge = age;
+    setState(() {});
+  }
 
   @override
   void dispose() {
@@ -33,21 +99,7 @@ class _MilestonesOverviewPageState extends State<MilestonesOverviewPage>
   @override
   void initState() {
     super.initState();
-    ages = [
-      '5 years old',
-      '4 years old',
-      '3 years old',
-      '2 years old',
-      '1 year old',
-    ];
-    dropdownAge = ages[0];
-    socialMilestones = MilestonesOverviewPageData().generateDummyData('Social');
-    languageMilestones =
-        MilestonesOverviewPageData().generateDummyData('Language');
-    cognitiveMilestones =
-        MilestonesOverviewPageData().generateDummyData('Cognitive');
-    movementMilestones =
-        MilestonesOverviewPageData().generateDummyData('Movement');
+    fetchMilestones();
     tabController = TabController(length: 4, vsync: this);
     scrollController = ScrollController();
     tabController.addListener(() {
@@ -60,6 +112,7 @@ class _MilestonesOverviewPageState extends State<MilestonesOverviewPage>
 
   @override
   Widget build(BuildContext context) {
+    loadAllMilestones(currentAge);
     return Scaffold(
       body: NestedScrollView(
         controller: scrollController,
@@ -81,17 +134,20 @@ class _MilestonesOverviewPageState extends State<MilestonesOverviewPage>
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(top: 10),
-                    child: CustomDropDown(
-                      outlined: false,
-                      value: dropdownAge,
-                      list: ages,
-                      onChanged: (String? value) {
-                        setState(() {
-                          dropdownAge = value!;
-                          // TODO: Filter milestones based on age
-                        });
-                      },
-                    ),
+                    child: agesString != null
+                        ? CustomDropDown(
+                            outlined: false,
+                            value: dropdownAge!,
+                            list: agesString!,
+                            onChanged: (String? value) {
+                              setState(() {
+                                updateAge(ages![agesString!.indexOf(value!)]);
+                              });
+                            },
+                          )
+                        : const Center(
+                            child: CircularProgressIndicator(),
+                          ),
                   ),
                   TabBar(
                     isScrollable: true,
@@ -121,10 +177,26 @@ class _MilestonesOverviewPageState extends State<MilestonesOverviewPage>
           controller: tabController,
           physics: const NeverScrollableScrollPhysics(),
           children: [
-            MilestoneOverviewSection(socialMilestones),
-            MilestoneOverviewSection(languageMilestones),
-            MilestoneOverviewSection(cognitiveMilestones),
-            MilestoneOverviewSection(movementMilestones),
+            socialMilestones != null
+                ? MilestoneOverviewSection(socialMilestones!)
+                : const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+            languageMilestones != null
+                ? MilestoneOverviewSection(languageMilestones!)
+                : const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+            cognitiveMilestones != null
+                ? MilestoneOverviewSection(cognitiveMilestones!)
+                : const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+            movementMilestones != null
+                ? MilestoneOverviewSection(movementMilestones!)
+                : const Center(
+                    child: CircularProgressIndicator(),
+                  ),
           ],
         ),
       ),
