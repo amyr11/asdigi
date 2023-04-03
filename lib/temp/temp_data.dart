@@ -66,18 +66,6 @@ class MilestonesOverviewPageData {
   }
 }
 
-class BehaviorDictionaryPageData {
-  static List<Behavior> listItems = List.filled(
-      20,
-      Behavior(
-        image: BehaviorMarkdownData.image,
-        title: BehaviorMarkdownData.title,
-        description: BehaviorMarkdownData.description,
-        overViewMarkdown: BehaviorMarkdownData.overViewMarkdown,
-        howToAddressMarkdown: BehaviorMarkdownData.howToAddressMarkdown,
-      ));
-}
-
 class DoctorsPageData {
   static List<Doctor> doctors = <Doctor>[
     Doctor(

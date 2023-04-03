@@ -4,8 +4,28 @@ import '../components/behavior_list_item.dart';
 import '../models/behavior.dart';
 import '../temp/temp_data.dart';
 
-class BehaviorDictionaryPage extends StatelessWidget {
+class BehaviorDictionaryPage extends StatefulWidget {
   const BehaviorDictionaryPage({super.key});
+
+  @override
+  State<BehaviorDictionaryPage> createState() => _BehaviorDictionaryPageState();
+}
+
+class _BehaviorDictionaryPageState extends State<BehaviorDictionaryPage> {
+  List<BehaviorOverview>? behaviorOverviews;
+
+  @override
+  void initState() {
+    super.initState();
+    loadBehaviorOverviews();
+  }
+
+  void loadBehaviorOverviews() async {
+    List<BehaviorOverview> data = await BehaviorOverview.getAllFromFirestore();
+    setState(() {
+      behaviorOverviews = data;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,8 +58,12 @@ class BehaviorDictionaryPage extends StatelessWidget {
                 color: Theme.of(context).colorScheme.surfaceVariant,
                 child: InkWell(
                   onTap: () {
-                    showSearch(
-                        context: context, delegate: CustomSearchDelegate());
+                    if (behaviorOverviews != null) {
+                      showSearch(
+                        context: context,
+                        delegate: CustomSearchDelegate(behaviorOverviews!),
+                      );
+                    }
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(15),
@@ -70,14 +94,17 @@ class BehaviorDictionaryPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Expanded(
-            child: ListView.separated(
-              itemCount: BehaviorDictionaryPageData.listItems.length,
-              shrinkWrap: true,
-              separatorBuilder: (BuildContext context, int index) =>
-                  const Divider(),
-              itemBuilder: (BuildContext context, int index) =>
-                  BehaviorListItem(BehaviorDictionaryPageData.listItems[index]),
-            ),
+            child: behaviorOverviews == null
+                ? const Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : ListView.builder(
+                    itemCount: behaviorOverviews!.length,
+                    itemBuilder: (context, index) {
+                      var behaviorOverview = behaviorOverviews![index];
+                      return BehaviorListItem(behaviorOverview);
+                    },
+                  ),
           )
         ],
       ),
@@ -86,6 +113,10 @@ class BehaviorDictionaryPage extends StatelessWidget {
 }
 
 class CustomSearchDelegate extends SearchDelegate {
+  final List<BehaviorOverview> behaviorOverviews;
+
+  CustomSearchDelegate(this.behaviorOverviews);
+
   @override
   List<Widget> buildActions(BuildContext context) {
     return [
@@ -110,11 +141,13 @@ class CustomSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    List<Behavior> matchQuery = [];
-    for (Behavior behavior in BehaviorDictionaryPageData.listItems) {
-      if (behavior.title.toLowerCase().contains(query.toLowerCase()) ||
-          behavior.description.toLowerCase().contains(query.toLowerCase())) {
-        matchQuery.add(behavior);
+    List<BehaviorOverview> matchQuery = [];
+    for (BehaviorOverview behaviorOverview in behaviorOverviews) {
+      if (behaviorOverview.title.toLowerCase().contains(query.toLowerCase()) ||
+          behaviorOverview.description
+              .toLowerCase()
+              .contains(query.toLowerCase())) {
+        matchQuery.add(behaviorOverview);
       }
     }
 

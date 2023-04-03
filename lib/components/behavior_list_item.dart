@@ -4,24 +4,29 @@ import '../models/behavior.dart';
 import '../screens/behavior_content.dart';
 
 class BehaviorListItem extends StatelessWidget {
-  final Behavior behaviorObject;
+  final BehaviorOverview behaviorOverview;
 
   const BehaviorListItem(
-    this.behaviorObject, {
+    this.behaviorOverview, {
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      visualDensity: VisualDensity.compact,
-      leading: behaviorObject.image,
+      leading: Image.network(
+        behaviorOverview.imageURL,
+        fit: BoxFit.cover,
+        height: 50,
+        width: 80,
+        alignment: Alignment.topCenter,
+      ),
       title: Text(
-        behaviorObject.title,
+        behaviorOverview.title,
         style: Theme.of(context).textTheme.bodyLarge,
       ),
       subtitle: Text(
-        behaviorObject.description,
+        behaviorOverview.description,
         style: Theme.of(context).textTheme.bodyMedium,
         overflow: TextOverflow.ellipsis,
         maxLines: 2,
@@ -33,7 +38,7 @@ class BehaviorListItem extends StatelessWidget {
           PageRouteBuilder(
             pageBuilder: (BuildContext context, Animation<double> animation,
                 Animation<double> secondaryAnimation) {
-              return BehaviorContentPage(behaviorObject: behaviorObject);
+              return BehaviorContentPage(behaviorOverview);
             },
             transitionsBuilder: (BuildContext context,
                 Animation<double> animation,
