@@ -1,4 +1,7 @@
 import 'package:asdigi/helpers/storage_services.dart';
+import 'package:asdigi/models/milestone.dart';
+import 'package:asdigi/screens/answer_milestones_checklist.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -26,6 +29,20 @@ class _AddChildState extends State<AddChild> {
   DateTime? childBirthdate;
   String? nameErrorText;
   String? dateErrorText;
+
+  void goToAnswerChecklist(BuildContext context,
+      {required List<MilestoneChecklistItem> checklist,
+      required void Function() onSubmit}) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AnswerMilestoneChecklistPage(
+          allMilestones: checklist,
+          onSubmit: onSubmit,
+        ),
+      ),
+    );
+  }
 
   Future<void> _showDialog() async {
     return showDialog<void>(
@@ -261,10 +278,38 @@ class _AddChildState extends State<AddChild> {
                           onPressed: () async {
                             bool isValid = validateFields();
                             if (isValid) {
-                              await Child.uploadToFirestore(
+                              Child newChild = Child(
                                 name: childName!,
                                 birthDate: childBirthdate!,
-                                image: childImage,
+                              );
+                              List<MilestoneChecklistItem> checklist =
+                                  await MilestoneChecklistItem
+                                      .getChecklistForAge(
+                                Child.getNearestAge(
+                                  age: newChild.ageInMonths,
+                                  availableAges: await MilestoneOverviewItem
+                                      .getUniqueAges(),
+                                ),
+                              );
+                              goToAnswerChecklist(
+                                context,
+                                checklist: checklist,
+                                onSubmit: () async {
+                                  DocumentReference<Map<String, dynamic>>
+                                      childDocRef =
+                                      await Child.uploadToFirestore(
+                                    name: newChild.name,
+                                    birthDate: newChild.birthDate,
+                                    image: childImage,
+                                  );
+                                  await MilestoneChecklistItem
+                                      .uploadToFireStore(
+                                    childID: childDocRef.id,
+                                    checklist: checklist,
+                                  );
+                                  Navigator.pop(context);
+                                  Navigator.pop(context);
+                                },
                               );
                             }
                           },

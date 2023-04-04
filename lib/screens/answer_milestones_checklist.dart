@@ -5,18 +5,12 @@ import 'package:easy_stepper/easy_stepper.dart';
 import '../components/milestone_checklist_section.dart';
 
 class AnswerMilestoneChecklistPage extends StatefulWidget {
-  final List<MilestoneChecklistItem> socialMilestones;
-  final List<MilestoneChecklistItem> languageMilestones;
-  final List<MilestoneChecklistItem> cognitiveMilestones;
-  final List<MilestoneChecklistItem> movementMilestones;
+  final List<MilestoneChecklistItem> allMilestones;
   final void Function() onSubmit;
 
   const AnswerMilestoneChecklistPage({
     super.key,
-    required this.socialMilestones,
-    required this.languageMilestones,
-    required this.cognitiveMilestones,
-    required this.movementMilestones,
+    required this.allMilestones,
     required this.onSubmit,
   });
 
@@ -30,17 +24,42 @@ class _AnswerMilestoneChecklistPage
   late int activeStep;
   late List<EasyStep> steps;
   late PageController pageController;
-  late List<List<MilestoneChecklistItem>> allMilestones;
+  late List<List<MilestoneChecklistItem>> allMilestonesCategory;
+  late List<MilestoneChecklistItem> socialMilestones;
+  late List<MilestoneChecklistItem> languageMilestones;
+  late List<MilestoneChecklistItem> cognitiveMilestones;
+  late List<MilestoneChecklistItem> movementMilestones;
   String nextButtonString = 'Next';
+
+  void loadAllMilestones(List<MilestoneChecklistItem> allMilestones) {
+    socialMilestones = allMilestones
+        .where((element) =>
+            element.milestoneCategory == MilestoneOverviewItem.social)
+        .toList();
+    languageMilestones = allMilestones
+        .where((element) =>
+            element.milestoneCategory == MilestoneOverviewItem.language)
+        .toList();
+    cognitiveMilestones = allMilestones
+        .where((element) =>
+            element.milestoneCategory == MilestoneOverviewItem.cognitive)
+        .toList();
+    movementMilestones = allMilestones
+        .where((element) =>
+            element.milestoneCategory == MilestoneOverviewItem.movement)
+        .toList();
+    setState(() {});
+  }
 
   @override
   void initState() {
     super.initState();
-    allMilestones = [
-      widget.socialMilestones,
-      widget.languageMilestones,
-      widget.cognitiveMilestones,
-      widget.movementMilestones,
+    loadAllMilestones(widget.allMilestones);
+    allMilestonesCategory = [
+      socialMilestones,
+      languageMilestones,
+      cognitiveMilestones,
+      movementMilestones,
     ];
     pageController = PageController();
     activeStep = 0;
@@ -67,7 +86,7 @@ class _AnswerMilestoneChecklistPage
   void setActiveStep(int step) {
     // TODO: Refactor
     if (step > activeStep) {
-      int noStatusCount = allMilestones[step - 1]
+      int noStatusCount = allMilestonesCategory[step - 1]
           .where((element) => element.status == -1)
           .length;
       if (noStatusCount > 0) {
@@ -133,7 +152,7 @@ class _AnswerMilestoneChecklistPage
               physics: const NeverScrollableScrollPhysics(),
               controller: pageController,
               itemBuilder: (context, index) =>
-                  MilestoneChecklistSection(allMilestones[index]),
+                  MilestoneChecklistSection(allMilestonesCategory[index]),
             ),
           ),
           SizedBox(
@@ -155,7 +174,6 @@ class _AnswerMilestoneChecklistPage
                         setActiveStep(activeStep + 1);
                       } else {
                         widget.onSubmit();
-                        Navigator.pop(context);
                       }
                     },
                     child: Text(nextButtonString),

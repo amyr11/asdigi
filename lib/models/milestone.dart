@@ -12,6 +12,7 @@ class MilestoneChecklistItem {
   }
 
   final String? checklistItemID;
+  final String? milestoneID;
   final String imageURL;
   final String title;
   final int milestoneCategory;
@@ -19,6 +20,7 @@ class MilestoneChecklistItem {
 
   MilestoneChecklistItem({
     this.checklistItemID,
+    this.milestoneID,
     this.status = -1,
     required this.imageURL,
     required this.title,
@@ -75,6 +77,7 @@ class MilestoneChecklistItem {
     List<MilestoneChecklistItem> checklist = [];
     for (MilestoneOverviewItem milestone in milestones) {
       checklist.add(MilestoneChecklistItem(
+        milestoneID: milestone.milestoneID,
         imageURL: milestone.imageURL,
         title: milestone.title,
         milestoneCategory: milestone.milestoneCategory,
@@ -82,6 +85,29 @@ class MilestoneChecklistItem {
       ));
     }
     return checklist;
+  }
+
+  static uploadToFireStore(
+      {required String childID,
+      required List<MilestoneChecklistItem> checklist}) async {
+    CollectionReference<Map<String, dynamic>> colRef = FirebaseFirestore
+        .instance
+        .collection('Children')
+        .doc(childID)
+        .collection('MilestoneChecklist');
+    // Delete all existing checklist items
+    await colRef.get().then((querySnapshot) {
+      for (var docSnapshot in querySnapshot.docs) {
+        docSnapshot.reference.delete();
+      }
+    });
+    // Upload new checklist items
+    for (MilestoneChecklistItem item in checklist) {
+      await colRef.add({
+        'milestoneID': item.milestoneID,
+        'status': item.status,
+      });
+    }
   }
 }
 
@@ -94,12 +120,14 @@ class MilestoneOverviewItem {
   static CollectionReference<Map<String, dynamic>>
       get milestoneOverviewColRef =>
           FirebaseFirestore.instance.collection('Milestones');
+  final String? milestoneID;
   final String title;
   final String imageURL;
   final int age;
   final int milestoneCategory;
 
   MilestoneOverviewItem({
+    this.milestoneID,
     required this.title,
     required this.imageURL,
     required this.age,
@@ -110,6 +138,7 @@ class MilestoneOverviewItem {
     DocumentSnapshot<Map<String, dynamic>> snapshot,
   ) {
     return MilestoneOverviewItem(
+      milestoneID: snapshot.id,
       title: snapshot.data()!['title'],
       imageURL: snapshot.data()!['imageURL'],
       age: snapshot.data()!['age'],
@@ -160,5 +189,15 @@ class MilestoneOverviewItem {
       onError: (e) => print("Error completing: $e"),
     );
     return data;
+  }
+
+  static Future<List<int>> getUniqueAges() async {
+    List<MilestoneOverviewItem> allMilestones =
+        await MilestoneOverviewItem.getAllFromFirestore();
+
+    // get the unique ages from milestones
+    return <int>{
+      ...allMilestones.map((e) => e.age),
+    }.toList();
   }
 }

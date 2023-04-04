@@ -95,4 +95,23 @@ class Child {
     }
     return childDocRef;
   }
+
+  static int getNearestAge({
+    required int age,
+    required List<int> availableAges,
+  }) {
+    availableAges.sort();
+    if (age > availableAges.last) {
+      return availableAges.last;
+    }
+
+    int nearestAge = availableAges[0];
+    for (int availableAge in availableAges) {
+      if ((age - availableAge).abs() < (age - nearestAge).abs()) {
+        nearestAge = availableAge;
+      }
+    }
+    print('age: $age, nearestAge: $nearestAge');
+    return nearestAge;
+  }
 }

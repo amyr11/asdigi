@@ -123,13 +123,11 @@ class _MilestonesChecklistOverviewPageState
                       context,
                       MaterialPageRoute(
                         builder: (context) => AnswerMilestoneChecklistPage(
-                          socialMilestones: socialMilestones!,
-                          languageMilestones: languageMilestones!,
-                          cognitiveMilestones: cognitiveMilestones!,
-                          movementMilestones: movementMilestones!,
+                          allMilestones: allMilestones!,
                           onSubmit: () {
                             MilestoneChecklistItem.updateChecklist(
                                 allMilestones!);
+                            Navigator.pop(context);
                           },
                         ),
                       ),
