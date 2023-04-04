@@ -83,79 +83,45 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 20),
-                        child: Text(
-                          'Recommended',
-                          style: Theme.of(context).textTheme.titleLarge,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 350,
-                        child: ListView.builder(
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          scrollDirection: Axis.horizontal,
-                          itemCount: recommendedActivities.length,
-                          itemBuilder: (context, index) {
-                            return CustomRecommendationItem(
-                              backgroundImage:
-                                  recommendedActivities[index].backgroundImage,
-                              title: recommendedActivities[index].title,
-                              category: recommendedActivities[index].category,
-                              description:
-                                  recommendedActivities[index].description,
-                              onTap: () {
-                                goToActivityContentPage(
-                                    recommendedActivities[index]);
-                              },
-                            );
-                          },
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 25,
-                      ),
                       Visibility(
                         visible: pinnedList.isNotEmpty,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 16),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 16, vertical: 20),
                               child: Text(
                                 'Pinned',
                                 style: Theme.of(context).textTheme.titleLarge,
                               ),
                             ),
-                            const SizedBox(
-                              height: 20,
+                            SizedBox(
+                              height: 350,
+                              child: ListView.builder(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 16),
+                                scrollDirection: Axis.horizontal,
+                                itemCount: pinnedList.length,
+                                itemBuilder: (context, index) {
+                                  return CustomRecommendationItem(
+                                    backgroundImage:
+                                        pinnedList[index].backgroundImage,
+                                    title: pinnedList[index].title,
+                                    category: pinnedList[index].category,
+                                    description: pinnedList[index].description,
+                                    onTap: () {
+                                      goToActivityContentPage(
+                                          pinnedList[index]);
+                                    },
+                                  );
+                                },
+                              ),
                             ),
-                            ListView.separated(
-                              physics: const BouncingScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount: pinnedList.length,
-                              separatorBuilder: (context, index) {
-                                return const Divider();
-                              },
-                              itemBuilder: (context, index) {
-                                return CustomMaterialItem(
-                                  backgroundImage:
-                                      pinnedList[index].backgroundImage,
-                                  title: pinnedList[index].title,
-                                  category: pinnedList[index].category,
-                                  description: pinnedList[index].description,
-                                  onTap: () {
-                                    goToActivityContentPage(pinnedList[index]);
-                                  },
-                                );
-                              },
-                            ),
-                            const SizedBox(height: 25),
                           ],
                         ),
                       ),
+                      const SizedBox(height: 20),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 16),
                         child: Column(
