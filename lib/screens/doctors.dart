@@ -142,11 +142,7 @@ class _DoctorsPageState extends State<DoctorsPage> {
                     trunkLine: filteredDoctors![index].hospitalTelephoneNo,
                     hospitalName: filteredDoctors![index].hospitalName,
                     website: filteredDoctors![index].hospitalWebsite,
-                    callNumber: () {
-                      // ignore: deprecated_member_use
-                      launch(
-                          'tel:${filteredDoctors![index].hospitalTelephoneNo}');
-                    },
+                    gMapsLink: filteredDoctors![index].hospitalGMapsLink,
                   );
                 },
                 shrinkWrap: true,
