@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:markdown_viewer/markdown_viewer.dart';
 
 import '../models/behavior.dart';
-import '../temp/temp_markdown.dart';
 
 class BehaviorContentPage extends StatefulWidget {
   final BehaviorOverview behaviorOverview;

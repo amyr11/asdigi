@@ -1,36 +1,67 @@
 import 'package:flutter/material.dart';
 import 'package:markdown_viewer/markdown_viewer.dart';
 
-import '../models/developmentalActivity.dart';
+import '../models/child.dart';
+import '../models/developmental_resource.dart';
 
 class ActivityContentPage extends StatefulWidget {
-  final DevelopmentalActivity activity;
+  final Child activeChild;
+  final DevelopmentalResourceOverview resourceOverview;
 
-  const ActivityContentPage(this.activity, {super.key});
+  const ActivityContentPage({
+    super.key,
+    required this.activeChild,
+    required this.resourceOverview,
+  });
 
   @override
   State<ActivityContentPage> createState() => _ActivityContentPageState();
 }
 
 class _ActivityContentPageState extends State<ActivityContentPage> {
+  DevelopmentalResourceContent? resourceContent;
+
+  void fetchResourceContent() async {
+    resourceContent = await DevelopmentalResourceContent.getDataFromFirestore(
+        widget.resourceOverview.resourceID!);
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchResourceContent();
+  }
+
   @override
   Widget build(BuildContext context) {
+    bool isPinned = (widget.activeChild.pinnedResourcesID == null)
+        ? false
+        : DevelopmentalResourceOverview.isResourcePinned(
+            child: widget.activeChild,
+            resourceID: widget.resourceOverview.resourceID,
+          );
+
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.activity.title),
+        title: Text(widget.resourceOverview.title),
         actions: [
           IconButton(
             icon: Icon(
-              widget.activity.isPinned
-                  ? Icons.star
-                  : Icons.star_border_outlined,
+              isPinned ? Icons.star : Icons.star_border_outlined,
             ),
-            color: widget.activity.isPinned
-                ? Color.fromARGB(255, 242, 199, 9)
-                : null,
+            color: isPinned ? const Color.fromARGB(255, 242, 199, 9) : null,
             onPressed: () {
               setState(() {
-                widget.activity.isPinned = !widget.activity.isPinned;
+                if (isPinned) {
+                  widget.activeChild.pinnedResourcesID!
+                      .remove(widget.resourceOverview.resourceID);
+                } else {
+                  widget.activeChild.pinnedResourcesID ??= [];
+                  widget.activeChild.pinnedResourcesID!
+                      .add(widget.resourceOverview.resourceID!);
+                }
+                Child.updatePinnedResourceID(widget.activeChild);
               });
             },
           ),
@@ -38,9 +69,12 @@ class _ActivityContentPageState extends State<ActivityContentPage> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-          child: MarkdownViewer(widget.activity.content),
-        ),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+            child: resourceContent != null
+                ? MarkdownViewer(resourceContent!.content)
+                : const Center(
+                    child: CircularProgressIndicator(),
+                  )),
       ),
     );
   }

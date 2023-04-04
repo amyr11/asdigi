@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CustomRecommendationItem extends StatelessWidget {
-  final Image backgroundImage;
+  final String imageURL;
   final String title;
   final String category;
   final String description;
@@ -10,7 +10,7 @@ class CustomRecommendationItem extends StatelessWidget {
 
   const CustomRecommendationItem({
     super.key,
-    required this.backgroundImage,
+    required this.imageURL,
     required this.title,
     required this.category,
     required this.description,
@@ -28,8 +28,16 @@ class CustomRecommendationItem extends StatelessWidget {
         child: InkWell(
           onTap: onTap,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              backgroundImage,
+              SizedBox(
+                height: 160,
+                child: Image.network(
+                  imageURL,
+                  fit: BoxFit.cover,
+                  alignment: Alignment.topCenter,
+                ),
+              ),
               Padding(
                 padding: const EdgeInsets.all(16),
                 child: Column(
@@ -38,17 +46,21 @@ class CustomRecommendationItem extends StatelessWidget {
                     Text(
                       title,
                       style: Theme.of(context).textTheme.bodyLarge,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
                     Text(
                       category,
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     Text(
                       description,
                       style: Theme.of(context).textTheme.bodyMedium,
+                      maxLines: 4,
+                      overflow: TextOverflow.ellipsis,
                     )
                   ],
                 ),

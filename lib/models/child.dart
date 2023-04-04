@@ -14,21 +14,28 @@ class Child {
     return DateTime.now().difference(birthDate).inDays ~/ 30;
   }
 
+  String? childID;
   String? imageURL;
+  List<String>? pinnedResourcesID;
   String name;
   DateTime birthDate;
 
   Child({
+    this.childID,
     this.imageURL,
+    this.pinnedResourcesID,
     required this.name,
     required this.birthDate,
   });
 
   factory Child.fromFirestore(DocumentSnapshot<Map<String, dynamic>> snapshot) {
     return Child(
+      childID: snapshot.id,
       imageURL: snapshot.data()!['imageURL'],
       name: snapshot.data()!['name'],
       birthDate: snapshot.data()!['birthDate'].toDate(),
+      pinnedResourcesID:
+          List<String>.from(snapshot.data()!['pinnedResourcesID']),
     );
   }
 
@@ -136,5 +143,11 @@ class Child {
       }
     }
     return nearestAge;
+  }
+
+  static Future<void> updatePinnedResourceID(Child child) async {
+    await childrenColRef.doc(child.childID).update({
+      'pinnedResourcesID': child.pinnedResourcesID,
+    });
   }
 }

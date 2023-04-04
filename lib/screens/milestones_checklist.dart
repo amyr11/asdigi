@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import '../components/milestone_checklist_section.dart';
 import '../models/child.dart';
 import '../models/milestone.dart';
-import '../temp/temp_data.dart';
 import 'milestones_overview.dart';
 
 class MilestonesChecklistOverviewPage extends StatefulWidget {

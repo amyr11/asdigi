@@ -3,9 +3,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../components/custom_doctor_item.dart';
 import '../components/custom_dropdown.dart';
-import '../components/custom_financial_item.dart';
 import '../models/doctors.dart';
-import '../temp/temp_data.dart';
 
 class DoctorsPage extends StatefulWidget {
   const DoctorsPage({super.key});

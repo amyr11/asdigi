@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class CustomMaterialItem extends StatelessWidget {
-  final Image backgroundImage;
+  final String imageURL;
   final String title;
   final String category;
   final String description;
@@ -9,7 +9,7 @@ class CustomMaterialItem extends StatelessWidget {
 
   const CustomMaterialItem({
     super.key,
-    required this.backgroundImage,
+    required this.imageURL,
     required this.title,
     required this.category,
     required this.description,
@@ -21,7 +21,13 @@ class CustomMaterialItem extends StatelessWidget {
     return ListTile(
       visualDensity: VisualDensity.compact,
       onTap: onTap,
-      leading: backgroundImage,
+      leading: Image.network(
+        imageURL,
+        fit: BoxFit.cover,
+        height: 50,
+        width: 80,
+        alignment: Alignment.topCenter,
+      ),
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
