@@ -1,9 +1,14 @@
+import 'package:asdigi/helpers/storage_services.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'dart:io';
+
+import '../helpers/auth_services.dart';
+import '../models/child.dart';
 
 class AddChild extends StatefulWidget {
   const AddChild({super.key});
@@ -13,17 +18,24 @@ class AddChild extends StatefulWidget {
 }
 
 class _AddChildState extends State<AddChild> {
-  TextEditingController date = TextEditingController();
-
+  TextEditingController nameController = TextEditingController();
+  TextEditingController dateController = TextEditingController();
   final ImagePicker _picker = ImagePicker();
-  File? _image;
+  File? childImage;
+  String? childName;
+  DateTime? childBirthdate;
+  String? nameErrorText;
+  String? dateErrorText;
 
   Future<void> _showDialog() async {
     return showDialog<void>(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Select an option'),
+          title: const Text(
+            'Select an option',
+            textAlign: TextAlign.center,
+          ),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
@@ -33,7 +45,7 @@ class _AddChildState extends State<AddChild> {
                     final pickedFile =
                         await _picker.pickImage(source: ImageSource.camera);
                     setState(() {
-                      _image = File(pickedFile!.path);
+                      childImage = File(pickedFile!.path);
                     });
                     Navigator.of(context).pop();
                   },
@@ -45,7 +57,7 @@ class _AddChildState extends State<AddChild> {
                     final pickedFile =
                         await _picker.pickImage(source: ImageSource.gallery);
                     setState(() {
-                      _image = File(pickedFile!.path);
+                      childImage = File(pickedFile!.path);
                     });
                     Navigator.of(context).pop();
                   },
@@ -58,111 +70,224 @@ class _AddChildState extends State<AddChild> {
     );
   }
 
+  bool validateFields() {
+    bool validName = validateName();
+    bool validDate = validateDate();
+    return validName && validDate;
+  }
+
+  bool validateName() {
+    bool isValid = true;
+
+    setState(() {
+      nameErrorText = null;
+    });
+
+    if (childName == null) {
+      setState(() {
+        nameErrorText = 'Name cannot be empty';
+      });
+      isValid = false;
+    }
+
+    return isValid;
+  }
+
+  bool validateDate() {
+    bool isValid = true;
+
+    setState(() {
+      dateErrorText = null;
+    });
+
+    if (dateController.text.isNotEmpty) {
+      try {
+        childBirthdate = DateFormat('MM/dd/yyyy').parse(dateController.text);
+      } catch (e) {
+        dateErrorText = 'Invalid date';
+      }
+    } else {
+      dateErrorText = 'Date cannot be empty';
+    }
+
+    return isValid;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Add Child",
-          style: Theme.of(context).textTheme.titleLarge,
-        ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Stack(children: [
-              Container(
-                  height: 150,
-                  width: 150,
-                  clipBehavior: Clip.antiAliasWithSaveLayer,
-                  decoration: const BoxDecoration(shape: BoxShape.circle),
-                  child: _image == null
-                      ? Image.network(
-                          "https://childmind.org/wp-content/uploads/2021/07/our-impact-header-half-r.jpg",
-                          fit: BoxFit.cover,
-                        )
-                      : Image.file(
-                          _image!,
-                          fit: BoxFit.cover,
-                        )),
-              Padding(
-                padding: const EdgeInsets.only(top: 100, left: 100),
-                child: Container(
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black12,
-                        blurRadius: 10,
-                      )
-                    ],
-                    shape: BoxShape.circle,
-                  ),
-                  clipBehavior: Clip.antiAliasWithSaveLayer,
-                  child: IconButton(
-                    onPressed: () => {_showDialog()},
-                    icon: const Icon(Icons.camera_alt),
-                  ),
-                ),
-              ),
-            ]),
-            const SizedBox(
-              height: 40,
-            ),
-            Column(
-              children: [
-                TextFormField(
-                  decoration: const InputDecoration(
-                    isDense: true,
-                    border: OutlineInputBorder(),
-                    labelText: "Name",
-                  ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                TextFormField(
-                  controller: date,
-                  decoration: InputDecoration(
-                    helperText: 'MM/DD/YYYY',
-                    isDense: true,
-                    border: const OutlineInputBorder(),
-                    labelText: "Birth Date",
-                    suffixIcon: IconButton(
-                      icon: const Icon(Icons.calendar_month_sharp),
-                      tooltip: 'Date',
-                      onPressed: () async {
-                        DateTime? selectedDate = await showDatePicker(
-                            context: context,
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime(2000),
-                            lastDate: DateTime(2101));
+    AppBar appBar = AppBar();
 
-                        if (selectedDate != null) {
-                          setState(() {
-                            date.text =
-                                DateFormat('MM/dd/yyyy').format(selectedDate);
-                          });
-                        }
-                      },
+    return Scaffold(
+      appBar: appBar,
+      body: SingleChildScrollView(
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            maxHeight: MediaQuery.of(context).size.height -
+                (MediaQuery.of(context).padding.top +
+                    appBar.preferredSize.height),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const SizedBox(
+                      height: 40,
                     ),
-                  ),
+                    Text(
+                      'Add Child',
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.headlineLarge,
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      'Kindly add your child\'s details for us to better understand their needs.',
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                    const SizedBox(
+                      height: 40,
+                    ),
+                    Stack(children: [
+                      Container(
+                          height: 150,
+                          width: 150,
+                          clipBehavior: Clip.antiAliasWithSaveLayer,
+                          decoration:
+                              const BoxDecoration(shape: BoxShape.circle),
+                          child: childImage == null
+                              ? Image.network(
+                                  "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
+                                  fit: BoxFit.cover,
+                                )
+                              : Image.file(
+                                  childImage!,
+                                  fit: BoxFit.cover,
+                                )),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 100, left: 100),
+                        child: Container(
+                          decoration: const BoxDecoration(
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black12,
+                                blurRadius: 10,
+                              )
+                            ],
+                            shape: BoxShape.circle,
+                          ),
+                          clipBehavior: Clip.antiAliasWithSaveLayer,
+                          child: IconButton(
+                            onPressed: () => {_showDialog()},
+                            icon: const Icon(Icons.camera_alt),
+                          ),
+                        ),
+                      ),
+                    ]),
+                    const SizedBox(
+                      height: 40,
+                    ),
+                    Column(
+                      children: [
+                        TextFormField(
+                          controller: nameController,
+                          onEditingComplete: () => validateName(),
+                          onChanged: (value) {
+                            setState(() {
+                              childName = value;
+                            });
+                          },
+                          decoration: InputDecoration(
+                            errorText: nameErrorText,
+                            isDense: true,
+                            border: const OutlineInputBorder(),
+                            labelText: "Name",
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        TextFormField(
+                          controller: dateController,
+                          onEditingComplete: () => validateDate(),
+                          decoration: InputDecoration(
+                            errorText: dateErrorText,
+                            helperText: 'MM/DD/YYYY',
+                            isDense: true,
+                            border: const OutlineInputBorder(),
+                            labelText: "Birth Date",
+                            suffixIcon: IconButton(
+                              icon: const Icon(Icons.calendar_month_sharp),
+                              tooltip: 'Date',
+                              onPressed: () async {
+                                await showDatePicker(
+                                  context: context,
+                                  initialDate: DateTime.now(),
+                                  firstDate: DateTime(2000),
+                                  lastDate: DateTime(2101),
+                                ).then(
+                                  (value) {
+                                    if (value != null) {
+                                      setState(() {
+                                        dateController.text =
+                                            DateFormat('MM/dd/yyyy')
+                                                .format(value);
+                                        childBirthdate = value;
+                                      });
+                                    }
+                                  },
+                                );
+                              },
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Row(
+                      children: [
+                        const Spacer(),
+                        TextButton(
+                          onPressed: () async {
+                            bool isValid = validateFields();
+                            if (isValid) {
+                              await Child.uploadToFirestore(
+                                name: childName!,
+                                birthDate: childBirthdate!,
+                                image: childImage,
+                              );
+                            }
+                          },
+                          child: Row(
+                            children: const [
+                              Text("Next: Milestone Checklist"),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Icon(Icons.arrow_forward_ios, size: 16),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 40,
+                    ),
+                  ],
                 ),
               ],
             ),
-            const SizedBox(
-              height: 40,
-            ),
-            FilledButton(
-              onPressed: () => {},
-              child: const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                child: Text("Save"),
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );

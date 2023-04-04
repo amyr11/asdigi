@@ -53,6 +53,10 @@ class AuthServices {
     return await FirebaseAuth.instance.signInWithCredential(credential);
   }
 
+  Future<String> getCurrentUID() async {
+    return FirebaseAuth.instance.currentUser!.uid;
+  }
+
   signOut() async {
     FirebaseAuth.instance.signOut();
     await GoogleSignIn().disconnect();
