@@ -48,7 +48,8 @@ class _HomePage extends State<HomePage> {
       appBar: AppBarWithProfile(
         context,
         activeChild: activeChild,
-        onChildTap: (selectedChildren) {
+        onChildTap: (selectedChildren) async {
+          await User.updateActiveChildID(selectedChildren.childID!);
           setState(() {
             activeChild = selectedChildren;
           });

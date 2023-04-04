@@ -20,4 +20,9 @@ class User {
         .then((value) => activeChildID = value.data()!['activeChildID']);
     return activeChildID;
   }
+
+  static Future<void> updateActiveChildID(String childID) async {
+    String userID = await User.getID();
+    await userColRef.doc(userID).update({'activeChildID': childID});
+  }
 }
