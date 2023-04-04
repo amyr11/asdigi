@@ -8,7 +8,12 @@ import '../temp/temp_data.dart';
 import 'milestones_overview.dart';
 
 class MilestonesChecklistOverviewPage extends StatefulWidget {
-  const MilestonesChecklistOverviewPage({super.key});
+  Child? activeChild;
+
+  MilestonesChecklistOverviewPage({
+    super.key,
+    required this.activeChild,
+  });
 
   @override
   State<MilestonesChecklistOverviewPage> createState() =>
@@ -23,16 +28,10 @@ class _MilestonesChecklistOverviewPageState
   List<MilestoneChecklistItem>? languageMilestones;
   List<MilestoneChecklistItem>? cognitiveMilestones;
   List<MilestoneChecklistItem>? movementMilestones;
-  Child? activeChild;
 
   late TabController tabController;
   late ScrollController scrollController;
   Key _listKey = UniqueKey();
-
-  void fetchActiveChild() async {
-    activeChild = await Child.getActiveChild();
-    setState(() {});
-  }
 
   void fetchMilestones() async {
     allMilestones = await MilestoneChecklistItem.getAllFromFirestore();
@@ -73,7 +72,6 @@ class _MilestonesChecklistOverviewPageState
   @override
   void initState() {
     super.initState();
-    fetchActiveChild();
     fetchMilestones();
     tabController = TabController(length: 4, vsync: this);
     scrollController = ScrollController();
@@ -100,9 +98,9 @@ class _MilestonesChecklistOverviewPageState
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text((activeChild == null)
+                  Text((widget.activeChild == null)
                       ? '...'
-                      : '${activeChild!.name} (${Child.getAgeStringInYears(activeChild!.ageInMonths)})'),
+                      : '${widget.activeChild!.name} (${Child.getAgeStringInYears(widget.activeChild!.ageInMonths)})'),
                   const Text('Milestones Checklist'),
                   TextButton(
                     style: TextButton.styleFrom(

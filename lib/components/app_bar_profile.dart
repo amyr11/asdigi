@@ -10,9 +10,12 @@ List<Child> children = [];
 
 class AppBarWithProfile extends AppBar {
   final BuildContext context;
+  final Child? activeChild;
+
   AppBarWithProfile(
     this.context, {
     super.key,
+    required this.activeChild,
   }) : super(
           leading: CircleImageButton(
             image: const NetworkImage(
@@ -70,11 +73,13 @@ class AppBarWithProfile extends AppBar {
           title: Column(
             children: [
               Text(
-                "Juan",
+                (activeChild == null) ? '' : activeChild.name,
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               Text(
-                "5 years old",
+                (activeChild == null)
+                    ? ''
+                    : Child.getAgeStringInYears(activeChild.ageInMonths),
                 style: Theme.of(context).textTheme.titleSmall,
               ),
             ],
