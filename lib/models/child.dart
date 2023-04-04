@@ -32,6 +32,30 @@ class Child {
     );
   }
 
+  static String getAgeString(int ageInMonths) {
+    String word = '';
+    bool isYear = ageInMonths % 12 == 0;
+    if (isYear) {
+      ageInMonths = ageInMonths ~/ 12;
+      word = ageInMonths > 1 ? 'years' : 'year';
+    } else {
+      word = ageInMonths > 1 ? 'months' : 'month';
+    }
+    return '$ageInMonths $word old';
+  }
+
+  static String getAgeStringInYears(int ageInMonths) {
+    String word = '';
+    bool isYear = ageInMonths >= 12;
+    if (isYear) {
+      ageInMonths = ageInMonths ~/ 12;
+      word = ageInMonths > 1 ? 'years' : 'year';
+    } else {
+      word = ageInMonths > 1 ? 'months' : 'month';
+    }
+    return '$ageInMonths $word old';
+  }
+
   Map<String, dynamic> toFirestore() {
     return {
       'imageURL': imageURL,
@@ -111,7 +135,6 @@ class Child {
         nearestAge = availableAge;
       }
     }
-    print('age: $age, nearestAge: $nearestAge');
     return nearestAge;
   }
 }

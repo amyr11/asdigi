@@ -2,6 +2,7 @@ import 'package:asdigi/screens/answer_milestones_checklist.dart';
 import 'package:flutter/material.dart';
 
 import '../components/milestone_checklist_section.dart';
+import '../models/child.dart';
 import '../models/milestone.dart';
 import '../temp/temp_data.dart';
 import 'milestones_overview.dart';
@@ -22,10 +23,16 @@ class _MilestonesChecklistOverviewPageState
   List<MilestoneChecklistItem>? languageMilestones;
   List<MilestoneChecklistItem>? cognitiveMilestones;
   List<MilestoneChecklistItem>? movementMilestones;
+  Child? activeChild;
 
   late TabController tabController;
   late ScrollController scrollController;
   Key _listKey = UniqueKey();
+
+  void fetchActiveChild() async {
+    activeChild = await Child.getActiveChild();
+    setState(() {});
+  }
 
   void fetchMilestones() async {
     allMilestones = await MilestoneChecklistItem.getAllFromFirestore();
@@ -66,6 +73,7 @@ class _MilestonesChecklistOverviewPageState
   @override
   void initState() {
     super.initState();
+    fetchActiveChild();
     fetchMilestones();
     tabController = TabController(length: 4, vsync: this);
     scrollController = ScrollController();
@@ -92,7 +100,9 @@ class _MilestonesChecklistOverviewPageState
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('Juan (5 years old)'),
+                  Text((activeChild == null)
+                      ? '...'
+                      : '${activeChild!.name} (${Child.getAgeStringInYears(activeChild!.ageInMonths)})'),
                   const Text('Milestones Checklist'),
                   TextButton(
                     style: TextButton.styleFrom(

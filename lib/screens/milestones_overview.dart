@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../components/custom_dropdown.dart';
 import '../components/milestone_overview_section.dart';
+import '../models/child.dart';
 import '../models/milestone.dart';
 
 class MilestonesOverviewPage extends StatefulWidget {
@@ -67,25 +68,13 @@ class _MilestonesOverviewPageState extends State<MilestonesOverviewPage>
       ...allMilestones.map((e) => e.age),
     }.toList();
     ages!.sort();
-    agesString = ages!.map((e) => getAgeString(e)).toList();
+    agesString = ages!.map((e) => Child.getAgeString(e)).toList();
     updateAge(ages!.first);
     setState(() {});
   }
 
-  String getAgeString(int age) {
-    String word = '';
-    bool isYear = age % 12 == 0;
-    if (isYear) {
-      age = age ~/ 12;
-      word = age > 1 ? 'years' : 'year';
-    } else {
-      word = age > 1 ? 'months' : 'month';
-    }
-    return '$age $word old';
-  }
-
   void updateAge(int age) {
-    dropdownAge = getAgeString(age);
+    dropdownAge = Child.getAgeString(age);
     currentAge = age;
     setState(() {});
   }
