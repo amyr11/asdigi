@@ -2,6 +2,7 @@ import 'package:asdigi/screens/milestones_checklist.dart';
 import 'package:flutter/material.dart';
 import '../components/app_bar_profile.dart';
 import '../components/custom_nav_bar.dart';
+import '../models/user.dart';
 import 'activities.dart';
 import 'behavior_dictionary.dart';
 import 'doctors.dart';
@@ -33,7 +34,7 @@ class _HomePage extends State<HomePage> {
       ),
       body: <Widget>[
         const ActivitiesPage(),
-        const MilestonesChecklistPage(),
+        const MilestonesChecklistOverviewPage(),
         const BehaviorDictionaryPage(),
         const DoctorsPage(),
       ][currentPageIndex],

@@ -40,19 +40,6 @@ class DevelopmentalActivitiesPageData {
   }
 }
 
-class MilestonesChecklistPageData {
-  List<MilestoneChecklistItem> generateDummyData(String name) {
-    return List.generate(
-      3,
-      (index) => MilestoneChecklistItem(
-        title: '$name $index',
-        imageURL:
-            'https://cms-tc.pbskids.org/parents/expert-tips-and-advice/helping-young-children-learn-to-make-friends-hero.jpg',
-      ),
-    );
-  }
-}
-
 class DoctorsPageData {
   static List<Doctor> doctors = <Doctor>[
     Doctor(

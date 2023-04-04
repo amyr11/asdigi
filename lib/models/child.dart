@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:asdigi/helpers/auth_services.dart';
+import 'package:asdigi/models/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../helpers/storage_services.dart';
@@ -8,6 +9,10 @@ import '../helpers/storage_services.dart';
 class Child {
   static CollectionReference<Map<String, dynamic>> get childrenColRef =>
       FirebaseFirestore.instance.collection('Children');
+
+  int get ageInMonths {
+    return DateTime.now().difference(birthDate).inDays ~/ 30;
+  }
 
   String? imageURL;
   String name;
@@ -40,7 +45,7 @@ class Child {
     await childrenColRef
         .where(
           'userID',
-          isEqualTo: AuthServices().getCurrentUID(),
+          isEqualTo: await User.getID(),
         )
         .get()
         .then(
@@ -56,13 +61,19 @@ class Child {
     return data;
   }
 
+  static Future<Child> getActiveChild() async {
+    final activeChildID = await User.getActiveChildID();
+    final activeChildDoc = await childrenColRef.doc(activeChildID).get();
+    return Child.fromFirestore(activeChildDoc);
+  }
+
   static Future<DocumentReference<Map<String, dynamic>>> uploadToFirestore({
     required name,
     required birthDate,
     File? image,
   }) async {
     // return await Child.childrenColRef.add(child.toFirestore());
-    final userID = await AuthServices().getCurrentUID();
+    final userID = await User.getID();
 
     // Upload the child first to Firestore
     final childDocRef = await Child.childrenColRef.add({
