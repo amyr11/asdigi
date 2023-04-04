@@ -15,40 +15,52 @@ class DoctorsPage extends StatefulWidget {
 }
 
 class _DoctorsPageState extends State<DoctorsPage> {
-  List<Doctor> filteredDoctors = [];
-  String textValuePlaces = '';
-  String textValueOccupation = '';
+  List<Doctor>? filteredDoctors;
+  List<Doctor>? allDoctors;
+  List<String> cities = [];
+  List<String> occupations = [];
+  String cityDropdownValue = '';
+  String occupationDropdownValue = '';
+
+  void fetchDoctors() async {
+    allDoctors = await Doctor.getAllFromFirestore();
+    loadCitiesAndOccupations();
+    cityDropdownValue = cities.first;
+    occupationDropdownValue = occupations.first;
+    setFilteredDoctors(cityDropdownValue, occupationDropdownValue);
+    setState(() {});
+  }
+
+  void loadCitiesAndOccupations() {
+    cities = [
+      'Everywhere',
+      ...allDoctors!
+          .map((Doctor doctor) => doctor.hospitalCity)
+          .toSet()
+          .toList()
+        ..sort()
+    ];
+    occupations = [
+      'Any',
+      ...allDoctors!.map((Doctor doctor) => doctor.occupation).toSet().toList()
+        ..sort()
+    ];
+    setState(() {});
+  }
 
   @override
   void initState() {
     super.initState();
-
-    textValuePlaces = DoctorsPageData.places.first;
-    textValueOccupation = DoctorsPageData.occupations.first;
-
-    setFilteredDoctors(textValuePlaces, textValueOccupation);
+    fetchDoctors();
   }
 
   void setFilteredDoctors(String place, String occupation) {
     setState(() {
-      if (place == DoctorsPageData.places.first &&
-          occupation == DoctorsPageData.occupations.first) {
-        filteredDoctors = DoctorsPageData.doctors;
-      } else if (place == DoctorsPageData.places.first) {
-        filteredDoctors = DoctorsPageData.doctors
-            .where((Doctor doctor) => doctor.occupation.contains(occupation))
-            .toList();
-      } else if (occupation == DoctorsPageData.occupations.first) {
-        filteredDoctors = DoctorsPageData.doctors
-            .where((Doctor doctor) => doctor.address.contains(place))
-            .toList();
-      } else {
-        filteredDoctors = DoctorsPageData.doctors
-            .where((Doctor doctor) =>
-                doctor.address.contains(place) &&
-                doctor.occupation.contains(occupation))
-            .toList();
-      }
+      filteredDoctors = allDoctors!
+          .where((Doctor doctor) =>
+              (place == 'Everywhere' || doctor.hospitalCity == place) &&
+              (occupation == 'Any' || doctor.occupation == occupation))
+          .toList();
     });
   }
 
@@ -72,15 +84,15 @@ class _DoctorsPageState extends State<DoctorsPage> {
                       children: [
                         Expanded(
                           child: CustomDropDown(
-                              value: textValuePlaces,
+                              value: cityDropdownValue,
                               isExpanded: true,
-                              list: DoctorsPageData.places,
+                              list: cities,
                               onChanged: (String? value) {
                                 setState(
                                   () {
-                                    textValuePlaces = value!;
-                                    setFilteredDoctors(
-                                        textValuePlaces, textValueOccupation);
+                                    cityDropdownValue = value!;
+                                    setFilteredDoctors(cityDropdownValue,
+                                        occupationDropdownValue);
                                   },
                                 );
                               }),
@@ -90,15 +102,15 @@ class _DoctorsPageState extends State<DoctorsPage> {
                         ),
                         Expanded(
                           child: CustomDropDown(
-                              value: textValueOccupation,
+                              value: occupationDropdownValue,
                               isExpanded: true,
-                              list: DoctorsPageData.occupations,
+                              list: occupations,
                               onChanged: (String? value) {
                                 setState(
                                   () {
-                                    textValueOccupation = value!;
-                                    setFilteredDoctors(
-                                        textValuePlaces, textValueOccupation);
+                                    occupationDropdownValue = value!;
+                                    setFilteredDoctors(cityDropdownValue,
+                                        occupationDropdownValue);
                                   },
                                 );
                               }),
@@ -117,24 +129,30 @@ class _DoctorsPageState extends State<DoctorsPage> {
       },
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: ListView.builder(
-          itemCount: filteredDoctors.length,
-          itemBuilder: (context, index) {
-            return CustomDoctorItem(
-              docName: filteredDoctors[index].name,
-              docOccupation: filteredDoctors[index].occupation,
-              description: filteredDoctors[index].jobDescription,
-              address: filteredDoctors[index].address,
-              trunkLine: filteredDoctors[index].trunkLine,
-              hospitalName: filteredDoctors[index].hospital,
-              callNumber: () {
-                // ignore: deprecated_member_use
-                launch('tel:${filteredDoctors[index].trunkLine}');
-              },
-            );
-          },
-          shrinkWrap: true,
-        ),
+        child: filteredDoctors == null
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
+            : ListView.builder(
+                itemCount: filteredDoctors!.length,
+                itemBuilder: (context, index) {
+                  return CustomDoctorItem(
+                    docName: filteredDoctors![index].name,
+                    docOccupation: filteredDoctors![index].occupation,
+                    description: filteredDoctors![index].occupationDescription,
+                    address: filteredDoctors![index].hospitalAddress,
+                    trunkLine: filteredDoctors![index].hospitalTelephoneNo,
+                    hospitalName: filteredDoctors![index].hospitalName,
+                    website: filteredDoctors![index].hospitalWebsite,
+                    callNumber: () {
+                      // ignore: deprecated_member_use
+                      launch(
+                          'tel:${filteredDoctors![index].hospitalTelephoneNo}');
+                    },
+                  );
+                },
+                shrinkWrap: true,
+              ),
       ),
     );
   }

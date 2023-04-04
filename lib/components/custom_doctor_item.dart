@@ -9,7 +9,8 @@ class CustomDoctorItem extends StatelessWidget {
   final String description;
   final String hospitalName;
   final String address;
-  final int trunkLine;
+  final String trunkLine;
+  final String website;
   final Function()? callNumber;
 
   const CustomDoctorItem({
@@ -20,6 +21,7 @@ class CustomDoctorItem extends StatelessWidget {
     required this.address,
     required this.trunkLine,
     required this.hospitalName,
+    required this.website,
     this.callNumber,
   });
 
@@ -80,7 +82,9 @@ class CustomDoctorItem extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       OutlinedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          launchUrl(Uri.parse(website));
+                        },
                         child: Text('Go to website'),
                       ),
                       SizedBox(
