@@ -8,7 +8,12 @@ import '../models/milestone.dart';
 import 'activity_content.dart';
 
 class ActivitiesPage extends StatefulWidget {
-  const ActivitiesPage({super.key});
+  Child? activeChild;
+
+  ActivitiesPage({
+    super.key,
+    required this.activeChild,
+  });
 
   @override
   State<ActivitiesPage> createState() => _ActivitiesPageState();
@@ -20,12 +25,6 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
   List<DevelopmentalResourceOverview>? languageResourceOverviews;
   List<DevelopmentalResourceOverview>? cognitiveResourceOverviews;
   List<DevelopmentalResourceOverview>? movementResourceOverviews;
-  Child? activeChild;
-
-  void fetchActiveChild() async {
-    activeChild = await Child.getActiveChild();
-    setState(() {});
-  }
 
   void fetchAllResourceOverviews() async {
     allResourceOverviews =
@@ -57,7 +56,6 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
   @override
   void initState() {
     super.initState();
-    fetchActiveChild();
     fetchAllResourceOverviews();
   }
 
@@ -98,33 +96,33 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
             ),
             body: TabBarView(
               children: [
-                allResourceOverviews != null && activeChild != null
+                allResourceOverviews != null && widget.activeChild != null
                     ? ResourcesSection(
-                        activeChild: activeChild!,
+                        activeChild: widget.activeChild!,
                         allResourceOverviews: socialResourceOverviews!,
                       )
                     : const Center(
                         child: CircularProgressIndicator(),
                       ),
-                allResourceOverviews != null && activeChild != null
+                allResourceOverviews != null && widget.activeChild != null
                     ? ResourcesSection(
-                        activeChild: activeChild!,
+                        activeChild: widget.activeChild!,
                         allResourceOverviews: languageResourceOverviews!,
                       )
                     : const Center(
                         child: CircularProgressIndicator(),
                       ),
-                allResourceOverviews != null && activeChild != null
+                allResourceOverviews != null && widget.activeChild != null
                     ? ResourcesSection(
-                        activeChild: activeChild!,
+                        activeChild: widget.activeChild!,
                         allResourceOverviews: cognitiveResourceOverviews!,
                       )
                     : const Center(
                         child: CircularProgressIndicator(),
                       ),
-                allResourceOverviews != null && activeChild != null
+                allResourceOverviews != null && widget.activeChild != null
                     ? ResourcesSection(
-                        activeChild: activeChild!,
+                        activeChild: widget.activeChild!,
                         allResourceOverviews: movementResourceOverviews!,
                       )
                     : const Center(

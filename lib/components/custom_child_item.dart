@@ -1,27 +1,29 @@
 import 'package:flutter/material.dart';
 
-class ChildListItem extends StatelessWidget {
-  String? imageURL;
-  final String name;
+import '../models/child.dart';
 
-  ChildListItem({
+class ChildListItem extends StatelessWidget {
+  final Child child;
+  final void Function() onTap;
+
+  const ChildListItem({
     super.key,
-    this.imageURL,
-    required this.name,
+    required this.child,
+    required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      onTap: () {},
+      onTap: onTap,
       leading: CircleAvatar(
-        backgroundImage: imageURL == null
+        backgroundImage: child.imageURL == null
             ? const NetworkImage(
                 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png')
-            : NetworkImage(imageURL!),
+            : NetworkImage(child.imageURL!),
       ),
       title: Text(
-        name,
+        child.name,
         style: Theme.of(context).textTheme.bodyMedium,
       ),
     );

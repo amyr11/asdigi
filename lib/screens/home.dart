@@ -19,6 +19,14 @@ class _HomePage extends State<HomePage> {
   int currentPageIndex = 0;
   Child? activeChild;
 
+  Key _homeKey = UniqueKey();
+
+  void updateHomeKey() {
+    setState(() {
+      _homeKey = UniqueKey();
+    });
+  }
+
   bool favorite = true;
   final List<String> _filters = <String>[];
 
@@ -36,9 +44,16 @@ class _HomePage extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _homeKey,
       appBar: AppBarWithProfile(
         context,
         activeChild: activeChild,
+        onChildTap: (selectedChildren) {
+          setState(() {
+            activeChild = selectedChildren;
+          });
+          updateHomeKey();
+        },
       ),
       bottomNavigationBar: CustomNavBar(
         currentPageIndex: currentPageIndex,
@@ -49,7 +64,9 @@ class _HomePage extends State<HomePage> {
         },
       ),
       body: <Widget>[
-        const ActivitiesPage(),
+        ActivitiesPage(
+          activeChild: activeChild,
+        ),
         MilestonesChecklistOverviewPage(
           activeChild: activeChild,
         ),

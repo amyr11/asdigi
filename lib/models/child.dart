@@ -34,8 +34,9 @@ class Child {
       imageURL: snapshot.data()!['imageURL'],
       name: snapshot.data()!['name'],
       birthDate: snapshot.data()!['birthDate'].toDate(),
-      pinnedResourcesID:
-          List<String>.from(snapshot.data()!['pinnedResourcesID']),
+      pinnedResourcesID: snapshot.data()!['pinnedResourcesID'] == null
+          ? null
+          : List<String>.from(snapshot.data()!['pinnedResourcesID']),
     );
   }
 
