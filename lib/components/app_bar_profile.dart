@@ -18,8 +18,10 @@ class AppBarWithProfile extends AppBar {
     required this.activeChild,
   }) : super(
           leading: CircleImageButton(
-            image: const NetworkImage(
-                'https://childmind.org/wp-content/uploads/2021/07/our-impact-header-half-r.jpg'),
+            image: (activeChild == null || activeChild.imageURL == null)
+                ? const NetworkImage(
+                    "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png")
+                : NetworkImage(activeChild.imageURL!),
             onTap: () => showDialog<String>(
               context: context,
               builder: (BuildContext context) => Dialog(
