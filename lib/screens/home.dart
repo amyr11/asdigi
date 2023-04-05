@@ -32,7 +32,6 @@ class _HomePage extends State<HomePage> {
   final List<String> _filters = <String>[];
 
   void fetchActiveChild() async {
-    print('(yie) fetch child');
     await Child.getActiveChild().then((value) {
       if (value == null) {
         Navigator.push(
@@ -41,7 +40,6 @@ class _HomePage extends State<HomePage> {
             builder: (context) => const AddChild(),
           ),
         ).then((value) => fetchActiveChild());
-        print('(yie) child null');
         return;
       } else {
         activeChild = value;
