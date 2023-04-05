@@ -1,3 +1,4 @@
+import 'package:asdigi/screens/add_child.dart';
 import 'package:asdigi/screens/milestones_checklist.dart';
 import 'package:flutter/material.dart';
 import '../components/app_bar_profile.dart';
@@ -31,7 +32,21 @@ class _HomePage extends State<HomePage> {
   final List<String> _filters = <String>[];
 
   void fetchActiveChild() async {
-    activeChild = await Child.getActiveChild();
+    print('(yie) fetch child');
+    await Child.getActiveChild().then((value) {
+      if (value == null) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const AddChild(),
+          ),
+        ).then((value) => fetchActiveChild());
+        print('(yie) child null');
+        return;
+      } else {
+        activeChild = value;
+      }
+    });
     setState(() {});
   }
 
@@ -49,11 +64,14 @@ class _HomePage extends State<HomePage> {
         context,
         activeChild: activeChild,
         onChildTap: (selectedChildren) async {
-          await User.updateActiveChildID(selectedChildren.childID!);
+          await CustomUser.updateActiveChildID(selectedChildren.childID!);
           setState(() {
             activeChild = selectedChildren;
           });
           updateHomeKey();
+        },
+        onRefresh: () {
+          fetchActiveChild();
         },
       ),
       bottomNavigationBar: CustomNavBar(

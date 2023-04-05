@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 
 import '../screens/home.dart';
 import '../screens/login.dart';
+import '../models/user.dart';
 
 class AuthServices {
   handleAuthState() {
@@ -11,9 +12,12 @@ class AuthServices {
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (BuildContext context, snapshot) {
         if (snapshot.hasData) {
+          getCurrentUID().then((value) {
+            CustomUser.addUserID(value);
+          });
           return const HomePage();
         } else {
-          return const LoginPage();
+          return const LoginPage();.
         }
       },
     );

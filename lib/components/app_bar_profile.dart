@@ -2,6 +2,7 @@ import 'package:asdigi/screens/add_child.dart';
 import 'package:flutter/material.dart';
 import '../helpers/auth_services.dart';
 import '../models/child.dart';
+import '../screens/manage_children.dart';
 import 'circle_image_button.dart';
 import 'package:side_sheet/side_sheet.dart';
 import 'custom_child_item.dart';
@@ -10,10 +11,12 @@ class AppBarWithProfile extends AppBar {
   final BuildContext context;
   final Child? activeChild;
   final Function(Child selectedChild) onChildTap;
+  final Function() onRefresh;
 
   AppBarWithProfile(
     this.context, {
     super.key,
+    required this.onRefresh,
     required this.activeChild,
     required this.onChildTap,
   }) : super(
@@ -99,14 +102,34 @@ class AppBarWithProfile extends AppBar {
                 SideSheet.right(
                   body: Padding(
                     padding: const EdgeInsets.only(top: 50),
-                    child: ListTile(
-                      leading: Icon(Icons.logout),
-                      title: Text('Sign Out'),
-                      trailing: Icon(Icons.arrow_right),
-                      onTap: () {
-                        Navigator.pop(context);
-                        AuthServices().signOut();
-                      },
+                    child: Column(
+                      children: [
+                        ListTile(
+                          leading: Icon(Icons.person),
+                          title: Text('Manage Children'),
+                          trailing: Icon(Icons.arrow_right),
+                          onTap: () {
+                            Navigator.pop(context);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ManageChildrenPage(
+                                  onRefresh: onRefresh,
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                        ListTile(
+                          leading: Icon(Icons.logout),
+                          title: Text('Sign Out'),
+                          trailing: Icon(Icons.arrow_right),
+                          onTap: () {
+                            Navigator.pop(context);
+                            AuthServices().signOut();
+                          },
+                        ),
+                      ],
                     ),
                   ),
                   context: context,

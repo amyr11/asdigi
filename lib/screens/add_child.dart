@@ -12,6 +12,7 @@ import 'dart:io';
 
 import '../helpers/auth_services.dart';
 import '../models/child.dart';
+import '../models/user.dart';
 
 class AddChild extends StatefulWidget {
   const AddChild({super.key});
@@ -307,6 +308,8 @@ class _AddChildState extends State<AddChild> {
                                     childID: childDocRef.id,
                                     checklist: checklist,
                                   );
+                                  await CustomUser.setActiveChildID(
+                                      childDocRef.id);
                                   Navigator.pop(context);
                                   Navigator.pop(context);
                                 },

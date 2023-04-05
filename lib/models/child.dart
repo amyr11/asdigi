@@ -77,7 +77,7 @@ class Child {
     await childrenColRef
         .where(
           'userID',
-          isEqualTo: await User.getID(),
+          isEqualTo: await CustomUser.getID(),
         )
         .get()
         .then(
@@ -93,10 +93,15 @@ class Child {
     return data;
   }
 
-  static Future<Child> getActiveChild() async {
-    final activeChildID = await User.getActiveChildID();
-    final activeChildDoc = await childrenColRef.doc(activeChildID).get();
-    return Child.fromFirestore(activeChildDoc);
+  static Future<Child?> getActiveChild() async {
+    String? activeChildID = await CustomUser.getActiveChildID();
+    if (activeChildID == null) {
+      return null;
+    } else {
+      DocumentSnapshot<Map<String, dynamic>> activeChildDoc =
+          await childrenColRef.doc(activeChildID).get();
+      return Child.fromFirestore(activeChildDoc);
+    }
   }
 
   static Future<DocumentReference<Map<String, dynamic>>> uploadToFirestore({
@@ -105,7 +110,7 @@ class Child {
     File? image,
   }) async {
     // return await Child.childrenColRef.add(child.toFirestore());
-    final userID = await User.getID();
+    final userID = await CustomUser.getID();
 
     // Upload the child first to Firestore
     final childDocRef = await Child.childrenColRef.add({
@@ -150,5 +155,21 @@ class Child {
     await childrenColRef.doc(child.childID).update({
       'pinnedResourcesID': child.pinnedResourcesID,
     });
+  }
+
+  static Future<void> deleteFromFirestore(Child child) async {
+    CollectionReference<Map<String, dynamic>> checklistColRef =
+        FirebaseFirestore.instance
+            .collection('Children')
+            .doc(child.childID)
+            .collection('MilestoneChecklist');
+    // Delete all documents in the collection one by one
+    QuerySnapshot<Map<String, dynamic>> querySnapshot =
+        await checklistColRef.get();
+    for (DocumentSnapshot documentSnapshot in querySnapshot.docs) {
+      await documentSnapshot.reference.delete();
+    }
+
+    await childrenColRef.doc(child.childID).delete();
   }
 }

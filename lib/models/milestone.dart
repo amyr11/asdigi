@@ -2,13 +2,17 @@ import 'package:asdigi/models/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class MilestoneChecklistItem {
-  static Future<CollectionReference<Map<String, dynamic>>>
+  static Future<CollectionReference<Map<String, dynamic>>?>
       getMilestoneChecklistColRef() async {
-    String activeChildID = await User.getActiveChildID();
-    return FirebaseFirestore.instance
-        .collection('Children')
-        .doc(activeChildID)
-        .collection('MilestoneChecklist');
+    String? activeChildID = await CustomUser.getActiveChildID();
+    if (activeChildID != null) {
+      return FirebaseFirestore.instance
+          .collection('Children')
+          .doc(activeChildID)
+          .collection('MilestoneChecklist');
+    } else {
+      return null;
+    }
   }
 
   final String? checklistItemID;
@@ -43,30 +47,38 @@ class MilestoneChecklistItem {
     );
   }
 
-  static Future<List<MilestoneChecklistItem>> getAllFromFirestore() async {
-    List<MilestoneChecklistItem> data = [];
-    CollectionReference<Map<String, dynamic>> milestoneChecklistColRef =
+  static Future<List<MilestoneChecklistItem>?> getAllFromFirestore() async {
+    List<MilestoneChecklistItem>? data;
+    CollectionReference<Map<String, dynamic>>? milestoneChecklistColRef =
         await getMilestoneChecklistColRef();
-    await milestoneChecklistColRef.get().then(
-      (querySnapshot) async {
-        print("Successfully completed checklist");
-        for (var docSnapshot in querySnapshot.docs) {
-          data.add(await MilestoneChecklistItem.fromFirestore(docSnapshot));
-          print('${docSnapshot.id} => ${docSnapshot.data()}');
-        }
-      },
-      onError: (e) => print("Error completing: $e"),
-    );
+
+    if (milestoneChecklistColRef == null) {
+      return null;
+    } else {
+      data = [];
+      await milestoneChecklistColRef.get().then(
+        (querySnapshot) async {
+          print("Successfully completed checklist");
+          for (var docSnapshot in querySnapshot.docs) {
+            data!.add(await MilestoneChecklistItem.fromFirestore(docSnapshot));
+            print('${docSnapshot.id} => ${docSnapshot.data()}');
+          }
+        },
+        onError: (e) => print("Error completing: $e"),
+      );
+    }
     return data;
   }
 
   static void updateChecklist(List<MilestoneChecklistItem> checklist) async {
-    CollectionReference<Map<String, dynamic>> milestoneChecklistColRef =
+    CollectionReference<Map<String, dynamic>>? milestoneChecklistColRef =
         await getMilestoneChecklistColRef();
-    for (MilestoneChecklistItem item in checklist) {
-      await milestoneChecklistColRef.doc(item.checklistItemID).update({
-        'status': item.status,
-      });
+    if (milestoneChecklistColRef != null) {
+      for (MilestoneChecklistItem item in checklist) {
+        await milestoneChecklistColRef.doc(item.checklistItemID).update({
+          'status': item.status,
+        });
+      }
     }
   }
 
