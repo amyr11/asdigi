@@ -1,3 +1,6 @@
+# Download the app
+https://github.com/amyr11/asdigi/releases/download/v0.0.1/asdigi-v0.0.1.apk
+
 # How to clone and run this repo
 
 ## Prerequisites
