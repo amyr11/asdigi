@@ -18,10 +18,8 @@ class CustomUser {
   static Future<String?> getActiveChildID() async {
     String userID = await CustomUser.getID();
     String? activeChildID;
-    await userColRef
-        .doc(userID)
-        .get()
-        .then((value) => activeChildID = value.data()!['activeChildID']);
+    await userColRef.doc(userID).get().then((value) => activeChildID =
+        value.data() == null ? null : value.data()!['activeChildID']);
     return activeChildID;
   }
 

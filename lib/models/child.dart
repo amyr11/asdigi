@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:asdigi/helpers/auth_services.dart';
 import 'package:asdigi/models/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 import '../helpers/storage_services.dart';
 
@@ -124,8 +125,13 @@ class Child {
     if (image != null) {
       final imagePath =
           'users/$userID/children/$childID.${image.path.split('.').last}';
-      final imageURL = await StorageServices().uploadImage(image, imagePath);
-      await childDocRef.update({'imageURL': imageURL});
+      final Reference? storageRef =
+          await StorageServices().uploadImage(image, imagePath);
+      await childDocRef.update({
+        'imageURL': await storageRef!.getDownloadURL(),
+        'imagePath': storageRef.fullPath
+      });
+
       print('Added Child w/ image');
     } else {
       print('Added Child w/o image');
@@ -166,6 +172,13 @@ class Child {
     // Delete all documents in the collection one by one
     QuerySnapshot<Map<String, dynamic>> querySnapshot =
         await checklistColRef.get();
+    // delete pictures from cloud storage
+    childrenColRef.doc(child.childID).get().then((value) async {
+      if (value.data()!['imagePath'] != null) {
+        await StorageServices().deleteImage(value.data()!['imagePath']);
+      }
+    });
+
     for (DocumentSnapshot documentSnapshot in querySnapshot.docs) {
       await documentSnapshot.reference.delete();
     }
