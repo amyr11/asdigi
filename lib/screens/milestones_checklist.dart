@@ -1,29 +1,61 @@
-import 'package:asdigi/screens/edit_milestones_checklist.dart';
+import 'package:asdigi/screens/answer_milestones_checklist.dart';
 import 'package:flutter/material.dart';
 
 import '../components/milestone_checklist_section.dart';
+import '../models/child.dart';
 import '../models/milestone.dart';
-import '../temp/temp_data.dart';
 import 'milestones_overview.dart';
 
-class MilestonesChecklistPage extends StatefulWidget {
-  const MilestonesChecklistPage({super.key});
+class MilestonesChecklistOverviewPage extends StatefulWidget {
+  Child? activeChild;
+
+  MilestonesChecklistOverviewPage({
+    super.key,
+    required this.activeChild,
+  });
 
   @override
-  State<MilestonesChecklistPage> createState() =>
-      _MilestonesChecklistPageState();
+  State<MilestonesChecklistOverviewPage> createState() =>
+      _MilestonesChecklistOverviewPageState();
 }
 
-class _MilestonesChecklistPageState extends State<MilestonesChecklistPage>
+class _MilestonesChecklistOverviewPageState
+    extends State<MilestonesChecklistOverviewPage>
     with SingleTickerProviderStateMixin {
-  late List<MilestoneChecklistItem> socialMilestones;
-  late List<MilestoneChecklistItem> languageMilestones;
-  late List<MilestoneChecklistItem> cognitiveMilestones;
-  late List<MilestoneChecklistItem> movementMilestones;
+  List<MilestoneChecklistItem>? allMilestones;
+  List<MilestoneChecklistItem>? socialMilestones;
+  List<MilestoneChecklistItem>? languageMilestones;
+  List<MilestoneChecklistItem>? cognitiveMilestones;
+  List<MilestoneChecklistItem>? movementMilestones;
 
   late TabController tabController;
   late ScrollController scrollController;
   Key _listKey = UniqueKey();
+
+  void fetchMilestones() async {
+    allMilestones = await MilestoneChecklistItem.getAllFromFirestore();
+    loadAllMilestones(allMilestones!);
+  }
+
+  void loadAllMilestones(List<MilestoneChecklistItem> allMilestones) {
+    socialMilestones = allMilestones
+        .where((element) =>
+            element.milestoneCategory == MilestoneOverviewItem.social)
+        .toList();
+    languageMilestones = allMilestones
+        .where((element) =>
+            element.milestoneCategory == MilestoneOverviewItem.language)
+        .toList();
+    cognitiveMilestones = allMilestones
+        .where((element) =>
+            element.milestoneCategory == MilestoneOverviewItem.cognitive)
+        .toList();
+    movementMilestones = allMilestones
+        .where((element) =>
+            element.milestoneCategory == MilestoneOverviewItem.movement)
+        .toList();
+    setState(() {});
+  }
 
   @override
   void dispose() {
@@ -39,14 +71,7 @@ class _MilestonesChecklistPageState extends State<MilestonesChecklistPage>
   @override
   void initState() {
     super.initState();
-    socialMilestones =
-        MilestonesChecklistPageData().generateDummyData('Social');
-    languageMilestones =
-        MilestonesChecklistPageData().generateDummyData('Language');
-    cognitiveMilestones =
-        MilestonesChecklistPageData().generateDummyData('Cognitive');
-    movementMilestones =
-        MilestonesChecklistPageData().generateDummyData('Movement');
+    fetchMilestones();
     tabController = TabController(length: 4, vsync: this);
     scrollController = ScrollController();
     tabController.addListener(() {
@@ -72,7 +97,9 @@ class _MilestonesChecklistPageState extends State<MilestonesChecklistPage>
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('Juan (5 years old)'),
+                  Text((widget.activeChild == null)
+                      ? '...'
+                      : '${widget.activeChild!.name} (${Child.getAgeStringInYears(widget.activeChild!.ageInMonths)})'),
                   const Text('Milestones Checklist'),
                   TextButton(
                     style: TextButton.styleFrom(
@@ -98,17 +125,21 @@ class _MilestonesChecklistPageState extends State<MilestonesChecklistPage>
               const Spacer(),
               IconButton(
                 onPressed: () async {
-                  await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => EditMilestoneCheclistPage(
-                        socialMilestones: socialMilestones,
-                        languageMilestones: languageMilestones,
-                        cognitiveMilestones: cognitiveMilestones,
-                        movementMilestones: movementMilestones,
+                  if (allMilestones != null) {
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AnswerMilestoneChecklistPage(
+                          allMilestones: allMilestones!,
+                          onSubmit: () {
+                            MilestoneChecklistItem.updateChecklist(
+                                allMilestones!);
+                            Navigator.pop(context);
+                          },
+                        ),
                       ),
-                    ),
-                  ).then((value) => _updateListKey());
+                    ).then((value) => _updateListKey());
+                  }
                 },
                 icon: const Icon(Icons.edit),
                 tooltip: 'Edit',
@@ -144,22 +175,38 @@ class _MilestonesChecklistPageState extends State<MilestonesChecklistPage>
         controller: tabController,
         physics: const NeverScrollableScrollPhysics(),
         children: [
-          MilestoneChecklistSection(
-            socialMilestones,
-            readOnly: true,
-          ),
-          MilestoneChecklistSection(
-            languageMilestones,
-            readOnly: true,
-          ),
-          MilestoneChecklistSection(
-            cognitiveMilestones,
-            readOnly: true,
-          ),
-          MilestoneChecklistSection(
-            movementMilestones,
-            readOnly: true,
-          ),
+          (socialMilestones != null)
+              ? MilestoneChecklistSection(
+                  socialMilestones!,
+                  readOnly: true,
+                )
+              : const Center(
+                  child: CircularProgressIndicator(),
+                ),
+          (languageMilestones != null)
+              ? MilestoneChecklistSection(
+                  languageMilestones!,
+                  readOnly: true,
+                )
+              : const Center(
+                  child: CircularProgressIndicator(),
+                ),
+          (cognitiveMilestones != null)
+              ? MilestoneChecklistSection(
+                  cognitiveMilestones!,
+                  readOnly: true,
+                )
+              : const Center(
+                  child: CircularProgressIndicator(),
+                ),
+          (movementMilestones != null)
+              ? MilestoneChecklistSection(
+                  movementMilestones!,
+                  readOnly: true,
+                )
+              : const Center(
+                  child: CircularProgressIndicator(),
+                ),
         ],
       ),
     );

@@ -4,39 +4,62 @@ import 'package:easy_stepper/easy_stepper.dart';
 
 import '../components/milestone_checklist_section.dart';
 
-class EditMilestoneCheclistPage extends StatefulWidget {
-  final List<MilestoneChecklistItem> socialMilestones;
-  final List<MilestoneChecklistItem> languageMilestones;
-  final List<MilestoneChecklistItem> cognitiveMilestones;
-  final List<MilestoneChecklistItem> movementMilestones;
+class AnswerMilestoneChecklistPage extends StatefulWidget {
+  final List<MilestoneChecklistItem> allMilestones;
+  final void Function() onSubmit;
 
-  const EditMilestoneCheclistPage({
+  const AnswerMilestoneChecklistPage({
     super.key,
-    required this.socialMilestones,
-    required this.languageMilestones,
-    required this.cognitiveMilestones,
-    required this.movementMilestones,
+    required this.allMilestones,
+    required this.onSubmit,
   });
 
   @override
-  State<EditMilestoneCheclistPage> createState() =>
-      _EditMilestoneCheclistPageState();
+  State<AnswerMilestoneChecklistPage> createState() =>
+      _AnswerMilestoneChecklistPage();
 }
 
-class _EditMilestoneCheclistPageState extends State<EditMilestoneCheclistPage> {
+class _AnswerMilestoneChecklistPage
+    extends State<AnswerMilestoneChecklistPage> {
   late int activeStep;
   late List<EasyStep> steps;
   late PageController pageController;
-  late List<List<MilestoneChecklistItem>> allMilestones;
+  late List<List<MilestoneChecklistItem>> allMilestonesCategory;
+  late List<MilestoneChecklistItem> socialMilestones;
+  late List<MilestoneChecklistItem> languageMilestones;
+  late List<MilestoneChecklistItem> cognitiveMilestones;
+  late List<MilestoneChecklistItem> movementMilestones;
+  String nextButtonString = 'Next';
+
+  void loadAllMilestones(List<MilestoneChecklistItem> allMilestones) {
+    socialMilestones = allMilestones
+        .where((element) =>
+            element.milestoneCategory == MilestoneOverviewItem.social)
+        .toList();
+    languageMilestones = allMilestones
+        .where((element) =>
+            element.milestoneCategory == MilestoneOverviewItem.language)
+        .toList();
+    cognitiveMilestones = allMilestones
+        .where((element) =>
+            element.milestoneCategory == MilestoneOverviewItem.cognitive)
+        .toList();
+    movementMilestones = allMilestones
+        .where((element) =>
+            element.milestoneCategory == MilestoneOverviewItem.movement)
+        .toList();
+    setState(() {});
+  }
 
   @override
   void initState() {
     super.initState();
-    allMilestones = [
-      widget.socialMilestones,
-      widget.languageMilestones,
-      widget.cognitiveMilestones,
-      widget.movementMilestones,
+    loadAllMilestones(widget.allMilestones);
+    allMilestonesCategory = [
+      socialMilestones,
+      languageMilestones,
+      cognitiveMilestones,
+      movementMilestones,
     ];
     pageController = PageController();
     activeStep = 0;
@@ -63,7 +86,7 @@ class _EditMilestoneCheclistPageState extends State<EditMilestoneCheclistPage> {
   void setActiveStep(int step) {
     // TODO: Refactor
     if (step > activeStep) {
-      int noStatusCount = allMilestones[step - 1]
+      int noStatusCount = allMilestonesCategory[step - 1]
           .where((element) => element.status == -1)
           .length;
       if (noStatusCount > 0) {
@@ -80,9 +103,6 @@ class _EditMilestoneCheclistPageState extends State<EditMilestoneCheclistPage> {
         return;
       }
     }
-    if (step == steps.length) {
-      Navigator.pop(context, allMilestones);
-    }
     setState(() {
       if (step >= 0 && step < steps.length) {
         activeStep = step;
@@ -91,6 +111,15 @@ class _EditMilestoneCheclistPageState extends State<EditMilestoneCheclistPage> {
           duration: const Duration(milliseconds: 300),
           curve: Curves.ease,
         );
+      }
+      if (activeStep == steps.length - 1) {
+        setState(() {
+          nextButtonString = 'Submit';
+        });
+      } else {
+        setState(() {
+          nextButtonString = 'Next';
+        });
       }
     });
   }
@@ -123,7 +152,7 @@ class _EditMilestoneCheclistPageState extends State<EditMilestoneCheclistPage> {
               physics: const NeverScrollableScrollPhysics(),
               controller: pageController,
               itemBuilder: (context, index) =>
-                  MilestoneChecklistSection(allMilestones[index]),
+                  MilestoneChecklistSection(allMilestonesCategory[index]),
             ),
           ),
           SizedBox(
@@ -140,8 +169,14 @@ class _EditMilestoneCheclistPageState extends State<EditMilestoneCheclistPage> {
                       : const Spacer(),
                   const Spacer(),
                   TextButton(
-                    onPressed: () => setActiveStep(activeStep + 1),
-                    child: const Text('Next'),
+                    onPressed: () {
+                      if (activeStep < steps.length - 1) {
+                        setActiveStep(activeStep + 1);
+                      } else {
+                        widget.onSubmit();
+                      }
+                    },
+                    child: Text(nextButtonString),
                   ),
                 ],
               ),

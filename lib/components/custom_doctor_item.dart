@@ -9,8 +9,9 @@ class CustomDoctorItem extends StatelessWidget {
   final String description;
   final String hospitalName;
   final String address;
-  final int trunkLine;
-  final Function()? callNumber;
+  final String trunkLine;
+  final String website;
+  final String gMapsLink;
 
   const CustomDoctorItem({
     super.key,
@@ -20,7 +21,8 @@ class CustomDoctorItem extends StatelessWidget {
     required this.address,
     required this.trunkLine,
     required this.hospitalName,
-    this.callNumber,
+    required this.website,
+    required this.gMapsLink,
   });
 
   @override
@@ -70,7 +72,7 @@ class CustomDoctorItem extends StatelessWidget {
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   Text(
-                    'Trunk Line: $trunkLine',
+                    'Telephone: $trunkLine',
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   const SizedBox(
@@ -80,15 +82,19 @@ class CustomDoctorItem extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       OutlinedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          launchUrl(Uri.parse(website));
+                        },
                         child: Text('Go to website'),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 8,
                       ),
                       FilledButton(
-                        onPressed: callNumber,
-                        child: const Text('Add to Contacts'),
+                        onPressed: () {
+                          launchUrl(Uri.parse(gMapsLink));
+                        },
+                        child: const Text('Get Directions'),
                       )
                     ],
                   )

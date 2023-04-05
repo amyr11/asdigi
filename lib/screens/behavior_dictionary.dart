@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../components/behavior_list_item.dart';
 import '../models/behavior.dart';
-import '../temp/temp_data.dart';
 
 class BehaviorDictionaryPage extends StatefulWidget {
   const BehaviorDictionaryPage({super.key});
