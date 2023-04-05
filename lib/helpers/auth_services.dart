@@ -17,7 +17,7 @@ class AuthServices {
           });
           return const HomePage();
         } else {
-          return const LoginPage();.
+          return const LoginPage();
         }
       },
     );
